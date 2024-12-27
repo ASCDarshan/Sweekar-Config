@@ -24,7 +24,7 @@ import {
   ArrowForward,
   Phone,
 } from "@mui/icons-material";
-// import ForgotPasswordDialog from "./ForgotPasswordDialog";
+import ForgotPasswordDialog from "./ForgotPasswordDialog";
 // import OTPVerificationDialog from "./OTPVerificationDialog";
 
 const Login = () => {
@@ -39,7 +39,7 @@ const Login = () => {
   // });
   const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   // const [otpDialogOpen, setOtpDialogOpen] = useState(false);
 
 
@@ -192,7 +192,7 @@ const Login = () => {
                         component="button"
                         type="button"
                         variant="body2"
-                      // onClick={() => setForgotPasswordOpen(true)}
+                        onClick={() => setForgotPasswordOpen(true)}
                       >
                         Forgot Password?
                       </Link>
@@ -259,11 +259,11 @@ const Login = () => {
         </Grid>
       </Container>
 
-      {/* <ForgotPasswordDialog
+      <ForgotPasswordDialog
         open={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}
       />
-
+      {/* 
       <OTPVerificationDialog
         open={otpDialogOpen}
         onClose={() => setOtpDialogOpen(false)}

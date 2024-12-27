@@ -11,7 +11,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
-import api from '../../services/axios';
+// import api from '../../services/axios';
 
 const ClientProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -24,27 +24,27 @@ const ClientProfile = () => {
   }, []);
 
   const fetchProfile = async () => {
-    try {
-      const response = await api.get('/clients/profile/');
-      setProfile(response.data);
-    } catch (error) {
-      setError('Error fetching profile');
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await api.get('/clients/profile/');
+    //   setProfile(response.data);
+    // } catch (error) {
+    //   setError('Error fetching profile');
+    //   console.error('Error:', error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.patch('/clients/profile/', profile);
-      setSuccess('Profile updated successfully');
-      setProfile(response.data);
-    } catch (error) {
-      setError('Error updating profile');
-      console.error('Error:', error);
-    }
+    // e.preventDefault();
+    // try {
+    //   const response = await api.patch('/clients/profile/', profile);
+    //   setSuccess('Profile updated successfully');
+    //   setProfile(response.data);
+    // } catch (error) {
+    //   setError('Error updating profile');
+    //   console.error('Error:', error);
+    // }
   };
 
   const handleChange = (e) => {

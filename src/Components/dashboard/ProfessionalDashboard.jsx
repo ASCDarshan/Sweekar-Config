@@ -23,7 +23,7 @@ import {
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import api from '../../services/axios';
+// import api from '../../services/axios';
 import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 

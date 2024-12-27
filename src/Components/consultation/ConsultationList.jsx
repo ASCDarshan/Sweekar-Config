@@ -17,7 +17,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import api from '../../services/axios';
+// import api from '../../services/axios';
 
 const ConsultationList = () => {
   const [consultations, setConsultations] = useState([]);
@@ -28,13 +28,13 @@ const ConsultationList = () => {
   }, [statusFilter]);
 
   const fetchConsultations = async () => {
-    try {
-      const params = statusFilter ? { status: statusFilter } : {};
-      const response = await api.get('/consultations/consultations/', { params });
-      setConsultations(response.data);
-    } catch (error) {
-      console.error('Error fetching consultations:', error);
-    }
+    // try {
+    //   const params = statusFilter ? { status: statusFilter } : {};
+    //   const response = await api.get('/consultations/consultations/', { params });
+    //   setConsultations(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching consultations:', error);
+    // }
   };
 
   const getStatusColor = (status) => {

@@ -16,7 +16,6 @@ import {
   TextField,
   Rating,
 } from '@mui/material';
-import api from '../../services/axios';
 
 const ConsultationDetail = () => {
   const { id } = useParams();
@@ -31,37 +30,37 @@ const ConsultationDetail = () => {
   }, [id]);
 
   const fetchConsultation = async () => {
-    try {
-      const response = await api.get(`/consultations/consultations/${id}/`);
-      setConsultation(response.data);
-    } catch (error) {
-      console.error('Error fetching consultation:', error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await api.get(`/consultations/consultations/${id}/`);
+    //   setConsultation(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching consultation:', error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleCancel = async () => {
-    try {
-      await api.post(`/consultations/consultations/${id}/cancel/`);
-      fetchConsultation();
-    } catch (error) {
-      console.error('Error cancelling consultation:', error);
-    }
+    // try {
+    //   await api.post(`/consultations/consultations/${id}/cancel/`);
+    //   fetchConsultation();
+    // } catch (error) {
+    //   console.error('Error cancelling consultation:', error);
+    // }
   };
 
   const handleSubmitReview = async () => {
-    try {
-      await api.post('/consultations/reviews/', {
-        consultation: id,
-        rating,
-        comment,
-      });
-      setReviewDialog(false);
-      fetchConsultation();
-    } catch (error) {
-      console.error('Error submitting review:', error);
-    }
+    // try {
+    //   await api.post('/consultations/reviews/', {
+    //     consultation: id,
+    //     rating,
+    //     comment,
+    //   });
+    //   setReviewDialog(false);
+    //   fetchConsultation();
+    // } catch (error) {
+    //   console.error('Error submitting review:', error);
+    // }
   };
 
   if (loading || !consultation) {
