@@ -169,35 +169,33 @@ const BookConsultation = () => {
 
   return (
     <Container maxWidth="md">
-      <Paper sx={{ p: 4, mt: 4 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Book Consultation
-        </Typography>
-        <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        {renderStepContent(activeStep)}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-          {activeStep !== 0 && (
-            <Button onClick={handleBack} sx={{ mr: 1 }}>
-              Back
-            </Button>
-          )}
-          {activeStep === steps.length - 1 ? (
-            <Button variant="contained" onClick={handleSubmit}>
-              Book Now
-            </Button>
-          ) : (
-            <Button variant="contained" onClick={handleNext}>
-              Next
-            </Button>
-          )}
-        </Box>
-      </Paper>
+      <Typography variant="h4" align="center" gutterBottom>
+        Book Consultation
+      </Typography>
+      <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      {renderStepContent(activeStep)}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+        {activeStep !== 0 && (
+          <Button onClick={handleBack} sx={{ mr: 1 }}>
+            Back
+          </Button>
+        )}
+        {activeStep === steps.length - 1 ? (
+          <Button variant="contained" onClick={handleSubmit}>
+            Book Now
+          </Button>
+        ) : (
+          <Button variant="contained" onClick={handleNext}>
+            Next
+          </Button>
+        )}
+      </Box>
     </Container>
   );
 };

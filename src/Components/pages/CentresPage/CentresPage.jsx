@@ -1,5 +1,3 @@
-// src/pages/CentresPage.jsx
-import { useState } from 'react';
 import {
   Box,
   Container,
