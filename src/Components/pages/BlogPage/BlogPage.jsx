@@ -1,4 +1,3 @@
-// src/pages/BlogPage.jsx
 import {
   Box,
   Container,
@@ -28,7 +27,6 @@ const blogPosts = [
 ];
 
 const BlogPage = () => {
-
   return (
     <Box>
       <Box sx={{ bgcolor: 'primary.light', py: 6 }}>

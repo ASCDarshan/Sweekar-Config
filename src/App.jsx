@@ -7,13 +7,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import Navbar from "./Components/common/Navbar"
 import Footer from "./Components/common/Footer"
-import LandingPage from "./Components/pages/LandingPage"
-import ServicesPage from './Components/pages/ServicesPage';
-import ExpertsPage from './Components/pages/ExpertsPage';
-import CentresPage from './Components/pages/CentresPage';
-import BlogPage from './Components/pages/BlogPage';
-import ResourcesPage from './Components/pages/ResourcesPage';
-import ContactPage from './Components/pages/ContactPage';
+import LandingPage from "./Components/pages/LandingPage/LandingPage"
+import ServicesPage from './Components/pages/ServicesPage/ServicesPage';
+import ExpertsPage from './Components/pages/ExpertsPage/ExpertsPage';
+import CentresPage from './Components/pages/CentresPage/CentresPage';
+import BlogPage from './Components/pages/BlogPage/BlogPage';
+import ResourcesPage from './Components/pages/ResourcesPage/ResourcesPage';
+import ContactPage from './Components/pages/ContactPage/ContactPage';
 import Login from './Components/auth/Login';
 import Register from './Components/auth/Register';
 import ClientDashboard from './Components/dashboard/ClientDashboard';
