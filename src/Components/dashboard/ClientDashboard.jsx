@@ -10,22 +10,22 @@ import {
   CardActions,
 } from '@mui/material';
 import { Schedule } from '@mui/icons-material';
-import api from '../../services/axios';
+// import api from '../../services/axios';
 
 const ClientDashboard = () => {
   const [upcomingConsultations, setUpcomingConsultations] = useState([]);
 
   useEffect(() => {
-    const fetchConsultations = async () => {
-      try {
-        const response = await api.get('/consultations/consultations/?status=SCHEDULED');
-        setUpcomingConsultations(response.data);
-      } catch (error) {
-        console.error('Error fetching consultations:', error);
-      }
-    };
+    // const fetchConsultations = async () => {
+    //   try {
+    //     const response = await api.get('/consultations/consultations/?status=SCHEDULED');
+    //     setUpcomingConsultations(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching consultations:', error);
+    //   }
+    // };
 
-    fetchConsultations();
+    // fetchConsultations();
   }, []);
 
   return (

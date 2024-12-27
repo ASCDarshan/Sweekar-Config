@@ -16,7 +16,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
-import api from '../../services/axios';
+// import api from '../../services/axios';
 
 const ProfessionalProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -31,36 +31,36 @@ const ProfessionalProfile = () => {
   }, []);
 
   const fetchProfile = async () => {
-    try {
-      const response = await api.get('/professionals/profile/');
-      setProfile(response.data);
-    } catch (error) {
-      setError('Error fetching profile');
-      console.error('Error:', error);
-    }
+    // try {
+    //   const response = await api.get('/professionals/profile/');
+    //   setProfile(response.data);
+    // } catch (error) {
+    //   setError('Error fetching profile');
+    //   console.error('Error:', error);
+    // }
   };
 
   const fetchSpecializations = async () => {
-    try {
-      const response = await api.get('/professionals/specializations/');
-      setSpecializations(response.data);
-    } catch (error) {
-      console.error('Error fetching specializations:', error);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await api.get('/professionals/specializations/');
+    //   setSpecializations(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching specializations:', error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.patch('/professionals/profile/', profile);
-      setSuccess('Profile updated successfully');
-      setProfile(response.data);
-    } catch (error) {
-      setError('Error updating profile');
-      console.error('Error:', error);
-    }
+    // e.preventDefault();
+    // try {
+    //   const response = await api.patch('/professionals/profile/', profile);
+    //   setSuccess('Profile updated successfully');
+    //   setProfile(response.data);
+    // } catch (error) {
+    //   setError('Error updating profile');
+    //   console.error('Error:', error);
+    // }
   };
 
   const handleChange = (e) => {

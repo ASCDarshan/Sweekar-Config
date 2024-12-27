@@ -21,7 +21,7 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import axiosInstance from '../../services/axios';
+// import axiosInstance from '../../services/axios';
 
 const steps = ['Select Professional', 'Choose Time', 'Confirm Details'];
 
@@ -34,16 +34,16 @@ const BookConsultation = () => {
   const [notes, setNotes] = useState('');
 
   useEffect(() => {
-    const fetchProfessionals = async () => {
-      try {
-        const response = await api.get('/professionals/public/');
-        setProfessionals(response.data);
-      } catch (error) {
-        console.error('Error fetching professionals:', error);
-      }
-    };
+    // const fetchProfessionals = async () => {
+    //   try {
+    //     const response = await api.get('/professionals/public/');
+    //     setProfessionals(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching professionals:', error);
+    //   }
+    // };
 
-    fetchProfessionals();
+    // fetchProfessionals();
   }, []);
 
   const handleNext = () => {
@@ -55,20 +55,20 @@ const BookConsultation = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const consultationData = {
-        professional: selectedProfessional.id,
-        scheduled_time: selectedDateTime.toISOString(),
-        consultation_type: consultationType,
-        notes: notes,
-        duration: 30,
-      };
+    // try {
+    //   const consultationData = {
+    //     professional: selectedProfessional.id,
+    //     scheduled_time: selectedDateTime.toISOString(),
+    //     consultation_type: consultationType,
+    //     notes: notes,
+    //     duration: 30,
+    //   };
 
-      const response = await api.post('/consultations/consultations/', consultationData);
-      window.location.href = `/consultation/${response.data.id}`;
-    } catch (error) {
-      console.error('Error booking consultation:', error);
-    }
+    //   const response = await api.post('/consultations/consultations/', consultationData);
+    //   window.location.href = `/consultation/${response.data.id}`;
+    // } catch (error) {
+    //   console.error('Error booking consultation:', error);
+    // }
   };
 
   const renderStepContent = (step) => {
