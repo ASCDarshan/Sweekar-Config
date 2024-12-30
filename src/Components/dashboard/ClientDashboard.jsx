@@ -10,7 +10,6 @@ import {
   CardActions,
 } from '@mui/material';
 import { Schedule } from '@mui/icons-material';
-// import api from '../../services/axios';
 
 const ClientDashboard = () => {
   const [upcomingConsultations, setUpcomingConsultations] = useState([]);
