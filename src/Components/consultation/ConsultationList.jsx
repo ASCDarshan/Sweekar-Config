@@ -17,7 +17,6 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-// import api from '../../services/axios';
 
 const ConsultationList = () => {
   const [consultations, setConsultations] = useState([]);
