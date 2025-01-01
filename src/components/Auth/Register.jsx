@@ -37,6 +37,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import ajaxCall from "../../helpers/ajaxCall";
+import Loading from "../UI/Loading";
 
 const initialValues = {
   username: "",
@@ -54,10 +55,11 @@ const Register = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const [activeStep, setActiveStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -90,6 +92,7 @@ const Register = () => {
     },
   });
   const fetchData = async (url, data) => {
+    setisLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -105,6 +108,7 @@ const Register = () => {
       );
       if (response?.status === 201) {
         toast.success("Registration successful.");
+        setisLoading(false);
         formik.resetForm();
         navigate("/login");
       } else {
@@ -484,15 +488,19 @@ const Register = () => {
                       Back
                     </Button>
                     {activeStep === steps.length - 1 ? (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        size="large"
-                        sx={{ px: 4 }}
-                        onClick={formik.handleSubmit}
-                      >
-                        Register
-                      </Button>
+                      isLoading ? (
+                        <Loading />
+                      ) : (
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          size="large"
+                          sx={{ px: 4 }}
+                          onClick={formik.handleSubmit}
+                        >
+                          Register
+                        </Button>
+                      )
                     ) : (
                       <Button
                         variant="contained"
@@ -504,6 +512,7 @@ const Register = () => {
                         Next
                       </Button>
                     )}
+
                   </Box>
                 </form>
                 {isMobile && (
