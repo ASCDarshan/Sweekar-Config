@@ -9,6 +9,8 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -35,6 +37,7 @@ import ConsultationDetail from "./components/Consultation/ConsultationDetail";
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer theme="colored" position="top-center" autoClose={3000} />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <CssBaseline />
         <Router>
@@ -50,12 +53,12 @@ const App = () => {
             <Route path="/services" element={<Services />} />
             <Route path="/resources" element={<Resources />} />
 
-            <Route path="/client/dashboard" element={<Client />} />
-            <Route path="/client/profile" element={<ClientProfile />} />
+            <Route path="/Client/Dashboard" element={<Client />} />
+            <Route path="/Client/Profile" element={<ClientProfile />} />
 
-            <Route path="/professional/dashboard" element={<Professional />} />
+            <Route path="/Professional/Dashboard" element={<Professional />} />
             <Route
-              path="/professional/profile"
+              path="/Professional/Profile"
               element={<ProfessionalProfile />}
             />
 

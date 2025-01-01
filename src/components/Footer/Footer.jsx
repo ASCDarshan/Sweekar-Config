@@ -19,11 +19,19 @@ const Footer = () => {
           © {new Date().getFullYear()} Consultation Portal. All rights reserved.
         </Typography>
         <Typography variant="body2" align="center" color="text.secondary">
-          <Link color="inherit" href="/privacy">
+          <Link
+            color="inherit"
+            href="/privacy"
+            style={{ textDecoration: "none" }}
+          >
             Privacy Policy
           </Link>
           {" | "}
-          <Link color="inherit" href="/terms">
+          <Link
+            href="/terms"
+            color="inherit"
+            style={{ textDecoration: "none" }}
+          >
             Terms of Service
           </Link>
         </Typography>

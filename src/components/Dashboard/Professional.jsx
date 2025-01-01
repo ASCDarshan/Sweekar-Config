@@ -111,7 +111,6 @@ const Professional = () => {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
-          onSelectEvent={handleEventClick}
         />
       </Box>
       <ConsultationDialog
@@ -124,7 +123,6 @@ const Professional = () => {
       <CreateEventDialog
         open={createEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
-        onCreate={handleCreateEvent}
       />
     </Container>
   );
@@ -157,7 +155,6 @@ const ConsultationDialog = ({
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
-          onClick={handleUpdateConsultation}
           disabled={loading}
         >
           {loading ? <CircularProgress size={24} /> : "Update"}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Container,
   Paper,
@@ -21,7 +21,6 @@ import Loading from "../UI/Loading";
 const Professional = () => {
   const error = "";
   const success = "";
-  const loading = true;
   const specializations = [];
   const [profile, setProfile] = useState(null);
 
@@ -31,8 +30,6 @@ const Professional = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  if (loading) return <Loading />;
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -64,7 +61,7 @@ const Professional = () => {
             {success}
           </Alert>
         )}
-        <form onSubmit={handleSubmit}>
+        <form>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TextField

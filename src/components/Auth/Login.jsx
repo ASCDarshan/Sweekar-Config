@@ -21,9 +21,12 @@ import {
   VisibilityOff,
   Person,
   Lock,
-  ArrowForward,
   Phone,
 } from "@mui/icons-material";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import ajaxCall from "../../helpers/ajaxCall";
 import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
@@ -36,57 +39,86 @@ const Login = () => {
   const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().required("Username is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: (values) => {
+      const loginCredentials = {
+        username: values.email,
+        password: values.password,
+      };
+      fetchData("users/login/", loginCredentials);
+    },
+  });
+
+  const fetchData = async (url, data) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(data),
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        formik.resetForm();
+        const result = response?.data;
+        localStorage.setItem(
+          "loginInfo",
+          JSON.stringify({
+            user: result?.user?.id,
+            user_type: result?.user?.user_type,
+            accessToken: result?.tokens?.access,
+            refreshToken: result?.tokens?.refresh,
+          })
+        );
+        toast.success("Login Successful");
+        if (result?.user?.user_type === "PROFESSIONAL") {
+          navigate("/Professional/Dashboard");
+        } else if (result?.user?.user_type === "CLIENT") {
+          navigate("/Client/Dashboard");
+        } else {
+          navigate("/");
+        }
+      } else if (response.status === 400) {
+        if (response.data.error === "Invalid credentials") {
+          toast.error(response.data.error);
+        } else {
+          toast.error(
+            "Email not verified. Please verify your email to log in."
+          );
+        }
+      } else if (response.status === 404) {
+        toast.error("Username or Password is wrong, Please try again...");
+      }
+    } catch (error) {
+      toast.error("Some Problem Occurred. Please try again.");
+    }
+  };
+
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        py: 4,
         display: "flex",
+        minHeight: "100vh",
         alignItems: "center",
         background: `linear-gradient(45deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-        py: 4,
       }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="center" alignItems="center">
-          {!isMobile && (
-            <Grid item xs={12} md={6}>
-              <Fade in timeout={1000}>
-                <Box sx={{ color: "white", pr: 4 }}>
-                  <Typography
-                    variant="h2"
-                    gutterBottom
-                    sx={{ fontWeight: 700 }}
-                  >
-                    Welcome Back
-                  </Typography>
-                  <Typography variant="h5" sx={{ mb: 4, opacity: 0.9 }}>
-                    Sign in to access your account
-                  </Typography>
-                  <Typography variant="body1" sx={{ opacity: 0.8 }}>
-                    Don&apos;t have an account?
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    size="large"
-                    endIcon={<ArrowForward />}
-                    onClick={() => navigate("/register")}
-                    sx={{
-                      mt: 2,
-                      borderColor: "white",
-                      color: "white",
-                      "&:hover": {
-                        borderColor: "white",
-                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      },
-                    }}
-                  >
-                    Create Account
-                  </Button>
-                </Box>
-              </Fade>
-            </Grid>
-          )}
           <Grid item xs={12} md={6}>
             <Fade in timeout={1000}>
               <Paper
@@ -127,12 +159,18 @@ const Login = () => {
                   </Button>
                 </Box>
                 {loginMethod === "password" ? (
-                  <form onSubmit={""}>
+                  <form onSubmit={formik.handleSubmit}>
                     <TextField
                       fullWidth
                       label="Username"
-                      name="username"
-                      onChange={""}
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.email && Boolean(formik.errors.email)
+                      }
+                      helperText={formik.touched.email && formik.errors.email}
                       required
                       sx={{ mb: 2 }}
                       InputProps={{
@@ -148,7 +186,16 @@ const Login = () => {
                       label="Password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      onChange={""}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                      }
+                      helperText={
+                        formik.touched.password && formik.errors.password
+                      }
                       required
                       sx={{ mb: 1 }}
                       InputProps={{
@@ -173,14 +220,30 @@ const Login = () => {
                         ),
                       }}
                     />
-                    <Box sx={{ textAlign: "right", mb: 2 }}>
+                    <Box
+                      sx={{
+                        mb: 2,
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <Link
                         component="button"
                         type="button"
                         variant="body2"
+                        style={{ textDecoration: "none" }}
                         onClick={() => setForgotPasswordOpen(true)}
                       >
                         Forgot Password?
+                      </Link>
+                      <Link
+                        component="button"
+                        type="button"
+                        variant="body2"
+                        style={{ textDecoration: "none" }}
+                        onClick={() => navigate("/register")}
+                      >
+                        Don&apos;t have an account?
                       </Link>
                     </Box>
                     <Button
