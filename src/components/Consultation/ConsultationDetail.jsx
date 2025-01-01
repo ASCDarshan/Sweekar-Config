@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import {
   Container,
   Paper,
@@ -18,54 +17,10 @@ import {
 } from "@mui/material";
 
 const ConsultationDetail = () => {
-  const { id } = useParams();
-  const [consultation, setConsultation] = useState(null);
-  const [reviewDialog, setReviewDialog] = useState(false);
+  const consultation = null;
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchConsultation();
-  }, [id]);
-
-  const fetchConsultation = async () => {
-    // try {
-    //   const response = await api.get(`/consultations/consultations/${id}/`);
-    //   setConsultation(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching consultation:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
-  };
-
-  const handleCancel = async () => {
-    // try {
-    //   await api.post(`/consultations/consultations/${id}/cancel/`);
-    //   fetchConsultation();
-    // } catch (error) {
-    //   console.error('Error cancelling consultation:', error);
-    // }
-  };
-
-  const handleSubmitReview = async () => {
-    // try {
-    //   await api.post('/consultations/reviews/', {
-    //     consultation: id,
-    //     rating,
-    //     comment,
-    //   });
-    //   setReviewDialog(false);
-    //   fetchConsultation();
-    // } catch (error) {
-    //   console.error('Error submitting review:', error);
-    // }
-  };
-
-  if (loading || !consultation) {
-    return <div>Loading...</div>;
-  }
+  const [reviewDialog, setReviewDialog] = useState(false);
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -73,7 +28,6 @@ const ConsultationDetail = () => {
         <Typography variant="h4" gutterBottom>
           Consultation Details
         </Typography>
-
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Professional</Typography>
@@ -81,7 +35,6 @@ const ConsultationDetail = () => {
               {consultation.professional_name}
             </Typography>
           </Grid>
-
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Status</Typography>
             <Chip
@@ -91,30 +44,25 @@ const ConsultationDetail = () => {
               }
             />
           </Grid>
-
           <Grid item xs={12}>
             <Divider sx={{ my: 2 }} />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Date & Time</Typography>
             <Typography>
               {new Date(consultation.scheduled_time).toLocaleString()}
             </Typography>
           </Grid>
-
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Type</Typography>
             <Typography>{consultation.consultation_type}</Typography>
           </Grid>
-
           {consultation.notes && (
             <Grid item xs={12}>
               <Typography variant="subtitle1">Notes</Typography>
               <Typography>{consultation.notes}</Typography>
             </Grid>
           )}
-
           <Grid item xs={12}>
             <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
               {consultation.status === "SCHEDULED" && (
@@ -135,7 +83,6 @@ const ConsultationDetail = () => {
           </Grid>
         </Grid>
       </Paper>
-
       <Dialog open={reviewDialog} onClose={() => setReviewDialog(false)}>
         <DialogTitle>Leave a Review</DialogTitle>
         <DialogContent>

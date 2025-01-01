@@ -10,9 +10,8 @@ import {
   Box,
   TextField,
 } from "@mui/material";
-import api from "../../services/axios";
 
-const OTPVerification = ({ open, onClose, phone, onVerificationComplete }) => {
+const OTPVerification = ({ open, onClose, phone }) => {
   const [otp, setOTP] = useState("");
   const [error, setError] = useState("");
   const [countdown, setCountdown] = useState(30);
@@ -34,29 +33,6 @@ const OTPVerification = ({ open, onClose, phone, onVerificationComplete }) => {
       clearInterval(timer);
     };
   }, [open, countdown]);
-
-  const handleResendOTP = async () => {
-    try {
-      await api.post("/users/send-otp/", { phone });
-      setCountdown(30);
-      setCanResend(false);
-      setError("");
-    } catch (err) {
-      setError("Failed to resend OTP");
-    }
-  };
-
-  const handleVerifyOTP = async () => {
-    try {
-      const response = await api.post("/users/verify-otp/", {
-        phone,
-        otp,
-      });
-      onVerificationComplete(response.data);
-    } catch (err) {
-      setError("Invalid OTP");
-    }
-  };
 
   return (
     <Dialog

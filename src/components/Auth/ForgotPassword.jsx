@@ -46,19 +46,16 @@ const ForgotPassword = ({ open, onClose }) => {
             Enter your email address and we&apos;ll send you instructions to
             reset your password.
           </Typography>
-
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
-
           {success && (
             <Alert severity="success" sx={{ mb: 2 }}>
               {success}
             </Alert>
           )}
-
           <TextField
             fullWidth
             label="Email Address"

@@ -49,7 +49,6 @@ const Contact = () => {
             with the right resources and support services.
           </Typography>
         </Container>
-
         <Box
           sx={{
             position: "absolute",
@@ -73,10 +72,9 @@ const Contact = () => {
           }}
         />
       </Box>
-
       <Container
         maxWidth="lg"
-        sx={{ position: "relative", mt: -6, mb: 8, zIndex: 2 }}
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
       >
         <Grid container spacing={4}>
           <Grid item xs={12} md={5}>
@@ -94,7 +92,6 @@ const Contact = () => {
                 <Typography variant="h4" gutterBottom fontWeight="bold">
                   Get in Touch
                 </Typography>
-
                 <List sx={{ mt: 4 }}>
                   <ListItem sx={{ mb: 3 }}>
                     <ListItemIcon>
@@ -113,7 +110,6 @@ const Contact = () => {
                       }
                     />
                   </ListItem>
-
                   <ListItem sx={{ mb: 3 }}>
                     <ListItemIcon>
                       <LocationOn sx={{ color: "white", fontSize: 28 }} />
@@ -135,7 +131,6 @@ const Contact = () => {
                       }
                     />
                   </ListItem>
-
                   <ListItem sx={{ mb: 3 }}>
                     <ListItemIcon>
                       <AccessTime sx={{ color: "white", fontSize: 28 }} />
@@ -156,7 +151,6 @@ const Contact = () => {
                     />
                   </ListItem>
                 </List>
-
                 <Box
                   sx={{
                     position: "absolute",
@@ -171,7 +165,6 @@ const Contact = () => {
               </CardContent>
             </Card>
           </Grid>
-
           <Grid item xs={12} md={7}>
             <Card elevation={3}>
               <CardContent sx={{ p: 4 }}>
@@ -186,7 +179,6 @@ const Contact = () => {
                   Fill out the form below and we&apos;ll get back to you as soon
                   as possible.
                 </Typography>
-
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -264,7 +256,6 @@ const Contact = () => {
           </Grid>
         </Grid>
       </Container>
-
       <Box sx={{ bgcolor: "grey.100", py: 8 }}>
         <Container maxWidth="lg">
           <Typography

@@ -33,6 +33,7 @@ const faqs = [
 ];
 const FAQ = () => {
   const [expanded, setExpanded] = useState(false);
+  
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>

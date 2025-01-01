@@ -9,7 +9,7 @@ import ImportanceSection from "./components/Importance";
 
 const Landing = () => {
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "#fff" }}>
+    <Box>
       <HeroSection />
       <VisionSection />
       <ImportanceSection />

@@ -50,7 +50,6 @@ const Vision = () => {
             >
               Why Sweekar? – The Vision
             </Typography>
-
             <Grid container spacing={4}>
               {visionPoints.map((point, index) => (
                 <Grid item xs={12} md={4} key={index}>

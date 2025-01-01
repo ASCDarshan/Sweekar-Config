@@ -30,18 +30,63 @@ const blogPosts = [
 const Blog = () => {
   return (
     <Box>
-      <Box sx={{ bgcolor: "primary.light", py: 6 }}>
-        <Container>
-          <Typography variant="h3" gutterBottom align="center">
+      <Box
+        sx={{
+          bgcolor: "primary.light",
+          py: { xs: 6, md: 10 },
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography
+            variant="h2"
+            gutterBottom
+            align="center"
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
+            }}
+          >
             Insights & Stories
           </Typography>
-          <Typography variant="h6" align="center" color="text.secondary">
+          <Typography
+            variant="h6"
+            align="center"
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+          >
             Resources, stories and updates from the Sweekar community
           </Typography>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
-
-      <Container sx={{ mt: -4, mb: 6 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+      >
         <Card sx={{ p: 3 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -64,7 +109,6 @@ const Blog = () => {
           </Grid>
         </Card>
       </Container>
-
       <Container sx={{ mb: 6 }}>
         <Grid container spacing={4}>
           {blogPosts.map((post, index) => (

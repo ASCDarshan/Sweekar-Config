@@ -12,7 +12,6 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
-  Fade,
   Slide,
   IconButton,
 } from "@mui/material";
@@ -65,33 +64,28 @@ const Centres = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Fade in={true} timeout={1000}>
-            <Typography
-              variant="h2"
-              align="center"
-              sx={{
-                fontWeight: 700,
-                mb: 2,
-                color: "primary.dark",
-                fontSize: { xs: "2.5rem", md: "3.5rem" },
-              }}
-            >
-              Our Centre
-            </Typography>
-          </Fade>
-          <Fade in={true} timeout={1500}>
-            <Typography
-              variant="h5"
-              align="center"
-              color="text.secondary"
-              sx={{ maxWidth: "800px", mx: "auto" }}
-            >
-              A safe and inclusive space for support, community building, and
-              professional services
-            </Typography>
-          </Fade>
+          <Typography
+            variant="h2"
+            gutterBottom
+            align="center"
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
+            }}
+          >
+            Our Centre
+          </Typography>
+          <Typography
+            variant="h6"
+            align="center"
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+          >
+            A safe and inclusive space for support, community building, and
+            professional services
+          </Typography>
         </Container>
-
         <Box
           sx={{
             position: "absolute",
@@ -103,11 +97,21 @@ const Centres = () => {
             background: "rgba(157, 132, 183, 0.1)",
           }}
         />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
-
       <Container
         maxWidth="lg"
-        sx={{ mt: -6, mb: 8, position: "relative", zIndex: 1 }}
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
       >
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
@@ -146,7 +150,6 @@ const Centres = () => {
                         }
                       />
                     </ListItem>
-
                     <ListItem>
                       <ListItemIcon>
                         <Phone color="primary" />
@@ -164,7 +167,6 @@ const Centres = () => {
                         }
                       />
                     </ListItem>
-
                     <ListItem>
                       <ListItemIcon>
                         <AccessTime color="primary" />
@@ -183,7 +185,6 @@ const Centres = () => {
                       />
                     </ListItem>
                   </List>
-
                   <Button
                     variant="contained"
                     startIcon={<DirectionsWalk />}
@@ -201,64 +202,66 @@ const Centres = () => {
               </Card>
             </Slide>
           </Grid>
-
           <Grid item xs={12} md={6}>
-            <Slide direction="up" in={true} timeout={1500}>
-              <Box>
-                <Typography variant="h4" gutterBottom fontWeight="bold">
-                  Available Services
-                </Typography>
-                <Grid container spacing={2}>
-                  {services.map((service, index) => (
-                    <Grid item xs={12} key={index}>
-                      <Card
-                        elevation={2}
-                        sx={{
-                          transition: "all 0.3s ease",
-                          "&:hover": {
-                            transform: "translateX(10px)",
-                            bgcolor: "primary.light",
-                          },
-                        }}
-                      >
-                        <CardContent>
-                          <Grid container alignItems="center" spacing={2}>
-                            <Grid item>
-                              <IconButton
-                                sx={{
-                                  bgcolor: "primary.light",
-                                  "&:hover": { bgcolor: "primary.main" },
-                                }}
-                              >
-                                {service.icon}
-                              </IconButton>
-                            </Grid>
-                            <Grid item xs>
-                              <Typography variant="h6" gutterBottom>
-                                {service.title}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                {service.description}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <ArrowForward color="primary" />
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
+            <Card elevation={3}>
+              <CardContent sx={{ p: 4 }}>
+                <Slide direction="up" in={true} timeout={1500}>
+                  <Box>
+                    <Typography variant="h4" gutterBottom fontWeight="bold">
+                      Available Services
+                    </Typography>
+                    <Grid container spacing={2}>
+                      {services.map((service, index) => (
+                        <Grid item xs={12} key={index}>
+                          <Card
+                            elevation={2}
+                            sx={{
+                              transition: "all 0.3s ease",
+                              "&:hover": {
+                                transform: "translateX(10px)",
+                                bgcolor: "primary.light",
+                              },
+                            }}
+                          >
+                            <CardContent>
+                              <Grid container alignItems="center" spacing={2}>
+                                <Grid item>
+                                  <IconButton
+                                    sx={{
+                                      bgcolor: "primary.light",
+                                      "&:hover": { bgcolor: "primary.main" },
+                                    }}
+                                  >
+                                    {service.icon}
+                                  </IconButton>
+                                </Grid>
+                                <Grid item xs>
+                                  <Typography variant="h6" gutterBottom>
+                                    {service.title}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    {service.description}
+                                  </Typography>
+                                </Grid>
+                                <Grid item>
+                                  <ArrowForward color="primary" />
+                                </Grid>
+                              </Grid>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            </Slide>
+                  </Box>
+                </Slide>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
       </Container>
-
       <Box sx={{ bgcolor: "grey.100", py: 8 }}>
         <Container maxWidth="lg">
           <Typography

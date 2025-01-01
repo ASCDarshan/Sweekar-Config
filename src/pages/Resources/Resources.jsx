@@ -10,6 +10,7 @@ import {
   ListItemText,
   Button,
   TextField,
+  IconButton,
 } from "@mui/material";
 import { Article, LocalHospital, Gavel, Download } from "@mui/icons-material";
 
@@ -43,18 +44,63 @@ const resources = [
 const Resources = () => {
   return (
     <Box>
-      <Box sx={{ bgcolor: "primary.light", py: 6 }}>
-        <Container>
-          <Typography variant="h3" gutterBottom align="center">
+      <Box
+        sx={{
+          bgcolor: "primary.light",
+          py: { xs: 6, md: 10 },
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography
+            variant="h2"
+            gutterBottom
+            align="center"
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
+            }}
+          >
             Resources
           </Typography>
-          <Typography variant="h6" align="center" color="text.secondary">
-            Helpful guides, documents, and information for our community
+          <Typography
+            variant="h6"
+            align="center"
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+          >
+            Helpful guides, Documents, and Information for Our community
           </Typography>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
-
-      <Container sx={{ mt: -4, mb: 6 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+      >
         <Card sx={{ p: 3 }}>
           <TextField
             fullWidth
@@ -63,13 +109,20 @@ const Resources = () => {
           />
         </Card>
       </Container>
-
       <Container sx={{ mb: 6 }}>
         {resources.map((category, index) => (
           <Card key={index} sx={{ mb: 4 }}>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                {category.icon}
+                <IconButton
+                  sx={{
+                    bgcolor: "primary.light",
+                    "&:hover": { bgcolor: "primary.main" },
+                  }}
+                >
+                  {category.icon}
+                </IconButton>
+
                 <Typography variant="h5" sx={{ ml: 2 }}>
                   {category.category}
                 </Typography>
