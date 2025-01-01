@@ -28,6 +28,7 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import ajaxCall from "../../helpers/ajaxCall";
 import ForgotPassword from "./ForgotPassword";
+import Loading from "../UI/Loading";
 
 const Login = () => {
   const theme = useTheme();
@@ -38,6 +39,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -58,6 +60,7 @@ const Login = () => {
   });
 
   const fetchData = async (url, data) => {
+    setisLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -86,8 +89,10 @@ const Login = () => {
         toast.success("Login Successful");
         if (result?.user?.user_type === "PROFESSIONAL") {
           navigate("/Professional/Dashboard");
+          setisLoading(false);
         } else if (result?.user?.user_type === "CLIENT") {
           navigate("/Client/Dashboard");
+          setisLoading(false);
         } else {
           navigate("/");
         }
@@ -250,10 +255,10 @@ const Login = () => {
                       type="submit"
                       fullWidth
                       variant="contained"
-                      size="large"
+                      size="small"
                       sx={{ mb: 2 }}
                     >
-                      Sign In
+                      {isLoading ? <Loading /> : "Login"}
                     </Button>
                   </form>
                 ) : (

@@ -15,11 +15,18 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  ListItemIcon,
+  Collapse,
 } from "@mui/material";
 import {
   AccountCircle,
   Menu as MenuIcon,
   Close as CloseIcon,
+  Dashboard as DashboardIcon,
+  AccountCircle as AccountCircleIcon,
+  Logout as LogoutIcon,
+  ExpandLess,
+  ExpandMore
 } from "@mui/icons-material";
 import logo from "../../assets/sweekar-Logo.png";
 
@@ -38,6 +45,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const user = JSON.parse(localStorage.getItem("loginInfo"));
 
   const trigger = useScrollTrigger({
@@ -65,6 +73,10 @@ const Navbar = () => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleDropdownToggle = () => {
+    setOpenDropdown(!openDropdown);
   };
 
   const handleDashboard = () => {
@@ -134,21 +146,6 @@ const Navbar = () => {
                 >
                   <img src={logo} alt="Sweekar" style={{ height: "40px" }} />
                 </Box>
-                {!user && (
-                  <Button
-                    variant="contained"
-                    onClick={() => navigate("/login")}
-                    sx={{
-                      bgcolor: "white",
-                      color: "#9D84B7",
-                      "&:hover": {
-                        bgcolor: "rgba(255,255,255,0.9)",
-                      },
-                    }}
-                  >
-                    Login
-                  </Button>
-                )}
               </>
             ) : (
               <>
@@ -256,9 +253,24 @@ const Navbar = () => {
                           },
                         }}
                       >
-                        <MenuItem onClick={handleDashboard}>Dashboard</MenuItem>
-                        <MenuItem onClick={handleProfile}>Profile</MenuItem>
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem onClick={handleDashboard}>
+                          <ListItemIcon>
+                            <DashboardIcon fontSize="small" />
+                          </ListItemIcon>
+                          Dashboard
+                        </MenuItem>
+                        <MenuItem onClick={handleProfile}>
+                          <ListItemIcon>
+                            <AccountCircleIcon fontSize="small" />
+                          </ListItemIcon>
+                          Profile
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>
+                          <ListItemIcon>
+                            <LogoutIcon fontSize="small" />
+                          </ListItemIcon>
+                          Logout
+                        </MenuItem>
                       </Menu>
                     </>
                   ) : (
@@ -315,6 +327,28 @@ const Navbar = () => {
             <CloseIcon />
           </IconButton>
         </Box>
+
+        {user?.user && (
+          <Box sx={{ px: 2, pb: 2 }}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => {
+                navigate("/consultations");
+                handleDrawerToggle();
+              }}
+              sx={{
+                bgcolor: "#9D84B7",
+                "&:hover": {
+                  bgcolor: "rgba(157, 132, 183, 0.9)",
+                },
+              }}
+            >
+              My Consultations
+            </Button>
+          </Box>
+        )}
+
         <List>
           {navItems.map((item) => (
             <ListItem
@@ -337,6 +371,88 @@ const Navbar = () => {
               />
             </ListItem>
           ))}
+
+          {user?.user ? (
+            <>
+              <ListItem
+                button
+                onClick={handleDropdownToggle}
+                sx={{
+                  borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+                }}
+              >
+                <ListItemIcon>
+                  <AccountCircleIcon />
+                  {openDropdown ? <ExpandLess /> : <ExpandMore />}
+                </ListItemIcon>
+
+              </ListItem>
+              <Collapse in={openDropdown} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      handleDashboard();
+                      handleDrawerToggle();
+                    }}
+                    sx={{ pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      handleProfile();
+                      handleDrawerToggle();
+                    }}
+                    sx={{ pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Profile" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      handleLogout();
+                      handleDrawerToggle();
+                    }}
+                    sx={{ pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                  </ListItem>
+                </List>
+              </Collapse>
+            </>
+          ) : (
+            <>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate("/login");
+                  handleDrawerToggle();
+                }}
+              >
+                <ListItemText primary="Login" />
+              </ListItem>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate("/register");
+                  handleDrawerToggle();
+                }}
+              >
+                <ListItemText primary="Register" />
+              </ListItem>
+            </>
+          )}
         </List>
       </Drawer>
       <Toolbar

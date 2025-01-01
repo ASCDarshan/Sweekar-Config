@@ -7,10 +7,9 @@ const Loading = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "200px",
       }}
     >
-      <CircularProgress />
+      <CircularProgress size={26} />
     </Box>
   );
 };
