@@ -9,7 +9,7 @@ const ajaxCall = async (
       timeOutFunction();
     }, timeOut);
 
-    const response = await fetch(`https://cicinfosystems.com/baa/api/${url}`, fetchObj);
+    const response = await fetch(`https://sweekarme.in/api/${url}`, fetchObj);
     clearTimeout(id);
     const data = await response.json();
 

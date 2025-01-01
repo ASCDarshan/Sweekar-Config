@@ -1,31 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   IconButton,
   Menu,
   MenuItem,
   Box,
-  Avatar,
   Container,
   useScrollTrigger,
   Drawer,
   List,
   ListItem,
   ListItemText,
-  useTheme,
-  useMediaQuery,
+  Stack,
 } from "@mui/material";
 import {
   AccountCircle,
   Menu as MenuIcon,
   Close as CloseIcon,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import logo from "../../assets/sweekar-Logo.png";
 
 const navItems = [
+  { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
   { label: "Experts", path: "/experts" },
   { label: "Centres", path: "/centres" },
@@ -35,18 +34,26 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [isMobile, setIsMobile] = useState(false);
+  const user = JSON.parse(localStorage.getItem("loginInfo"));
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 50,
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 960);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,19 +67,27 @@ const Navbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleDashboard = () => {
+    if (user.user.user_type === "CLIENT") {
+      navigate("/Client/Dashboard");
+    } else {
+      navigate("/Professional/Dashboard");
+    }
     handleClose();
   };
 
   const handleProfile = () => {
-    if (user.user_type === "CLIENT") {
-      navigate("/client/profile");
+    if (user.user.user_type === "CLIENT") {
+      navigate("/Client/Profile");
     } else {
-      navigate("/professional/profile");
+      navigate("/Professional/Profile");
     }
+    handleClose();
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
     handleClose();
   };
 
@@ -84,46 +99,42 @@ const Navbar = () => {
           backgroundColor: trigger
             ? "rgba(157, 132, 183, 0.95)"
             : "transparent",
+          height: trigger ? "64px" : "80px",
+          transition: "all 0.3s ease-in-out",
           backdropFilter: trigger ? "blur(10px)" : "none",
           boxShadow: trigger ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
-          transition: "all 0.3s ease-in-out",
-          height: trigger ? "64px" : "80px",
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           <Toolbar
             sx={{
-              minHeight: trigger ? "64px !important" : "80px !important",
-              transition: "all 0.3s ease-in-out",
-              justifyContent: "space-between",
               padding: "0 !important",
+              transition: "all 0.3s ease-in-out",
+              minHeight: trigger ? "64px !important" : "80px !important",
             }}
           >
             {isMobile ? (
               <>
                 <IconButton
-                  color="inherit"
                   edge="start"
+                  color="inherit"
                   onClick={handleDrawerToggle}
-                  sx={{ color: trigger || isMobile ? "white" : "black" }}
+                  sx={{ color: trigger ? "white" : "black" }}
                 >
                   <MenuIcon />
                 </IconButton>
-
-                <Typography
-                  variant="h6"
-                  component="div"
-                  onClick={() => navigate("/")}
+                <Box
                   sx={{
-                    color: trigger || isMobile ? "white" : "black",
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
+                    flexGrow: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
+                  onClick={() => navigate("/")}
                 >
-                  SWEEKAR
-                </Typography>
-
-                {!user?.id && (
+                  <img src={logo} alt="Sweekar" style={{ height: "40px" }} />
+                </Box>
+                {!user && (
                   <Button
                     variant="contained"
                     onClick={() => navigate("/login")}
@@ -141,27 +152,22 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Typography
-                  variant="h6"
-                  component="div"
-                  onClick={() => navigate("/")}
-                  sx={{
-                    cursor: "pointer",
-                    color: trigger ? "white" : "black",
-                    fontWeight: "bold",
-                    fontSize: "1.5rem",
-                    minWidth: "120px",
-                  }}
-                >
-                  SWEEKAR
-                </Typography>
-
                 <Box
                   sx={{
                     display: "flex",
-                    gap: 3,
-                    mx: 4,
+                    minWidth: "200px",
+                    alignItems: "center",
+                  }}
+                  onClick={() => navigate("/")}
+                >
+                  <img src={logo} alt="Sweekar" style={{ height: "40px" }} />
+                </Box>
+                <Stack
+                  spacing={3}
+                  direction="row"
+                  sx={{
                     flexGrow: 1,
+                    justifyContent: "center",
                   }}
                 >
                   {navItems.map((item) => (
@@ -169,20 +175,20 @@ const Navbar = () => {
                       key={item.label}
                       onClick={() => navigate(item.path)}
                       sx={{
-                        color: trigger ? "white" : "black",
-                        fontSize: "0.95rem",
-                        textTransform: "none",
-                        position: "relative",
                         padding: "6px 8px",
+                        fontSize: "0.95rem",
+                        position: "relative",
+                        textTransform: "none",
+                        color: trigger ? "white" : "black",
                         "&::after": {
                           content: '""',
                           position: "absolute",
-                          width: "0%",
+                          width: "0",
                           height: "2px",
-                          bottom: "0",
+                          bottom: 0,
                           left: "50%",
                           transform: "translateX(-50%)",
-                          backgroundColor: trigger ? "white" : "primary.main",
+                          backgroundColor: trigger ? "white" : "#9D84B7",
                           transition: "width 0.3s ease-in-out",
                         },
                         "&:hover::after": {
@@ -193,41 +199,41 @@ const Navbar = () => {
                       {item.label}
                     </Button>
                   ))}
-                </Box>
-
+                </Stack>
                 <Box
                   sx={{
-                    display: "flex",
                     gap: 2,
+                    display: "flex",
+                    minWidth: "200px",
                     alignItems: "center",
                     justifyContent: "flex-end",
-                    minWidth: "200px",
                   }}
                 >
-                  {user?.id ? (
+                  {user?.user ? (
                     <>
                       <Button
+                        variant="contained"
                         onClick={() => navigate("/consultations")}
                         sx={{
-                          color: trigger ? "white" : "black",
-                          textTransform: "none",
+                          bgcolor: "#9D84B7",
+                          "&:hover": {
+                            bgcolor: "rgba(157, 132, 183, 0.9)",
+                          },
                         }}
                       >
                         My Consultations
                       </Button>
                       <IconButton
                         onClick={handleMenu}
-                        size="small"
-                        sx={{ color: trigger ? "white" : "black" }}
+                        sx={{
+                          color: "rgba(255, 255, 255, 0.7)",
+                          bgcolor: "#9D84B7",
+                          "&:hover": {
+                            bgcolor: "rgba(157, 132, 183, 0.9)",
+                          },
+                        }}
                       >
-                        {user.profile_picture ? (
-                          <Avatar
-                            src={user.profile_picture}
-                            sx={{ width: 32, height: 32 }}
-                          />
-                        ) : (
-                          <AccountCircle />
-                        )}
+                        <AccountCircle />
                       </IconButton>
                       <Menu
                         anchorEl={anchorEl}
@@ -250,19 +256,20 @@ const Navbar = () => {
                           },
                         }}
                       >
+                        <MenuItem onClick={handleDashboard}>Dashboard</MenuItem>
                         <MenuItem onClick={handleProfile}>Profile</MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </>
                   ) : (
-                    <>
+                    <Stack direction="row" spacing={2}>
                       <Button
-                        variant="text"
+                        variant="contained"
                         onClick={() => navigate("/login")}
                         sx={{
-                          color: trigger ? "white" : "black",
+                          bgcolor: "#9D84B7",
                           "&:hover": {
-                            backgroundColor: "rgba(255,255,255,0.1)",
+                            bgcolor: "rgba(157, 132, 183, 0.9)",
                           },
                         }}
                       >
@@ -272,16 +279,15 @@ const Navbar = () => {
                         variant="contained"
                         onClick={() => navigate("/register")}
                         sx={{
-                          bgcolor: "white",
-                          color: "#9D84B7",
+                          bgcolor: "#9D84B7",
                           "&:hover": {
-                            bgcolor: "rgba(255,255,255,0.9)",
+                            bgcolor: "rgba(157, 132, 183, 0.9)",
                           },
                         }}
                       >
                         Register
                       </Button>
-                    </>
+                    </Stack>
                   )}
                 </Box>
               </>
@@ -290,44 +296,48 @@ const Navbar = () => {
         </Container>
       </AppBar>
       <Drawer
-        variant="temporary"
         anchor="left"
+        variant="temporary"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
           keepMounted: true,
         }}
+        PaperProps={{
+          sx: {
+            width: 250,
+            bgcolor: "white",
+          },
+        }}
       >
-        <Box sx={{ width: 250, height: "100%", bgcolor: "white" }}>
-          <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-            <IconButton onClick={handleDrawerToggle}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <List>
-            {navItems.map((item) => (
-              <ListItem
-                button
-                key={item.label}
-                onClick={() => {
-                  navigate(item.path);
-                  handleDrawerToggle();
-                }}
-                sx={{ py: 1.5 }}
-              >
-                <ListItemText
-                  primary={item.label}
-                  sx={{
-                    "& .MuiListItemText-primary": {
-                      fontSize: "1.1rem",
-                      fontWeight: 500,
-                    },
-                  }}
-                />
-              </ListItem>
-            ))}
-          </List>
+        <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+          <IconButton onClick={handleDrawerToggle}>
+            <CloseIcon />
+          </IconButton>
         </Box>
+        <List>
+          {navItems.map((item) => (
+            <ListItem
+              button
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+                handleDrawerToggle();
+              }}
+              sx={{ py: 1.5 }}
+            >
+              <ListItemText
+                primary={item.label}
+                sx={{
+                  "& .MuiListItemText-primary": {
+                    fontSize: "1.1rem",
+                    fontWeight: 500,
+                  },
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
       <Toolbar
         sx={{

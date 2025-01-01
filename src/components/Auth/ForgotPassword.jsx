@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,22 +6,65 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
   InputAdornment,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { Email } from "@mui/icons-material";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const ForgotPassword = ({ open, onClose }) => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setLoading(true);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+    }),
+
+    onSubmit: (values) => {
+      const changePasswordMail = {
+        email: values.email,
+      };
+      fetchData("users/change-password/", changePasswordMail);
+    },
+  });
+
+  const fetchData = async (url, data) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+            }`,
+          },
+          method: "POST",
+          body: JSON.stringify(data),
+        },
+        8000
+      );
+      if (response?.status === 201) {
+        toast.success("Password reset link sent! Please check your email.");
+        formik.resetForm();
+        navigate("/login");
+      } else {
+        toast.error("Failed to send reset link. Please try again later.");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Registration failed. Please try again");
+    }
   };
 
   return (
@@ -40,29 +82,22 @@ const ForgotPassword = ({ open, onClose }) => {
           Reset Password
         </Typography>
       </DialogTitle>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <DialogContent>
           <Typography color="text.secondary" paragraph>
             Enter your email address and we&apos;ll send you instructions to
             reset your password.
           </Typography>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {success}
-            </Alert>
-          )}
           <TextField
             fullWidth
+            name="email"
             label="Email Address"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -73,11 +108,9 @@ const ForgotPassword = ({ open, onClose }) => {
           />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3 }}>
-          <Button onClick={onClose} disabled={loading}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" disabled={loading}>
-            Send Instructions
+          <Button onClick={onClose}>Cancel</Button>
+          <Button type="submit" variant="contained">
+            Send
           </Button>
         </DialogActions>
       </form>
