@@ -39,11 +39,9 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
           <Close />
         </IconButton>
       </Box>
-
       <Typography paragraph color="text.secondary">
         {service.description}
       </Typography>
-
       <Typography variant="h6" gutterBottom fontWeight="bold">
         Features
       </Typography>
@@ -52,7 +50,6 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
           <Chip key={idx} label={feature} sx={{ m: 0.5 }} />
         ))}
       </Box>
-
       <Typography variant="h6" gutterBottom fontWeight="bold">
         Benefits
       </Typography>
@@ -74,7 +71,6 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
           </Box>
         ))}
       </Box>
-
       <Button
         fullWidth
         variant="contained"

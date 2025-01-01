@@ -35,12 +35,13 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -288,7 +289,6 @@ const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-
       <Drawer
         variant="temporary"
         anchor="left"
@@ -329,7 +329,6 @@ const Navbar = () => {
           </List>
         </Box>
       </Drawer>
-
       <Toolbar
         sx={{
           minHeight: trigger ? "64px !important" : "80px !important",

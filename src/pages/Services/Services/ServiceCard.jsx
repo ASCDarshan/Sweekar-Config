@@ -48,7 +48,6 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
               }}
             />
           )}
-
           <Box onClick={() => onSelect(service)}>
             <Avatar
               sx={{
@@ -60,15 +59,12 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
             >
               {service.icon}
             </Avatar>
-
             <Typography variant="h5" gutterBottom fontWeight="bold">
               {service.category}
             </Typography>
-
             <Typography color="text.secondary" paragraph>
               {service.shortDescription}
             </Typography>
-
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
               {service.features.slice(0, 3).map((feature, idx) => (
                 <Chip
@@ -95,7 +91,6 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
                 </Tooltip>
               )}
             </Box>
-
             <Box
               sx={{
                 display: "flex",
@@ -119,7 +114,6 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
               ))}
             </Box>
           </Box>
-
           <Button
             fullWidth
             variant="contained"

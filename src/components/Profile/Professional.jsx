@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Container,
   Paper,
@@ -14,54 +14,16 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-// import api from '../../services/axios';
+} from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
+import Loading from "../UI/Loading";
 
 const Professional = () => {
+  const error = "";
+  const success = "";
+  const loading = true;
+  const specializations = [];
   const [profile, setProfile] = useState(null);
-  const [specializations, setSpecializations] = useState([]);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchProfile();
-    fetchSpecializations();
-  }, []);
-
-  const fetchProfile = async () => {
-    // try {
-    //   const response = await api.get('/professionals/profile/');
-    //   setProfile(response.data);
-    // } catch (error) {
-    //   setError('Error fetching profile');
-    //   console.error('Error:', error);
-    // }
-  };
-
-  const fetchSpecializations = async () => {
-    // try {
-    //   const response = await api.get('/professionals/specializations/');
-    //   setSpecializations(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching specializations:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
-  };
-
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // try {
-    //   const response = await api.patch('/professionals/profile/', profile);
-    //   setSuccess('Profile updated successfully');
-    //   setProfile(response.data);
-    // } catch (error) {
-    //   setError('Error updating profile');
-    //   console.error('Error:', error);
-    // }
-  };
 
   const handleChange = (e) => {
     setProfile({
@@ -70,19 +32,19 @@ const Professional = () => {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
           <Avatar
             src={profile?.user?.profile_picture}
             sx={{ width: 100, height: 100, mr: 2 }}
           />
           <input
             accept="image/*"
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
             id="profile-photo"
             type="file"
           />
@@ -92,10 +54,16 @@ const Professional = () => {
             </IconButton>
           </label>
         </Box>
-
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {success}
+          </Alert>
+        )}
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -103,7 +71,7 @@ const Professional = () => {
                 fullWidth
                 label="License Number"
                 name="license_number"
-                value={profile?.license_number || ''}
+                value={profile?.license_number || ""}
                 onChange={handleChange}
               />
             </Grid>
@@ -113,7 +81,7 @@ const Professional = () => {
                 label="Years of Experience"
                 type="number"
                 name="years_of_experience"
-                value={profile?.years_of_experience || ''}
+                value={profile?.years_of_experience || ""}
                 onChange={handleChange}
               />
             </Grid>
@@ -124,7 +92,7 @@ const Professional = () => {
                 rows={4}
                 label="Biography"
                 name="biography"
-                value={profile?.biography || ''}
+                value={profile?.biography || ""}
                 onChange={handleChange}
               />
             </Grid>
@@ -134,7 +102,7 @@ const Professional = () => {
                 label="Consultation Fee"
                 type="number"
                 name="consultation_fee"
-                value={profile?.consultation_fee || ''}
+                value={profile?.consultation_fee || ""}
                 onChange={handleChange}
               />
             </Grid>
@@ -143,7 +111,7 @@ const Professional = () => {
                 fullWidth
                 label="Languages Spoken"
                 name="languages_spoken"
-                value={profile?.languages_spoken || ''}
+                value={profile?.languages_spoken || ""}
                 onChange={handleChange}
                 helperText="Separate languages with commas"
               />
@@ -153,15 +121,17 @@ const Professional = () => {
                 <InputLabel>Specializations</InputLabel>
                 <Select
                   multiple
-                  value={profile?.specializations?.map(s => s.id) || []}
+                  value={profile?.specializations?.map((s) => s.id) || []}
                   onChange={handleChange}
                   name="specializations"
                   renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selected.map((value) => (
                         <Chip
                           key={value}
-                          label={specializations.find(s => s.id === value)?.name}
+                          label={
+                            specializations.find((s) => s.id === value)?.name
+                          }
                         />
                       ))}
                     </Box>

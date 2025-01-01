@@ -58,7 +58,6 @@ const Importance = () => {
             >
               The Importance of Sweekar
             </Typography>
-
             <Grid container spacing={4}>
               {keyPoints.map((point, index) => (
                 <Grid item xs={12} md={4} key={index}>

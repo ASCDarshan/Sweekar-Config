@@ -29,6 +29,7 @@ const features = [
   },
 ];
 const Features = () => {
+  
   return (
     <Box sx={{ py: 8, backgroundColor: "#2C1810", color: "white" }}>
       <Container maxWidth="lg">

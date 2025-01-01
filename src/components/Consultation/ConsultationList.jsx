@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Container,
   Paper,
@@ -19,22 +19,8 @@ import {
 } from "@mui/material";
 
 const ConsultationList = () => {
-  const [consultations, setConsultations] = useState([]);
+  const consultations = [];
   const [statusFilter, setStatusFilter] = useState("");
-
-  useEffect(() => {
-    fetchConsultations();
-  }, [statusFilter]);
-
-  const fetchConsultations = async () => {
-    // try {
-    //   const params = statusFilter ? { status: statusFilter } : {};
-    //   const response = await api.get('/consultations/consultations/', { params });
-    //   setConsultations(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching consultations:', error);
-    // }
-  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -71,7 +57,6 @@ const ConsultationList = () => {
             </Select>
           </FormControl>
         </Box>
-
         <TableContainer>
           <Table>
             <TableHead>

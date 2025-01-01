@@ -5,7 +5,6 @@ import {
   Typography,
   Grid,
   IconButton,
-  useTheme,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -132,7 +131,6 @@ const services = [
 ];
 
 const Services = () => {
-  const theme = useTheme();
   const [selectedService, setSelectedService] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -163,8 +161,8 @@ const Services = () => {
     <Box>
       <Box
         sx={{
-          background: `linear-gradient(45deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-          py: 8,
+          bgcolor: "primary.light",
+          py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",
         }}
@@ -172,44 +170,49 @@ const Services = () => {
         <Container maxWidth="lg">
           <Typography
             variant="h2"
-            align="center"
             gutterBottom
+            align="center"
             sx={{
               fontWeight: 700,
-              color: "white",
-              mb: 3,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
             }}
           >
             Our Services
           </Typography>
           <Typography
-            variant="h5"
+            variant="h6"
             align="center"
-            sx={{
-              maxWidth: 800,
-              mx: "auto",
-              mb: 4,
-              color: "rgba(255, 255, 255, 0.9)",
-            }}
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
           >
             Comprehensive support services designed for LGBTQAI+ individuals and
             women
           </Typography>
         </Container>
-
         <Box
           sx={{
             position: "absolute",
-            top: -100,
-            right: -100,
-            width: 300,
-            height: 300,
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
             borderRadius: "50%",
-            background: "rgba(255, 255, 255, 0.1)",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
           }}
         />
       </Box>
-
       <Container
         maxWidth="lg"
         sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
@@ -227,21 +230,17 @@ const Services = () => {
           ))}
         </Grid>
       </Container>
-
       <ExpertsSection
         selectedService={selectedService}
         onBookExpert={handleExpertBooking}
       />
-
       <NeedHelp />
-
       <ServiceDetailDrawer
         service={selectedService}
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
         onBooking={handleBookingOpen}
       />
-
       <Dialog
         open={bookingOpen}
         onClose={handleBookingClose}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Container,
   Grid,
@@ -15,61 +15,25 @@ import {
   CardContent,
   CircularProgress,
 } from "@mui/material";
+import moment from "moment";
+import "draft-js/dist/Draft.css";
+import { Editor, EditorState } from "draft-js";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Editor, EditorState } from "draft-js";
-import "draft-js/dist/Draft.css";
 
 const localizer = momentLocalizer(moment);
 
 const Professional = () => {
-  const [consultation, setConsultation] = useState(null);
+  const consultation = null;
+  const calendarEvents = [];
+  const latestConsultations = [];
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [createEventDialogOpen, setCreateEventDialogOpen] = useState(false);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  const [latestConsultations, setLatestConsultations] = useState([]);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await api.get("/consultations/events/");
-        setCalendarEvents(response.data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
-
-    const fetchLatestConsultations = async () => {
-      try {
-        const response = await api.get("/consultations/latest/");
-        setLatestConsultations(response.data);
-      } catch (error) {
-        console.error("Error fetching latest consultations:", error);
-      }
-    };
-
-    fetchEvents();
-    fetchLatestConsultations();
-  }, []);
-
-  const handleEventClick = (event) => {
-    setConsultation(event);
-    setDialogOpen(true);
-  };
-
-  const handleCreateEvent = async (eventDetails) => {
-    try {
-      const response = await api.post("/consultations/events/", eventDetails);
-      setCalendarEvents((prevEvents) => [...prevEvents, response.data]);
-    } catch (error) {
-      console.error("Error creating event:", error);
-    }
-  };
 
   return (
     <Container>
@@ -78,7 +42,6 @@ const Professional = () => {
           Professional Dashboard
         </Typography>
       </Box>
-
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={6} lg={3}>
           <Card elevation={3}>
@@ -93,7 +56,6 @@ const Professional = () => {
             </CardContent>
           </Card>
         </Grid>
-
         <Grid item xs={12} md={6} lg={3}>
           <Card elevation={3}>
             <CardContent>
@@ -107,7 +69,6 @@ const Professional = () => {
             </CardContent>
           </Card>
         </Grid>
-
         <Grid item xs={12} lg={6}>
           <Paper sx={{ p: 2, height: "100%" }}>
             <Typography variant="h6" gutterBottom>
@@ -135,7 +96,6 @@ const Professional = () => {
           </Paper>
         </Grid>
       </Grid>
-
       <Box sx={{ mb: 4 }}>
         <Button
           variant="contained"
@@ -154,7 +114,6 @@ const Professional = () => {
           onSelectEvent={handleEventClick}
         />
       </Box>
-
       <ConsultationDialog
         consultation={consultation}
         open={dialogOpen}
@@ -162,7 +121,6 @@ const Professional = () => {
         editorState={editorState}
         setEditorState={setEditorState}
       />
-
       <CreateEventDialog
         open={createEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
@@ -179,29 +137,7 @@ const ConsultationDialog = ({
   editorState,
   setEditorState,
 }) => {
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (consultation) {
-      setStatus(consultation.status || "SCHEDULED");
-    }
-  }, [consultation]);
-
-  const handleUpdateConsultation = async () => {
-    setLoading(true);
-    try {
-      await api.patch(`/consultations/${consultation.id}/`, {
-        notes: editorState.getCurrentContent().getPlainText(),
-        status,
-      });
-      onClose();
-    } catch (error) {
-      console.error("Error updating consultation:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loading = false;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>

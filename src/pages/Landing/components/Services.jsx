@@ -45,12 +45,10 @@ const Services = () => {
   const [openBooking, setOpenBooking] = useState(false);
 
   const handleOpenBooking = () => {
-    console.log("Opening booking dialog");
     setOpenBooking(true);
   };
 
   const handleClose = () => {
-    console.log("Closing booking dialog");
     setOpenBooking(false);
   };
 
@@ -117,7 +115,6 @@ const Services = () => {
             </Grid>
           ))}
         </Grid>
-
         <Dialog
           open={openBooking}
           onClose={handleClose}

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -12,19 +11,7 @@ import {
 import { Schedule } from "@mui/icons-material";
 
 const Client = () => {
-  const [upcomingConsultations, setUpcomingConsultations] = useState([]);
-
-  useEffect(() => {
-    // const fetchConsultations = async () => {
-    //   try {
-    //     const response = await api.get('/consultations/consultations/?status=SCHEDULED');
-    //     setUpcomingConsultations(response.data);
-    //   } catch (error) {
-    //     console.error('Error fetching consultations:', error);
-    //   }
-    // };
-    // fetchConsultations();
-  }, []);
+  const upcomingConsultations = [];
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -44,7 +31,6 @@ const Client = () => {
             </Button>
           </Paper>
         </Grid>
-
         <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
@@ -58,7 +44,6 @@ const Client = () => {
             </CardContent>
           </Card>
         </Grid>
-
         <Grid item xs={12}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>

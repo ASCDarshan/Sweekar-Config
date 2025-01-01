@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Container,
   Paper,
@@ -11,41 +11,13 @@ import {
   IconButton,
 } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
-// import api from '../../services/axios';
+import Loading from "../UI/Loading";
 
 const Client = () => {
+  const error = "";
+  const success = "";
+  const loading = true;
   const [profile, setProfile] = useState(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
-    // try {
-    //   const response = await api.get('/clients/profile/');
-    //   setProfile(response.data);
-    // } catch (error) {
-    //   setError('Error fetching profile');
-    //   console.error('Error:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
-  };
-
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // try {
-    //   const response = await api.patch('/clients/profile/', profile);
-    //   setSuccess('Profile updated successfully');
-    //   setProfile(response.data);
-    // } catch (error) {
-    //   setError('Error updating profile');
-    //   console.error('Error:', error);
-    // }
-  };
 
   const handleChange = (e) => {
     setProfile({
@@ -54,7 +26,7 @@ const Client = () => {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>

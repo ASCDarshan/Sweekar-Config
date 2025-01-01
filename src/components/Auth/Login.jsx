@@ -24,23 +24,17 @@ import {
   ArrowForward,
   Phone,
 } from "@mui/icons-material";
-import ForgotPasswordDialog from "./ForgotPassword";
-// import OTPVerificationDialog from "./OTPVerificationDialog";
+import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [loginMethod, setLoginMethod] = useState("password");
-  // const [formData, setFormData] = useState({
-  //   username: "",
-  //   password: "",
-  // });
   const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  // const [otpDialogOpen, setOtpDialogOpen] = useState(false);
 
   return (
     <Box
@@ -93,7 +87,6 @@ const Login = () => {
               </Fade>
             </Grid>
           )}
-
           <Grid item xs={12} md={6}>
             <Fade in timeout={1000}>
               <Paper
@@ -114,7 +107,6 @@ const Login = () => {
                     Sign In
                   </Typography>
                 </Box>
-
                 <Box sx={{ mb: 3 }}>
                   <Button
                     fullWidth
@@ -134,14 +126,12 @@ const Login = () => {
                     Login with OTP
                   </Button>
                 </Box>
-
                 {loginMethod === "password" ? (
                   <form onSubmit={""}>
                     <TextField
                       fullWidth
                       label="Username"
                       name="username"
-                      // value={formData.username}
                       onChange={""}
                       required
                       sx={{ mb: 2 }}
@@ -158,7 +148,6 @@ const Login = () => {
                       label="Password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      // value={formData.password}
                       onChange={""}
                       required
                       sx={{ mb: 1 }}
@@ -233,7 +222,6 @@ const Login = () => {
                     </Button>
                   </Box>
                 )}
-
                 {isMobile && (
                   <>
                     <Divider sx={{ my: 2 }}>
@@ -255,18 +243,10 @@ const Login = () => {
           </Grid>
         </Grid>
       </Container>
-
-      <ForgotPasswordDialog
+      <ForgotPassword
         open={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}
       />
-      {/* 
-      <OTPVerificationDialog
-        open={otpDialogOpen}
-        onClose={() => setOtpDialogOpen(false)}
-        phone={phone}
-        onVerificationComplete={""}
-      /> */}
     </Box>
   );
 };

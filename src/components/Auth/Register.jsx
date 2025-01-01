@@ -329,7 +329,6 @@ const Register = () => {
               </Fade>
             </Grid>
           )}
-
           <Grid item xs={12} md={7}>
             <Fade in timeout={1000}>
               <Paper
@@ -353,7 +352,6 @@ const Register = () => {
                     Fill in your details to get started
                   </Typography>
                 </Box>
-
                 <Stepper
                   activeStep={activeStep}
                   alternativeLabel
@@ -365,14 +363,12 @@ const Register = () => {
                     </Step>
                   ))}
                 </Stepper>
-
                 <form
                   onSubmit={
                     activeStep === steps.length - 1 ? undefined : undefined
                   }
                 >
                   {getStepContent(activeStep)}
-
                   <Box
                     sx={{
                       display: "flex",
@@ -409,7 +405,6 @@ const Register = () => {
                     )}
                   </Box>
                 </form>
-
                 {isMobile && (
                   <>
                     <Divider sx={{ my: 3 }}>

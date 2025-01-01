@@ -77,6 +77,7 @@ const experts = [
     nextAvailable: "Tomorrow",
   },
 ];
+
 const ExpertsSection = ({ selectedService, onBookExpert }) => {
   const filteredExperts = experts.filter(
     (expert) => expert.serviceId === selectedService?.id
@@ -99,7 +100,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       >
         {selectedService.category} Experts
       </Typography>
-
       <Grid container spacing={3}>
         {filteredExperts.map((expert) => (
           <Grid item xs={12} md={4} key={expert.id}>
@@ -137,9 +137,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   </Box>
                 </Box>
               </Box>
-
               <Divider sx={{ my: 2 }} />
-
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Typography variant="body2" color="text.secondary">
@@ -156,7 +154,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   </Typography>
                 </Grid>
               </Grid>
-
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2" color="text.secondary">
                   Specializations
@@ -177,7 +174,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   ))}
                 </Box>
               </Box>
-
               <Box
                 sx={{
                   mt: 3,
@@ -203,7 +199,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   {expert.consultationFee}
                 </Typography>
               </Box>
-
               <Button
                 fullWidth
                 variant="contained"

@@ -27,23 +27,68 @@ const experts = [
 ];
 
 const Experts = () => {
-  const [filterType, setFilterType] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
   return (
     <Box>
-      <Box sx={{ bgcolor: "primary.light", py: 6 }}>
-        <Container>
-          <Typography variant="h3" gutterBottom align="center">
+      <Box
+        sx={{
+          bgcolor: "primary.light",
+          py: { xs: 6, md: 10 },
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography
+            variant="h2"
+            gutterBottom
+            align="center"
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
+            }}
+          >
             Our Verified Experts
           </Typography>
-          <Typography variant="h6" align="center" color="text.secondary">
+          <Typography
+            variant="h6"
+            align="center"
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+          >
             Connect with LGBTQAI+ friendly and women-centric professionals
           </Typography>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
-
-      <Container sx={{ mt: -4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+      >
         <Card sx={{ p: 3, mb: 4 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
@@ -71,7 +116,6 @@ const Experts = () => {
           </Grid>
         </Card>
       </Container>
-
       <Container sx={{ my: 4 }}>
         <Grid container spacing={3}>
           {experts.map((expert, index) => (
@@ -99,11 +143,9 @@ const Experts = () => {
                       <Rating value={expert.rating} readOnly size="small" />
                     </Box>
                   </Box>
-
                   <Typography variant="body2" sx={{ mb: 2 }}>
                     Experience: {expert.experience}
                   </Typography>
-
                   <Box sx={{ mb: 2 }}>
                     {expert.specializations.map((spec) => (
                       <Chip
@@ -114,7 +156,6 @@ const Experts = () => {
                       />
                     ))}
                   </Box>
-
                   <Box sx={{ mb: 2 }}>
                     {expert.languages.map((lang) => (
                       <Chip
@@ -126,7 +167,6 @@ const Experts = () => {
                       />
                     ))}
                   </Box>
-
                   <Button variant="contained" fullWidth>
                     Book Consultation
                   </Button>
