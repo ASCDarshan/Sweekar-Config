@@ -108,7 +108,7 @@ const Login = () => {
         toast.error("Username or Password is wrong, Please try again...");
       }
     } catch (error) {
-      toast.error("Some Problem Occurred. Please try again.");
+      console.log(error);
     }
   };
 

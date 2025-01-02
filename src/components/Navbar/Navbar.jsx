@@ -26,7 +26,7 @@ import {
   AccountCircle as AccountCircleIcon,
   Logout as LogoutIcon,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
 } from "@mui/icons-material";
 import logo from "../../assets/sweekar-Logo.png";
 
@@ -39,7 +39,6 @@ const navItems = [
   { label: "Resources", path: "/resources" },
   { label: "Reach Us", path: "/contact" },
 ];
-
 const Navbar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -385,7 +384,6 @@ const Navbar = () => {
                   <AccountCircleIcon />
                   {openDropdown ? <ExpandLess /> : <ExpandMore />}
                 </ListItemIcon>
-
               </ListItem>
               <Collapse in={openDropdown} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>

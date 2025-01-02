@@ -45,9 +45,8 @@ const ForgotPassword = ({ open, onClose }) => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
-            }`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "POST",
           body: JSON.stringify(data),
@@ -63,7 +62,6 @@ const ForgotPassword = ({ open, onClose }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Registration failed. Please try again");
     }
   };
 

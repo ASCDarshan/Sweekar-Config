@@ -9,7 +9,7 @@ const Loading = () => {
         alignItems: "center",
       }}
     >
-      <CircularProgress size={26} />
+      <CircularProgress size={26} color="white" />
     </Box>
   );
 };
