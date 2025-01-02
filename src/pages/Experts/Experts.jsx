@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -13,6 +13,7 @@ import {
   Button,
   Rating,
 } from "@mui/material";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const experts = [
   {
@@ -29,6 +30,33 @@ const experts = [
 const Experts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
+
+  // const fetchData = async (url, setData) => {
+  //   try {
+  //     const response = await ajaxCall(
+  //       url,
+  //       {
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //         method: "GET",
+  //       },
+  //       8000
+  //     );
+  //     if (response?.status === 200) {
+  //       setData(response?.data || []);
+  //     } else {
+  //       console.error("Fetch error:", response);
+  //     }
+  //   } catch (error) {
+  //     console.error("Network error:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData("", setExperts);
+  // }, []);
 
   return (
     <Box>

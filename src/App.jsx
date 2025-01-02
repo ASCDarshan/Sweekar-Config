@@ -33,6 +33,7 @@ import ProfessionalProfile from "./components/Profile/Professional";
 import ConsultationList from "./components/Consultation/ConsultationList";
 import BookConsultation from "./components/Consultation/BookConsultation";
 import ConsultationDetail from "./components/Consultation/ConsultationDetail";
+import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 
 const App = () => {
   return (
@@ -67,6 +68,7 @@ const App = () => {
             <Route path="/book-consultation" element={<BookConsultation />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          <MobileBottomNav />
           <Footer />
         </Router>
       </LocalizationProvider>

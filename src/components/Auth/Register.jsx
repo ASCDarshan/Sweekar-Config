@@ -116,7 +116,6 @@ const Register = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Registration failed. Please try again");
     }
   };
   const steps = [

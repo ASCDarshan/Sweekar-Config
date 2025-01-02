@@ -14,8 +14,53 @@ import {
   Paper,
 } from "@mui/material";
 import { Phone, LocationOn, Send, AccessTime } from "@mui/icons-material";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+    phone: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await ajaxCall(
+        "website/contact-us",
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(formData),
+        },
+        8000
+      );
+      if ([200, 201].includes(response.status)) {
+        toast.success("Message Sent Successfully.");
+        setFormData({ name: "", email: "", message: "", phone: "" });
+      } else if ([400, 404].includes(response.status)) {
+        toast.error("Some Problem Occurred. Please try again.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box>
       <Box
@@ -183,9 +228,12 @@ const Contact = () => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
+                      type="text"
                       label="Full Name"
                       variant="outlined"
-                      required
+                      name="name"
+                      onChange={handleChange}
+                      value={formData.name}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: 2,
@@ -199,7 +247,9 @@ const Contact = () => {
                       label="Email"
                       type="email"
                       variant="outlined"
-                      required
+                      name="email"
+                      onChange={handleChange}
+                      value={formData.email}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: 2,
@@ -210,8 +260,12 @@ const Contact = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
+                      type="number"
                       label="Phone Number"
                       variant="outlined"
+                      name="phone"
+                      onChange={handleChange}
+                      value={formData.phone}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: 2,
@@ -222,11 +276,14 @@ const Contact = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
+                      type="text"
                       label="How can we help you?"
                       multiline
                       rows={4}
                       variant="outlined"
-                      required
+                      name="message"
+                      onChange={handleChange}
+                      value={formData.message}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: 2,
@@ -237,15 +294,10 @@ const Contact = () => {
                   <Grid item xs={12}>
                     <Button
                       variant="contained"
-                      size="large"
+                      size="small"
                       fullWidth
                       startIcon={<Send />}
-                      sx={{
-                        py: 1.5,
-                        borderRadius: 2,
-                        textTransform: "none",
-                        fontSize: "1.1rem",
-                      }}
+                      onClick={handleSubmit}
                     >
                       Send Message
                     </Button>
