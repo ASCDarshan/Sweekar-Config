@@ -96,9 +96,10 @@ const Login = () => {
         } else {
           navigate("/");
         }
-      } else if (response.status === 400) {
+      } else if (response.status === 401) {
         if (response.data.error === "Invalid credentials") {
           toast.error(response.data.error);
+          setisLoading(false);
         } else {
           toast.error(
             "Email not verified. Please verify your email to log in."

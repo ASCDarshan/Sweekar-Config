@@ -17,6 +17,7 @@ import { Phone, LocationOn, Send, AccessTime } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
+import Loading from "../../components/UI/Loading";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ const Contact = () => {
     message: "",
     phone: "",
   });
+  const [isLoading, setisLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,11 +37,12 @@ const Contact = () => {
   };
 
   const handleSubmit = async (event) => {
+    setisLoading(true);
     event.preventDefault();
 
     try {
       const response = await ajaxCall(
-        "website/contact-us",
+        "contact/contact/",
         {
           headers: {
             Accept: "application/json",
@@ -52,9 +55,15 @@ const Contact = () => {
       );
       if ([200, 201].includes(response.status)) {
         toast.success("Message Sent Successfully.");
+        setisLoading(false);
         setFormData({ name: "", email: "", message: "", phone: "" });
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
+        setisLoading(false);
+      }
+      else if ([401].includes(response.status)) {
+        toast.error("Invalid Credentials.");
+        setisLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -239,6 +248,7 @@ const Contact = () => {
                           borderRadius: 2,
                         },
                       }}
+                      required
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -292,15 +302,19 @@ const Contact = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      fullWidth
-                      startIcon={<Send />}
-                      onClick={handleSubmit}
-                    >
-                      Send Message
-                    </Button>
+                    {isLoading ? (
+                      <Loading />
+                    ) : (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        fullWidth
+                        startIcon={<Send />}
+                        onClick={handleSubmit}
+                      >
+                        Send Message
+                      </Button>
+                    )}
                   </Grid>
                 </Grid>
               </CardContent>

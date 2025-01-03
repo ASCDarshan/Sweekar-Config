@@ -20,20 +20,20 @@ const ForgotPassword = ({ open, onClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      email_id: "",
     },
 
     validationSchema: Yup.object({
-      email: Yup.string()
+      email_id: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
     }),
 
     onSubmit: (values) => {
       const changePasswordMail = {
-        email: values.email,
+        email_id: values.email_id,
       };
-      fetchData("users/change-password/", changePasswordMail);
+      fetchData("users/forgot-password/", changePasswordMail);
     },
   });
 
@@ -53,9 +53,10 @@ const ForgotPassword = ({ open, onClose }) => {
         },
         8000
       );
-      if (response?.status === 201) {
+      if (response?.status === 200) {
         toast.success("Password reset link sent! Please check your email.");
         formik.resetForm();
+        onClose();
         navigate("/login");
       } else {
         toast.error("Failed to send reset link. Please try again later.");
@@ -88,14 +89,14 @@ const ForgotPassword = ({ open, onClose }) => {
           </Typography>
           <TextField
             fullWidth
-            name="email"
+            name="email_id"
             label="Email Address"
             type="email"
-            value={formik.values.email}
+            value={formik.values.email_id}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={formik.touched.email_id && Boolean(formik.errors.email_id)}
+            helperText={formik.touched.email_id && formik.errors.email_id}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
