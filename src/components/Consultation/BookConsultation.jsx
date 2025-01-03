@@ -77,7 +77,7 @@ const BookConsultation = ({ preSelectedExpert }) => {
                 py: 1,
                 bgcolor:
                   selectedDateTime &&
-                  selectedDateTime.getTime() === slot.time.getTime()
+                    selectedDateTime.getTime() === slot.time.getTime()
                     ? "primary.light"
                     : "inherit",
               }}
@@ -222,7 +222,7 @@ const BookConsultation = ({ preSelectedExpert }) => {
           </Button>
         )}
         {activeStep === steps.length - 1 ? (
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button variant="contained" >
             Book Now
           </Button>
         ) : (

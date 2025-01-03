@@ -15,48 +15,37 @@ import {
 } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
 
-const experts = [
-  {
-    name: "Dr. Sarah Johnson",
-    type: "Mental Health Professional",
-    specializations: ["LGBTQAI+ Counseling", "Anxiety", "Depression"],
-    rating: 4.8,
-    experience: "10+ years",
-    languages: ["English", "Hindi"],
-    image: "/path/to/image",
-  },
-];
-
 const Experts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
+  const [experts, setExperts] = useState([]);
 
-  // const fetchData = async (url, setData) => {
-  //   try {
-  //     const response = await ajaxCall(
-  //       url,
-  //       {
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //         method: "GET",
-  //       },
-  //       8000
-  //     );
-  //     if (response?.status === 200) {
-  //       setData(response?.data || []);
-  //     } else {
-  //       console.error("Fetch error:", response);
-  //     }
-  //   } catch (error) {
-  //     console.error("Network error:", error);
-  //   }
-  // };
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchData("", setExperts);
-  // }, []);
+  useEffect(() => {
+    fetchData("professionals/profilelist/", setExperts);
+  }, []);
 
   return (
     <Box>
@@ -164,36 +153,34 @@ const Experts = () => {
                       sx={{ width: 80, height: 80, mr: 2 }}
                     />
                     <Box>
-                      <Typography variant="h6">{expert.name}</Typography>
+                      <Typography variant="h6">{expert?.user?.first_name} {expert?.user?.last_name}</Typography>
                       <Typography color="text.secondary" gutterBottom>
-                        {expert.type}
+                        {expert.professional_type}
                       </Typography>
-                      <Rating value={expert.rating} readOnly size="small" />
+                      <Rating value={expert?.user?.rating} readOnly size="small" />
                     </Box>
                   </Box>
                   <Typography variant="body2" sx={{ mb: 2 }}>
-                    Experience: {expert.experience}
+                    Experience: {expert.years_of_experience}
                   </Typography>
                   <Box sx={{ mb: 2 }}>
-                    {expert.specializations.map((spec) => (
+                    {expert.concerns.map((spec) => (
                       <Chip
-                        key={spec}
-                        label={spec}
+                        key={spec.id}
+                        label={spec.name}
                         size="small"
                         sx={{ mr: 0.5, mb: 0.5 }}
                       />
                     ))}
                   </Box>
                   <Box sx={{ mb: 2 }}>
-                    {expert.languages.map((lang) => (
-                      <Chip
-                        key={lang}
-                        label={lang}
-                        size="small"
-                        variant="outlined"
-                        sx={{ mr: 0.5 }}
-                      />
-                    ))}
+                    <Chip
+                      key={expert.languages_spoken}
+                      label={expert.languages_spoken}
+                      size="small"
+                      variant="outlined"
+                      sx={{ mr: 0.5 }}
+                    />
                   </Box>
                   <Button variant="contained" fullWidth>
                     Book Consultation

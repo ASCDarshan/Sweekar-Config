@@ -13,6 +13,8 @@ import {
   Divider,
 } from "@mui/material";
 import { Search, AccessTime } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const blogPosts = [
   {
@@ -28,6 +30,36 @@ const blogPosts = [
 ];
 
 const Blog = () => {
+
+  const [blogs, setBlogs] = useState([]);
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData("blogs/blogs/", setBlogs);
+  }, []);
+
   return (
     <Box>
       <Box
