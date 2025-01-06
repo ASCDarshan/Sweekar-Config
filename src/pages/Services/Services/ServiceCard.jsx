@@ -11,9 +11,44 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import {
+  Psychology,
+  Gavel,
+  LocalHospital,
+  Work,
+} from "@mui/icons-material";
+
+const servicess = [
+  {
+    id: 1,
+    color: "#9D84B7",
+    stats: { professionals: 50, sessions: 1000, satisfaction: 98 },
+    icon: <Psychology sx={{ fontSize: 40 }} />,
+  },
+  {
+    id: 2,
+    color: "#7A5BA1",
+    stats: { professionals: 30, cases: 500, success: 95 },
+    icon: <Gavel sx={{ fontSize: 40 }} />,
+  },
+  {
+    id: 3,
+    color: "#FF6B6B",
+    stats: { doctors: 40, patients: 2000, satisfaction: 97 },
+    icon: <LocalHospital sx={{ fontSize: 40 }} />,
+  },
+  {
+    id: 4,
+    color: "#4ECDC4",
+    stats: { companies: 100, placements: 750, success: 92 },
+    icon: <Work sx={{ fontSize: 40 }} />,
+  },
+];
 
 const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
+
   const theme = useTheme();
+  const staticData = servicess.find((s) => s.id === service.id);
 
   return (
     <Grow in={true}>
@@ -30,8 +65,8 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
           },
           position: "relative",
           overflow: "visible",
-          bgcolor: isSelected ? `${service.color}10` : "background.paper",
-          border: isSelected ? `2px solid ${service.color}` : "none",
+          bgcolor: isSelected ? `${staticData.color}10` : "background.paper",
+          border: isSelected ? `2px solid ${staticData.color}` : "none",
         }}
       >
         <CardContent sx={{ p: 3 }}>
@@ -44,44 +79,45 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
                 position: "absolute",
                 top: -16,
                 right: 16,
-                backgroundColor: service.color,
+                backgroundColor: staticData.color,
               }}
             />
           )}
           <Box onClick={() => onSelect(service)}>
             <Avatar
               sx={{
-                bgcolor: service.color,
+                bgcolor: staticData.color,
                 width: 60,
                 height: 60,
                 mb: 2,
               }}
             >
-              {service.icon}
+              {staticData.icon}
             </Avatar>
             <Typography variant="h5" gutterBottom fontWeight="bold">
-              {service.category}
+              {service.title}
             </Typography>
             <Typography color="text.secondary" paragraph>
-              {service.shortDescription}
+              {service.description}
             </Typography>
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
-              {service.features.slice(0, 3).map((feature, idx) => (
+              {service.concern.slice(0, 3).map((feature, idx) => (
                 <Chip
-                  key={idx}
-                  label={feature}
+                  key={feature.id}
+                  label={feature.name}
                   size="small"
                   sx={{
-                    bgcolor: `${service.color}20`,
-                    color: service.color,
+                    bgcolor: `${staticData.color}20`,
+                    color: staticData.color,
                   }}
                 />
               ))}
-              {service.features.length > 3 && (
-                <Tooltip title={service.features.slice(3).join(", ")}>
+
+              {service.concern.length > 3 && (
+                <Tooltip title={service.concern.slice(3).map((feature) => feature.name).join(", ")}>
                   <Chip
                     icon={<Info />}
-                    label={`+${service.features.length - 3} more`}
+                    label={`+${service.concern.length - 3} more`}
                     size="small"
                     sx={{
                       bgcolor: `${service.color}20`,
@@ -90,6 +126,7 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
                   />
                 </Tooltip>
               )}
+
             </Box>
             <Box
               sx={{
@@ -98,11 +135,11 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
                 mt: "auto",
               }}
             >
-              {Object.entries(service.stats).map(([key, value]) => (
+              {Object.entries(staticData.stats).map(([key, value]) => (
                 <Box key={key} sx={{ textAlign: "center" }}>
                   <Typography
                     variant="h6"
-                    color={service.color}
+                    color={staticData.color}
                     fontWeight="bold"
                   >
                     {value}+
@@ -125,9 +162,9 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
             endIcon={<ArrowForward />}
             sx={{
               mt: 2,
-              bgcolor: service.color,
+              bgcolor: staticData.color,
               "&:hover": {
-                bgcolor: service.color,
+                bgcolor: staticData.color,
                 opacity: 0.9,
               },
             }}

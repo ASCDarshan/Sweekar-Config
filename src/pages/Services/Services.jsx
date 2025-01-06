@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -21,8 +21,9 @@ import ServiceCard from "./Services/ServiceCard";
 import ServiceDetailDrawer from "./Services/ServiceDetailDrawer";
 import ExpertsSection from "./Services/ExpertsSection";
 import NeedHelp from "../../components/Needhelp/NeedHelp";
+import ajaxCall from "../../helpers/ajaxCall";
 
-const services = [
+const servicess = [
   {
     id: 1,
     category: "Mental Health",
@@ -131,10 +132,39 @@ const services = [
 ];
 
 const Services = () => {
+  const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedExpert, setSelectedExpert] = useState(null);
+
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData("professionals/professionaltype/", setServices);
+  }, []);
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
@@ -230,17 +260,14 @@ const Services = () => {
           ))}
         </Grid>
       </Container>
-      <ExpertsSection
-        selectedService={selectedService}
-        onBookExpert={handleExpertBooking}
-      />
-      <NeedHelp />
+
       <ServiceDetailDrawer
         service={selectedService}
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
         onBooking={handleBookingOpen}
       />
+
       <Dialog
         open={bookingOpen}
         onClose={handleBookingClose}
@@ -255,8 +282,8 @@ const Services = () => {
             alignItems="center"
           >
             <Typography variant="h6">
-              Book {selectedService?.category} Consultation
-              {selectedExpert && ` with ${selectedExpert.name}`}
+              Book {selectedService?.title} Consultation
+              {/* {selectedExpert && ` with ${selectedExpert.name}`} */}
             </Typography>
             <IconButton
               edge="end"
@@ -275,6 +302,14 @@ const Services = () => {
           />
         </DialogContent>
       </Dialog>
+
+      <ExpertsSection
+        selectedService={selectedService}
+        onBookExpert={handleExpertBooking}
+      />
+
+      <NeedHelp />
+
     </Box>
   );
 };

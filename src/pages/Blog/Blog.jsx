@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -10,28 +11,18 @@ import {
   Button,
   TextField,
   MenuItem,
-  Divider,
+  CircularProgress,
 } from "@mui/material";
 import { Search, AccessTime } from "@mui/icons-material";
-import { useEffect, useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
-
-const blogPosts = [
-  {
-    title: "Understanding LGBTQAI+ Mental Health Needs",
-    category: "Mental Health",
-    date: "Dec 15, 2024",
-    readTime: "5 min read",
-    excerpt:
-      "Exploring the unique mental health challenges and support systems needed for the LGBTQAI+ community.",
-    image: "/path/to/image",
-    tags: ["Mental Health", "LGBTQAI+", "Support"],
-  },
-];
+import { useNavigate } from "react-router-dom";
 
 const Blog = () => {
-
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
     try {
@@ -47,18 +38,64 @@ const Blog = () => {
         8000
       );
       if (response?.status === 200) {
-        setData(response?.data || []);
+        if (url === "blog/categorylistview/") {
+          setData(response?.data || []);
+        } else {
+          setData(response?.data?.blog || []);
+        }
       } else {
         console.error("Fetch error:", response);
       }
+
     } catch (error) {
       console.error("Network error:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData("blogs/blogs/", setBlogs);
+    fetchData("blog/categorylistview/", setCategoryList);
+    fetchData("blog/bloglistview/", setBlogs);
   }, []);
+
+  const handleCategoryChange = (event) => {
+    const categoryId = event.target.value;
+    setSelectedCategory(categoryId);
+
+    if (categoryId === "All") {
+      fetchData("blog/bloglistview/", setBlogs);
+    } else {
+      fetchData(`blog/bloglistview/?category_id=${categoryId}`, setBlogs);
+    }
+  };
+
+  const getExcerpt = (text, wordLimit) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = text;
+    const plainText = tempDiv.textContent || tempDiv.innerText;
+    const words = plainText.split(/\s+/).slice(0, wordLimit).join(" ");
+    return words;
+  };
+
+  const slugify = (text) => {
+    return text.toLowerCase().replace(/\s+/g, "-");
+  };
+
+
+  const handleReadMore = (blogName, BlogId) => {
+    navigate(`/blogs/${slugify(blogName)}`, { state: BlogId });
+  };
+
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -115,10 +152,7 @@ const Blog = () => {
           }}
         />
       </Box>
-      <Container
-        maxWidth="lg"
-        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
-      >
+      <Container sx={{ mt: 4, mb: 4 }}>
         <Card sx={{ p: 3 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -131,11 +165,19 @@ const Blog = () => {
               />
             </Grid>
             <Grid item xs={12} md={3}>
-              <TextField fullWidth select label="Category" defaultValue="all">
-                <MenuItem value="all">All Categories</MenuItem>
-                <MenuItem value="mental-health">Mental Health</MenuItem>
-                <MenuItem value="legal">Legal Rights</MenuItem>
-                <MenuItem value="community">Community Stories</MenuItem>
+              <TextField
+                fullWidth
+                select
+                label="Category"
+                value={selectedCategory || ""}
+                onChange={handleCategoryChange}
+              >
+                <MenuItem value="All" >All</MenuItem>
+                {categoryList.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
           </Grid>
@@ -143,61 +185,77 @@ const Blog = () => {
       </Container>
       <Container sx={{ mb: 6 }}>
         <Grid container spacing={4}>
-          {blogPosts.map((post, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                  },
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={post.image}
-                  alt={post.title}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Box sx={{ mb: 2 }}>
-                    <Chip label={post.category} color="primary" size="small" />
-                  </Box>
-                  <Typography variant="h5" gutterBottom>
-                    {post.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
-                  >
-                    {post.excerpt}
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      color: "text.secondary",
-                      mb: 2,
-                    }}
-                  >
-                    <AccessTime sx={{ fontSize: 16, mr: 0.5 }} />
-                    <Typography variant="caption">{post.readTime}</Typography>
-                    <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-                    <Typography variant="caption">{post.date}</Typography>
-                  </Box>
-                  <Box sx={{ mt: "auto" }}>
-                    <Button variant="outlined" fullWidth>
-                      Read More
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+          {blogs.length === 0 ? (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <Typography variant="h6" color="text.secondary">
+                There is no blog for this category.
+              </Typography>
+            </Box>
+          ) : (
+            blogs.map((post) => (
+              <Grid item xs={12} md={4} key={post.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={post.image}
+                    alt={post.title}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Box sx={{ mb: 2 }}>
+                      <Chip
+                        label={
+                          post.category.name || "Uncategorized"
+                        }
+                        color="primary"
+                        size="small"
+                      />
+                    </Box>
+                    <Typography variant="h5" gutterBottom>
+                      {post.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2 }}
+                      dangerouslySetInnerHTML={{ __html: getExcerpt(post.text, 30) }}
+                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "text.secondary",
+                        mb: 2,
+                      }}
+                    >
+                      <AccessTime sx={{ fontSize: 16, mr: 0.5 }} />
+                      <Typography variant="caption">
+                        {post.date || "Unknown Date"}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ mt: "auto" }}>
+                      <Button variant="outlined"
+                        onClick={() => handleReadMore(post.title, post.id)}
+                        fullWidth
+                      >
+                        Read More
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          )}
         </Grid>
       </Container>
     </Box>

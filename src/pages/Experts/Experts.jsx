@@ -13,12 +13,14 @@ import {
   Button,
   Rating,
 } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
 
 const Experts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [experts, setExperts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
     try {
@@ -41,11 +43,22 @@ const Experts = () => {
     } catch (error) {
       console.error("Network error:", error);
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchData("professionals/profilelist/", setExperts);
+    fetchData("professionals/professionalist/", setExperts);
   }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -155,13 +168,13 @@ const Experts = () => {
                     <Box>
                       <Typography variant="h6">{expert?.user?.first_name} {expert?.user?.last_name}</Typography>
                       <Typography color="text.secondary" gutterBottom>
-                        {expert.professional_type}
+                        {expert.professional_type.title}
                       </Typography>
                       <Rating value={expert?.user?.rating} readOnly size="small" />
                     </Box>
                   </Box>
                   <Typography variant="body2" sx={{ mb: 2 }}>
-                    Experience: {expert.years_of_experience}
+                    Experience: {expert.years_of_experience} years
                   </Typography>
                   <Box sx={{ mb: 2 }}>
                     {expert.concerns.map((spec) => (

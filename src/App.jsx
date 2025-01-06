@@ -34,6 +34,7 @@ import ConsultationList from "./components/Consultation/ConsultationList";
 import BookConsultation from "./components/Consultation/BookConsultation";
 import ConsultationDetail from "./components/Consultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
+import BlogDetail from "./pages/Blog/BlogDetail";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blogs/:blogId" element={<BlogDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/experts" element={<Experts />} />
             <Route path="/centres" element={<Centres />} />
