@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
+  console.log(service);
   if (!service) return null;
 
   return (
@@ -16,7 +17,7 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
       anchor="right"
       open={open}
       onClose={onClose}
-      onOpen={() => {}}
+      onOpen={() => { }}
       PaperProps={{
         sx: {
           width: { xs: "100%", sm: 400 },
@@ -33,7 +34,7 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
         }}
       >
         <Typography variant="h5" fontWeight="bold">
-          {service.category}
+          {service.title}
         </Typography>
         <IconButton onClick={onClose}>
           <Close />
@@ -46,15 +47,19 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
         Features
       </Typography>
       <Box sx={{ mb: 3 }}>
-        {service.features.map((feature, idx) => (
-          <Chip key={idx} label={feature} sx={{ m: 0.5 }} />
+        {service.concern.map((feature, idx) => (
+          <Chip
+            key={idx}
+            label={feature.name || feature} // Use `feature.name` if `feature` is an object, or fallback to the value itself
+            sx={{ m: 0.5 }}
+          />
         ))}
       </Box>
       <Typography variant="h6" gutterBottom fontWeight="bold">
         Benefits
       </Typography>
       <Box sx={{ mb: 3 }}>
-        {service.benefits.map((benefit, idx) => (
+        {service.benifits.map((benefit, idx) => (
           <Box
             key={idx}
             sx={{
@@ -67,10 +72,11 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
             }}
           >
             <CheckCircle color="primary" sx={{ mr: 1, fontSize: 20 }} />
-            <Typography variant="body2">{benefit}</Typography>
+            <Typography variant="body2">{benefit.name || benefit}</Typography>
           </Box>
         ))}
       </Box>
+
       <Button
         fullWidth
         variant="contained"

@@ -1,6 +1,13 @@
 import { Button, Container, Paper, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const NeedHelp = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/contact");
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mb: 6 }}>
       <Paper
@@ -37,6 +44,7 @@ const NeedHelp = () => {
               bgcolor: "rgba(255, 255, 255, 0.9)",
             },
           }}
+          onClick={handleClick}
         >
           Contact Us
         </Button>
