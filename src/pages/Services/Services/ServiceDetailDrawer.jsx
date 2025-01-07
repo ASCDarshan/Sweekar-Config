@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
-  console.log(service);
   if (!service) return null;
 
   return (
@@ -50,7 +49,7 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
         {service.concern.map((feature, idx) => (
           <Chip
             key={idx}
-            label={feature.name || feature} // Use `feature.name` if `feature` is an object, or fallback to the value itself
+            label={feature.name || feature}
             sx={{ m: 0.5 }}
           />
         ))}
