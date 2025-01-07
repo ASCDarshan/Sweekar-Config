@@ -13,127 +13,95 @@ import {
 import ajaxCall from "../../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
 
-const experts = [
+const StaticColor = [
   {
     id: 1,
-    name: "Dr. Sarah Johnson",
-    serviceId: 1,
-    title: "Clinical Psychologist",
-    experience: "15+ years",
-    specializations: ["LGBTQAI+ Counseling", "Anxiety", "Depression"],
-    rating: 4.9,
-    availability: true,
-    languages: ["English", "Hindi"],
-    consultationFee: "₹1500",
-    nextAvailable: "Today",
+    color: "#9D84B7",
   },
   {
     id: 2,
-    name: "Adv. Priya Mehta",
-    serviceId: 2,
-    title: "Human Rights Lawyer",
-    experience: "12+ years",
-    specializations: [
-      "LGBTQAI+ Rights",
-      "Family Law",
-      "Workplace Discrimination",
-    ],
-    rating: 4.8,
-    availability: true,
-    languages: ["English", "Hindi", "Gujarati"],
-    consultationFee: "₹2000",
-    nextAvailable: "Tomorrow",
+    color: "#7A5BA1",
   },
   {
     id: 3,
-    name: "Dr. Rajesh Patel",
-    serviceId: 3,
-    title: "General Physician",
-    experience: "20+ years",
-    specializations: [
-      "General Medicine",
-      "Sexual Health",
-      "Gender-affirming Care",
-    ],
-    rating: 4.9,
-    availability: true,
-    languages: ["English", "Hindi", "Gujarati"],
-    consultationFee: "₹1000",
-    nextAvailable: "Today",
+    color: "#FF6B6B",
   },
   {
     id: 4,
-    name: "Ms. Deepa Shah",
-    serviceId: 4,
-    title: "Career Counselor",
-    experience: "10+ years",
-    specializations: [
-      "Career Guidance",
-      "Resume Building",
-      "Interview Preparation",
-    ],
-    rating: 4.7,
-    availability: true,
-    languages: ["English", "Hindi"],
-    consultationFee: "₹1200",
-    nextAvailable: "Tomorrow",
+    color: "#4ECDC4",
   },
 ];
 
 const ExpertsSection = ({ selectedService, onBookExpert }) => {
-  // const [experts, setExperts] = useState([]);
-  // console.log(experts);
+  const selectedServiceId = selectedService?.id;
+  const staticData = StaticColor.find((s) => s.id === selectedServiceId);
+  const [experts, setExperts] = useState([]);
 
-  // const fetchData = async (url, setData) => {
-  //   try {
-  //     const response = await ajaxCall(
-  //       url,
-  //       {
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //         method: "GET",
-  //       },
-  //       8000
-  //     );
-  //     if (response?.status === 200) {
-  //       setData(response?.data || []);
-  //     } else {
-  //       console.error("Fetch error:", response);
-  //     }
-  //   } catch (error) {
-  //     console.error("Network error:", error);
-  //   }
-  // };
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchData("professionals/professionalist/", setExperts);
-  // }, []);
+  useEffect(() => {
+    fetchData(`professionals/professional-filter/?professional_type=${selectedService?.id}`, setExperts);
+  }, [selectedServiceId]);
 
-  const filteredExperts = experts.filter(
-    (expert) => expert.serviceId === selectedService?.id
-  );
-
-  if (!selectedService) {
-    return null;
+  if (!experts || experts.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "200px",
+          textAlign: "center",
+          bgcolor: "#f9f9f9",
+          borderRadius: "8px",
+          p: 2,
+        }}
+      >
+        <Typography variant="h6" color="textSecondary">
+          No expert available for this service.
+        </Typography>
+      </Box>
+    );
   }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 8, mb: 6 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{
-          fontWeight: 700,
-          textAlign: "center",
-          mb: 4,
-        }}
-      >
-        {selectedService.category} Experts
-      </Typography>
+      {selectedService && (
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{
+            fontWeight: 700,
+            textAlign: "center",
+            mb: 4,
+          }}
+        >
+          {selectedService?.title} Experts
+        </Typography>
+      )}
       <Grid container spacing={3}>
-        {filteredExperts.map((expert) => (
+        {experts.map((expert) => (
           <Grid item xs={12} md={4} key={expert.id}>
             <Paper
               elevation={3}
@@ -153,14 +121,14 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                     width: 80,
                     height: 80,
                     mr: 2,
-                    border: `2px solid ${selectedService.color}`,
+                    border: `2px solid ${staticData.color}`,
                   }}
                 />
                 <Box>
                   <Typography variant="h6" gutterBottom>
-                    {expert.name}
+                    {expert?.user?.username}
                   </Typography>
-                  <Typography color="text.secondary">{expert.title}</Typography>
+                  <Typography color="text.secondary">{expert?.professional_type?.title} Specialist </Typography>
                   <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
                     <Rating value={expert.rating} readOnly size="small" />
                     <Typography variant="body2" sx={{ ml: 1 }}>
@@ -175,14 +143,14 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   <Typography variant="body2" color="text.secondary">
                     Experience
                   </Typography>
-                  <Typography variant="body1">{expert.experience}</Typography>
+                  <Typography variant="body1">{expert?.years_of_experience} + years</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body2" color="text.secondary">
                     Languages
                   </Typography>
                   <Typography variant="body1">
-                    {expert.languages.join(", ")}
+                    {expert?.languages_spoken}
                   </Typography>
                 </Grid>
               </Grid>
@@ -193,18 +161,19 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 <Box
                   sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}
                 >
-                  {expert.specializations.map((spec, index) => (
+                  {expert.concerns.map((spec, index) => (
                     <Chip
                       key={index}
-                      label={spec}
+                      label={spec.name}
                       size="small"
                       sx={{
-                        bgcolor: `${selectedService.color}15`,
-                        color: selectedService.color,
+                        bgcolor: `${staticData.color}15`,
+                        color: staticData.color,
                       }}
                     />
                   ))}
                 </Box>
+
               </Box>
               <Box
                 sx={{
@@ -237,9 +206,9 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 onClick={() => onBookExpert(expert)}
                 sx={{
                   mt: 2,
-                  bgcolor: selectedService.color,
+                  bgcolor: staticData.color,
                   "&:hover": {
-                    bgcolor: selectedService.color,
+                    bgcolor: staticData.color,
                     opacity: 0.9,
                   },
                 }}

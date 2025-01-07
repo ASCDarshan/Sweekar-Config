@@ -79,7 +79,7 @@ const Navbar = () => {
   };
 
   const handleDashboard = () => {
-    if (user.user.user_type === "CLIENT") {
+    if (user.user_type === "CLIENT") {
       navigate("/Client/Dashboard");
     } else {
       navigate("/Professional/Dashboard");
@@ -88,7 +88,7 @@ const Navbar = () => {
   };
 
   const handleProfile = () => {
-    if (user.user.user_type === "CLIENT") {
+    if (user.user_type === "CLIENT") {
       navigate("/Client/Profile");
     } else {
       navigate("/Professional/Profile");

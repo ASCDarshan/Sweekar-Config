@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Paper,
@@ -17,10 +17,12 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const ConsultationList = () => {
-  const consultations = [];
   const [statusFilter, setStatusFilter] = useState("");
+  const [consultationList, setConsultationList] = useState([]);
+  const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -37,8 +39,50 @@ const ConsultationList = () => {
     }
   };
 
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData("consultations/consultations/", setConsultationList);
+  }, []);
+
+  function formatScheduledTime(dateString) {
+    const date = new Date(dateString);
+
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const isAM = hours < 12;
+    const formattedTime = `${hours % 12 || 12}:${minutes} ${isAM ? 'AM' : 'PM'}`;
+
+    return `${formattedDate}, ${formattedTime}`;
+  }
+
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, py: 4 }}>
       <Paper sx={{ p: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
           <Typography variant="h5">My Consultations</Typography>
@@ -62,19 +106,19 @@ const ConsultationList = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date & Time</TableCell>
-                <TableCell>Professional/Client</TableCell>
+                {loginInfo.user.user_type === "CLIENT" ? <TableCell>Professional</TableCell> : <TableCell>Client</TableCell>}
                 <TableCell>Type</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {consultations.map((consultation) => (
+              {consultationList.map((consultation) => (
                 <TableRow key={consultation.id}>
                   <TableCell>
-                    {new Date(consultation.scheduled_time).toLocaleString()}
+                    {formatScheduledTime(consultation.scheduled_time)}
                   </TableCell>
-                  <TableCell>{consultation.professional_name}</TableCell>
+                  <TableCell>{consultation.client_name}</TableCell>
                   <TableCell>{consultation.consultation_type}</TableCell>
                   <TableCell>
                     <Chip

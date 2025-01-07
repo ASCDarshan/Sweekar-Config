@@ -8,12 +8,9 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  CircularProgress,
 } from "@mui/material";
 import {
-  Psychology,
-  Gavel,
-  LocalHospital,
-  Work,
   Close,
 } from "@mui/icons-material";
 import BookConsultation from "../../components/Consultation/BookConsultation";
@@ -23,121 +20,13 @@ import ExpertsSection from "./Services/ExpertsSection";
 import NeedHelp from "../../components/Needhelp/NeedHelp";
 import ajaxCall from "../../helpers/ajaxCall";
 
-const servicess = [
-  {
-    id: 1,
-    category: "Mental Health",
-    icon: <Psychology sx={{ fontSize: 40 }} />,
-    shortDescription:
-      "Professional mental health support in a safe environment",
-    description:
-      "Access professional mental health support specifically designed for LGBTQAI+ individuals and women. Our services ensure a safe, understanding, and confidential environment.",
-    features: [
-      "Individual Counseling",
-      "Group Support Sessions",
-      "Crisis Intervention",
-      "Family Counseling",
-    ],
-    benefits: [
-      "24/7 Emergency Support",
-      "Online & In-person Sessions",
-      "Specialized LGBTQAI+ Expertise",
-      "Confidential Environment",
-    ],
-    color: "#9D84B7",
-    stats: {
-      professionals: 50,
-      sessions: 1000,
-      satisfaction: 98,
-    },
-  },
-  {
-    id: 2,
-    category: "Legal Aid",
-    icon: <Gavel sx={{ fontSize: 40 }} />,
-    shortDescription: "Expert legal support for rights and justice",
-    description:
-      "Comprehensive legal assistance for protecting rights and ensuring justice for the LGBTQAI+ community and women.",
-    features: [
-      "Rights Advocacy",
-      "Documentation Support",
-      "Family Law",
-      "Workplace Rights",
-    ],
-    benefits: [
-      "Expert LGBTQAI+ Lawyers",
-      "Pro-bono Services",
-      "Complete Privacy",
-      "Regular Workshops",
-    ],
-    color: "#7A5BA1",
-    stats: {
-      professionals: 30,
-      cases: 500,
-      success: 95,
-    },
-  },
-  {
-    id: 3,
-    category: "Medical Services",
-    icon: <LocalHospital sx={{ fontSize: 40 }} />,
-    shortDescription: "Inclusive healthcare for your well-being",
-    description:
-      "Access to LGBTQAI+ friendly healthcare providers offering comprehensive medical services in a respectful environment.",
-    features: [
-      "General Healthcare",
-      "Gender-affirming Care",
-      "Sexual Health Services",
-      "Regular Health Checkups",
-    ],
-    benefits: [
-      "LGBTQAI+ Friendly Doctors",
-      "Private Consultations",
-      "Specialized Care Plans",
-      "Inclusive Healthcare",
-    ],
-    color: "#FF6B6B",
-    stats: {
-      doctors: 40,
-      patients: 2000,
-      satisfaction: 97,
-    },
-  },
-  {
-    id: 4,
-    category: "Placement Services",
-    icon: <Work sx={{ fontSize: 40 }} />,
-    shortDescription: "Career opportunities in inclusive workplaces",
-    description:
-      "Connect with LGBTQAI+ friendly employers and access career development resources for professional growth.",
-    features: [
-      "Job Placements",
-      "Career Counseling",
-      "Resume Building",
-      "Interview Preparation",
-    ],
-    benefits: [
-      "Verified Inclusive Employers",
-      "Career Guidance",
-      "Skill Development",
-      "Networking Opportunities",
-    ],
-    color: "#4ECDC4",
-    stats: {
-      companies: 100,
-      placements: 750,
-      success: 92,
-    },
-  },
-];
-
 const Services = () => {
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedExpert, setSelectedExpert] = useState(null);
-
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
     try {
@@ -159,6 +48,8 @@ const Services = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -186,6 +77,14 @@ const Services = () => {
     setBookingOpen(false);
     setSelectedExpert(null);
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -283,7 +182,7 @@ const Services = () => {
           >
             <Typography variant="h6">
               Book {selectedService?.title} Consultation
-              {/* {selectedExpert && ` with ${selectedExpert.name}`} */}
+              {selectedExpert && ` with ${selectedExpert.name}`}
             </Typography>
             <IconButton
               edge="end"
@@ -307,7 +206,6 @@ const Services = () => {
         selectedService={selectedService}
         onBookExpert={handleExpertBooking}
       />
-
       <NeedHelp />
 
     </Box>

@@ -31,10 +31,11 @@ import ClientProfile from "./components/Profile/Client";
 import Professional from "./components/Dashboard/Professional";
 import ProfessionalProfile from "./components/Profile/Professional";
 import ConsultationList from "./components/Consultation/ConsultationList";
-import BookConsultation from "./components/Consultation/BookConsultation";
+
 import ConsultationDetail from "./components/Consultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
+import ConsultationBooking from "./components/Dashboard/ConsultationBooking";
 
 const App = () => {
   return (
@@ -67,7 +68,7 @@ const App = () => {
 
             <Route path="/consultations" element={<ConsultationList />} />
             <Route path="/consultation/:id" element={<ConsultationDetail />} />
-            <Route path="/book-consultation" element={<BookConsultation />} />
+            <Route path="/book-consultation" element={<ConsultationBooking />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
           <MobileBottomNav />
