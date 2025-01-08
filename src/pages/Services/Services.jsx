@@ -202,10 +202,13 @@ const Services = () => {
         </DialogContent>
       </Dialog>
 
-      <ExpertsSection
-        selectedService={selectedService}
-        onBookExpert={handleExpertBooking}
-      />
+      {selectedService && (
+        <ExpertsSection
+          selectedService={selectedService}
+          onBookExpert={handleExpertBooking}
+        />
+      )}
+
       <NeedHelp />
 
     </Box>

@@ -106,7 +106,7 @@ const ConsultationList = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date & Time</TableCell>
-                {loginInfo.user.user_type === "CLIENT" ? <TableCell>Professional</TableCell> : <TableCell>Client</TableCell>}
+                <TableCell>{loginInfo.user.user_type === "CLIENT" ? "Professional" : "Client"}</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Actions</TableCell>
@@ -118,7 +118,11 @@ const ConsultationList = () => {
                   <TableCell>
                     {formatScheduledTime(consultation.scheduled_time)}
                   </TableCell>
-                  <TableCell>{consultation.client_name}</TableCell>
+                  <TableCell>
+                    {loginInfo.user.user_type === "CLIENT"
+                      ? consultation.professional_details?.user.username
+                      : consultation.client_details?.user.username}
+                  </TableCell>
                   <TableCell>{consultation.consultation_type}</TableCell>
                   <TableCell>
                     <Chip
