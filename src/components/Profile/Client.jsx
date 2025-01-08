@@ -16,7 +16,7 @@ import Loading from "../UI/Loading";
 const Client = () => {
   const error = "";
   const success = "";
-  const loading = true;
+  const loading = false;
   const [profile, setProfile] = useState(null);
 
   const handleChange = (e) => {
@@ -60,7 +60,7 @@ const Client = () => {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={""}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TextField

@@ -9,9 +9,15 @@ import {
   CardActions,
 } from "@mui/material";
 import { Schedule } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Client = () => {
+  const navigate = useNavigate();
   const upcomingConsultations = [];
+
+  const handleClick = () => {
+    navigate("/book-consultation")
+  };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -25,7 +31,7 @@ const Client = () => {
               variant="contained"
               color="primary"
               sx={{ alignSelf: "flex-start", mt: 2 }}
-              onClick={() => (window.location.href = "/book-consultation")}
+              onClick={handleClick}
             >
               Book New Consultation
             </Button>

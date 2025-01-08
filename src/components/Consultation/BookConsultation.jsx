@@ -15,11 +15,14 @@ import {
   MenuItem,
   TextField,
   Chip,
+  CircularProgress,
 } from "@mui/material";
 import { format } from "date-fns";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import ajaxCall from "../../helpers/ajaxCall";
+import { toast } from "react-toastify";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
@@ -31,7 +34,76 @@ const BookConsultation = ({ preSelectedExpert }) => {
   );
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [consultationType, setConsultationType] = useState("");
+  const [concern, setConcern] = useState("");
   const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData("professionals/professionalist/", setProfessionals);
+  }, []);
+
+  const handleBookConsultant = async () => {
+    // const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
+    try {
+      const response = await ajaxCall(
+        `consultations/consultations/`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
+          },
+          method: "POST",
+          body: JSON.stringify({
+            professional: selectedProfessional.id,
+            client: 1,
+            consultation_type: consultationType,
+            scheduled_time: selectedDateTime,
+            duration: 3600,
+            status: "SCHEDULED",
+            amount: selectedProfessional.hourly_rate,
+            notes: notes,
+            concerns: concern,
+          }),
+        },
+        8000
+      );
+
+      if ([200, 201].includes(response.status)) {
+        toast.success("Consultation Booked Successfully.");
+      } else {
+        toast.error("Failed to book consultation. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
 
   useEffect(() => {
     if (preSelectedExpert) {
@@ -95,46 +167,53 @@ const BookConsultation = ({ preSelectedExpert }) => {
       case 0:
         return (
           <Grid container spacing={3}>
-            {professionals.map((professional) => (
-              <Grid item xs={12} md={6} key={professional.id}>
-                <Card
-                  sx={{
-                    cursor: "pointer",
-                    border:
-                      selectedProfessional?.id === professional.id ? 2 : 0,
-                    borderColor: "primary.main",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                    },
-                  }}
-                  onClick={() => setSelectedProfessional(professional)}
-                >
-                  <CardContent>
-                    <Typography variant="h6">{professional.name}</Typography>
-                    <Typography color="textSecondary">
-                      {professional.title}
-                    </Typography>
-                    <Typography variant="body2">
-                      Experience: {professional.experience}
-                    </Typography>
-                    <Typography variant="body2">
-                      Languages: {professional.languages.join(", ")}
-                    </Typography>
-                    <Box sx={{ mt: 1 }}>
-                      {professional.specializations.map((spec, index) => (
-                        <Chip
-                          key={index}
-                          label={spec}
-                          size="small"
-                          sx={{ m: 0.5 }}
-                        />
-                      ))}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+            {professionals.map((professional) => {
+              return (
+                <Grid item xs={12} md={6} key={professional.id}>
+                  <Card
+                    sx={{
+                      cursor: "pointer",
+                      border:
+                        selectedProfessional?.id === professional.id ? 2 : 0,
+                      borderColor: "primary.main",
+                      transition: "transform 0.2s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                      },
+                    }}
+                    onClick={() => setSelectedProfessional(professional)}
+                  >
+                    <CardContent>
+                      <Typography variant="h6">
+                        {professional.user.username}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        {professional.professional_type.title}
+                      </Typography>
+                      <Typography variant="body2">
+                        Experience: {professional.years_of_experience}
+                      </Typography>
+                      <Typography variant="body2">
+                        Languages: {professional.languages_spoken}
+                      </Typography>
+                      <Box sx={{ mt: 1 }}>
+                        <Typography variant="body2">
+                          Specializations:{" "}
+                          {professional.concerns.map((spec, index) => (
+                            <Chip
+                              key={index}
+                              label={spec.name}
+                              size="small"
+                              sx={{ m: 0.5 }}
+                            />
+                          ))}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
         );
 
@@ -148,11 +227,23 @@ const BookConsultation = ({ preSelectedExpert }) => {
                 onChange={(e) => setConsultationType(e.target.value)}
                 label="Consultation Type"
               >
-                <MenuItem value="VIDEO">Video Call</MenuItem>
-                <MenuItem value="AUDIO">Audio Call</MenuItem>
+                {selectedProfessional.is_available_online && (
+                  <MenuItem value="VIDEO">Video Call</MenuItem>
+                )}
                 <MenuItem value="CHAT">Chat</MenuItem>
-                <MenuItem value="IN_PERSON">In Person</MenuItem>
+                <MenuItem value="AUDIO">Audio Call</MenuItem>
+                {selectedProfessional.is_available_in_person && (
+                  <MenuItem value="IN_PERSON">In Person</MenuItem>
+                )}
               </Select>
+              <TextField
+                fullWidth
+                sx={{ mt: 2 }}
+                label="List of concerns to be discussed"
+                value={concern}
+                onChange={(e) => setConcern(e.target.value)}
+                variant="outlined"
+              />
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <StaticDatePicker
@@ -183,7 +274,9 @@ const BookConsultation = ({ preSelectedExpert }) => {
             <Typography variant="h6" gutterBottom>
               Consultation Details
             </Typography>
-            <Typography>Professional: {selectedProfessional?.name}</Typography>
+            <Typography>
+              Professional: {selectedProfessional.user.username}
+            </Typography>
             <Typography>
               Date & Time: {selectedDateTime?.toLocaleString()}
             </Typography>
@@ -222,17 +315,21 @@ const BookConsultation = ({ preSelectedExpert }) => {
           </Button>
         )}
         {activeStep === steps.length - 1 ? (
-          <Button variant="contained" >
-            Book Now
-          </Button>
+          loading ? (
+            <CircularProgress size={24} />
+          ) : (
+            <Button variant="contained" onClick={handleBookConsultant}>
+              Book Now
+            </Button>
+          )
         ) : (
           <Button
             variant="contained"
             onClick={handleNext}
-            disabled={
-              (activeStep === 0 && !selectedProfessional) ||
-              (activeStep === 1 && (!selectedDateTime || !consultationType))
-            }
+          // disabled={
+          //   (activeStep === 0 && !selectedProfessional) ||
+          //   (activeStep === 1 && (!selectedDateTime || !consultationType))
+          // }
           >
             Next
           </Button>
