@@ -1,28 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Paper,
   Grid,
   TextField,
   Button,
-  Alert,
   Box,
   Avatar,
   IconButton,
-  Chip,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
-import Loading from "../UI/Loading";
+import ajaxCall from "../../helpers/ajaxCall";
+import { toast } from "react-toastify";
 
 const Professional = () => {
-  const error = "";
-  const success = "";
-  const specializations = [];
-  const [profile, setProfile] = useState(null);
+  const user = JSON.parse(localStorage.getItem("loginInfo")).user;
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [expert, setExpert] = useState({});
 
   const handleChange = (e) => {
     setProfile({
@@ -31,12 +30,86 @@ const Professional = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfile({ ...profile, profile_picture: file });
+    }
+  };
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || {});
+        setProfile(response?.data || {});
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(`professionals/professional-user/?user=${user}`, setExpert);
+  }, []);
+
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    Object.keys(profile).forEach((key) => {
+      formData.append(key, profile[key]);
+    });
+
+    try {
+      const response = await ajaxCall(
+        `professionals/professional-update/${expert.id}/`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+          },
+          method: "PATCH",
+          body: formData,
+        },
+        8000
+      );
+      if ([200, 201].includes(response.status)) {
+        toast.success("Profile Updated Successfully.");
+      } else if ([400, 404].includes(response.status)) {
+        toast.error("Some Problem Occurred. Please try again.");
+      } else if ([401].includes(response.status)) {
+        toast.error("Invalid Credentials.");
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 4 }}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
           <Avatar
-            src={profile?.user?.profile_picture}
+            src={profile?.profile_picture ? URL.createObjectURL(profile?.profile_picture) : expert?.user?.profile_picture}
             sx={{ width: 100, height: 100, mr: 2 }}
           />
           <input
@@ -44,25 +117,41 @@ const Professional = () => {
             style={{ display: "none" }}
             id="profile-photo"
             type="file"
+            onChange={handleFileChange}
           />
           <label htmlFor="profile-photo">
             <IconButton component="span">
               <PhotoCamera />
             </IconButton>
           </label>
+          <TextField
+            fullWidth
+            label="Username"
+            name="username"
+            value={expert?.user?.username || ""}
+            onChange={handleChange}
+          />
         </Box>
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {success}
-          </Alert>
-        )}
-        <form>
+        <form onSubmit={handleUpdate}>
           <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="First Name"
+                name="first_name"
+                value={profile?.user?.first_name || ""}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Last Name"
+                name="last_name"
+                value={profile?.user?.last_name || ""}
+                onChange={handleChange}
+              />
+            </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -98,8 +187,8 @@ const Professional = () => {
                 fullWidth
                 label="Consultation Fee"
                 type="number"
-                name="consultation_fee"
-                value={profile?.consultation_fee || ""}
+                name="hourly_rate"
+                value={profile?.hourly_rate || ""}
                 onChange={handleChange}
               />
             </Grid>
@@ -118,33 +207,27 @@ const Professional = () => {
                 <InputLabel>Specializations</InputLabel>
                 <Select
                   multiple
-                  value={profile?.specializations?.map((s) => s.id) || []}
-                  onChange={handleChange}
+                  value={profile?.concerns?.map((concern) => concern.id) || []}
+                  onChange={(e) => {
+                    const selectedIds = e.target.value;
+                    const selectedConcerns = expert?.concerns?.filter((concern) =>
+                      selectedIds.includes(concern.id)
+                    );
+                    setProfile({ ...profile, concerns: selectedConcerns });
+                  }}
                   name="specializations"
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value}
-                          label={
-                            specializations.find((s) => s.id === value)?.name
-                          }
-                        />
-                      ))}
-                    </Box>
-                  )}
                 >
-                  {specializations.map((spec) => (
-                    <MenuItem key={spec.id} value={spec.id}>
-                      {spec.name}
+                  {expert?.concerns?.map((concern) => (
+                    <MenuItem key={concern.id} value={concern.id}>
+                      {concern.name}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
-                Update Profile
+              <Button type="submit" variant="contained" color="primary" disabled={loading}>
+                {loading ? "Updating..." : "Update Profile"}
               </Button>
             </Grid>
           </Grid>

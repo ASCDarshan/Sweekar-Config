@@ -23,10 +23,11 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import ajaxCall from "../../helpers/ajaxCall";
 import { toast } from "react-toastify";
+import Loading from "../UI/Loading";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
-const BookConsultation = ({ preSelectedExpert }) => {
+const BookConsultation = ({ preSelectedExpert, onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [professionals, setProfessionals] = useState([]);
   const [selectedProfessional, setSelectedProfessional] = useState(
@@ -68,6 +69,7 @@ const BookConsultation = ({ preSelectedExpert }) => {
   }, []);
 
   const handleBookConsultant = async () => {
+    setLoading(true);
     // const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
     try {
       const response = await ajaxCall(
@@ -97,11 +99,15 @@ const BookConsultation = ({ preSelectedExpert }) => {
 
       if ([200, 201].includes(response.status)) {
         toast.success("Consultation Booked Successfully.");
+        onClose();
       } else {
         toast.error("Failed to book consultation. Please try again later.");
+
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -316,7 +322,7 @@ const BookConsultation = ({ preSelectedExpert }) => {
         )}
         {activeStep === steps.length - 1 ? (
           loading ? (
-            <CircularProgress size={24} />
+            <Loading />
           ) : (
             <Button variant="contained" onClick={handleBookConsultant}>
               Book Now
