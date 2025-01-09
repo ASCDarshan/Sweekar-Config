@@ -198,6 +198,7 @@ const Services = () => {
           <BookConsultation
             preSelectedService={selectedService}
             preSelectedExpert={selectedExpert}
+            onClose={handleBookingClose}
           />
         </DialogContent>
       </Dialog>

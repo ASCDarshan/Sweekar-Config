@@ -207,18 +207,21 @@ const Navbar = () => {
                 >
                   {user?.user ? (
                     <>
-                      <Button
-                        variant="contained"
-                        onClick={() => navigate("/consultations")}
-                        sx={{
-                          bgcolor: "#9D84B7",
-                          "&:hover": {
-                            bgcolor: "rgba(157, 132, 183, 0.9)",
-                          },
-                        }}
-                      >
-                        My Consultations
-                      </Button>
+                      {user.user_type !== "CLIENT" && (
+                        <Button
+                          variant="contained"
+                          onClick={() => navigate("/consultations")}
+                          sx={{
+                            bgcolor: "#9D84B7",
+                            "&:hover": {
+                              bgcolor: "rgba(157, 132, 183, 0.9)",
+                            },
+                          }}
+                        >
+                          My Consultations
+                        </Button>
+                      )}
+
                       <IconButton
                         onClick={handleMenu}
                         sx={{
