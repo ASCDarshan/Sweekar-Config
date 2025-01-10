@@ -29,13 +29,14 @@ import Register from "./components/Auth/Register";
 import Client from "./components/Dashboard/Client";
 import ClientProfile from "./components/Profile/Client";
 import Professional from "./components/Dashboard/Professional";
-import ProfessionalProfile from "./components/Profile/Professional";
+// import ProfessionalProfile from "./components/Profile/Professional";
 import ConsultationList from "./components/Consultation/ConsultationList";
 
 import ConsultationDetail from "./components/Consultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
 import ConsultationBooking from "./components/Dashboard/ConsultationBooking";
+import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 
 const App = () => {
   return (
@@ -63,7 +64,7 @@ const App = () => {
             <Route path="/Professional/Dashboard" element={<Professional />} />
             <Route
               path="/Professional/Profile"
-              element={<ProfessionalProfile />}
+              element={<ProfessionalProfileDisplay />}
             />
 
             <Route path="/consultations" element={<ConsultationList />} />

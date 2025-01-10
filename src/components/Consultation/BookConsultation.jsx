@@ -15,7 +15,6 @@ import {
   MenuItem,
   TextField,
   Chip,
-  CircularProgress,
 } from "@mui/material";
 import { format } from "date-fns";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -27,6 +26,7 @@ import Loading from "../UI/Loading";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
+// eslint-disable-next-line react/prop-types
 const BookConsultation = ({ preSelectedExpert, onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [professionals, setProfessionals] = useState([]);
@@ -70,7 +70,6 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
 
   const handleBookConsultant = async () => {
     setLoading(true);
-    // const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
     try {
       const response = await ajaxCall(
         `consultations/consultations/`,
