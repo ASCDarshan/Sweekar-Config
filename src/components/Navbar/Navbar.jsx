@@ -28,7 +28,7 @@ import {
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
-import logo from "../../assets/sweekar-Logo.png";
+import logo from "../../assets/Sweekar FINAL LOGO-02.png";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -156,7 +156,7 @@ const Navbar = () => {
                   }}
                   onClick={() => navigate("/")}
                 >
-                  <img src={logo} alt="Sweekar" style={{ height: "40px" }} />
+                  <img src={logo} alt="Sweekar" style={{ height: "70px" }} />
                 </Box>
                 <Stack
                   spacing={3}

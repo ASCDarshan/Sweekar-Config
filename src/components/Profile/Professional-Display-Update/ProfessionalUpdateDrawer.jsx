@@ -2,7 +2,6 @@ import { Close } from "@mui/icons-material"
 import { Box, IconButton, SwipeableDrawer, Typography } from "@mui/material"
 import BasicInformation from "./Update-Professional-Component/BasicInformation"
 import Award from "./Update-Professional-Component/Award"
-import Centre from "./Update-Professional-Component/Centre"
 import Concern from "./Update-Professional-Component/Concern"
 
 // eslint-disable-next-line react/prop-types
@@ -52,13 +51,6 @@ const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
             </Typography>
             <Box sx={{ mb: 3 }}>
                 <Award expertId={ExpertDetails?.id} />
-            </Box>
-
-            {/* <Typography variant="h6" gutterBottom fontWeight="bold">
-                Centres
-            </Typography> */}
-            <Box sx={{ mb: 3 }}>
-                <Centre />
             </Box>
         </SwipeableDrawer>
     )

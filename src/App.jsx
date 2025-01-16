@@ -27,7 +27,6 @@ import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 
 import Client from "./components/Dashboard/Client";
-import ClientProfile from "./components/Profile/Client";
 import Professional from "./components/Dashboard/Professional";
 // import ProfessionalProfile from "./components/Profile/Professional";
 import ConsultationList from "./components/Consultation/ConsultationList";
@@ -37,6 +36,8 @@ import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
 import ConsultationBooking from "./components/Dashboard/ConsultationBooking";
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
+import ExpertsDetails from "./pages/Experts/ExpertsDetails";
+import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="/blogs/:blogId" element={<BlogDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/experts" element={<Experts />} />
+            <Route path="/experts/:id/" element={<ExpertsDetails />} />
             <Route path="/centres" element={<Centres />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<Register />} />
@@ -59,7 +61,7 @@ const App = () => {
             <Route path="/resources" element={<Resources />} />
 
             <Route path="/Client/Dashboard" element={<Client />} />
-            <Route path="/Client/Profile" element={<ClientProfile />} />
+            <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
 
             <Route path="/Professional/Dashboard" element={<Professional />} />
             <Route

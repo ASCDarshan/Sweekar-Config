@@ -29,6 +29,8 @@ import { toast } from "react-toastify";
 import ajaxCall from "../../helpers/ajaxCall";
 import ForgotPassword from "./ForgotPassword";
 import Loading from "../UI/Loading";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const theme = useTheme();
@@ -36,6 +38,7 @@ const Login = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [phone, setPhone] = useState("");
+  const [credentials, setCredentials] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
@@ -113,6 +116,56 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSuccess = async () => {
+    setisLoading(true);
+    try {
+      const googleData = {
+        email: credentials.email,
+        family_name: credentials.family_name,
+        given_name: credentials.given_name,
+        aud: credentials.aud,
+      };
+
+      const response = await ajaxCall(
+        "auth/google/",
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(googleData),
+        },
+        8000
+      );
+
+      if (response?.status === 200) {
+        const result = response?.data;
+        localStorage.setItem(
+          "loginInfo",
+          JSON.stringify({
+            user: result?.user?.id,
+            user_type: result?.user?.user_type,
+            accessToken: result?.tokens?.access,
+            refreshToken: result?.tokens?.refresh,
+          })
+        );
+        toast.success("Google Login Successful");
+        if (result?.user?.user_type === "PROFESSIONAL") {
+          navigate("/Professional/Dashboard");
+        } else if (result?.user?.user_type === "CLIENT") {
+          navigate("/Client/Dashboard");
+        } else {
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast.error("Google login failed. Please try again.");
+    } finally {
+      setisLoading(false);
+    }
+  };
   return (
     <Box
       sx={{
@@ -165,103 +218,122 @@ const Login = () => {
                   </Button>
                 </Box>
                 {loginMethod === "password" ? (
-                  <form onSubmit={formik.handleSubmit}>
-                    <TextField
-                      fullWidth
-                      label="Username"
-                      name="email"
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.email && Boolean(formik.errors.email)
-                      }
-                      helperText={formik.touched.email && formik.errors.email}
-                      required
-                      sx={{ mb: 2 }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Person color="primary" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Password"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.password &&
-                        Boolean(formik.errors.password)
-                      }
-                      helperText={
-                        formik.touched.password && formik.errors.password
-                      }
-                      required
-                      sx={{ mb: 1 }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Lock color="primary" />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => setShowPassword(!showPassword)}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                  <>
+                    <form onSubmit={formik.handleSubmit}>
+                      <TextField
+                        fullWidth
+                        label="Username"
+                        name="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.email && Boolean(formik.errors.email)
+                        }
+                        helperText={formik.touched.email && formik.errors.email}
+                        required
+                        sx={{ mb: 2 }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Person color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                          formik.touched.password &&
+                          Boolean(formik.errors.password)
+                        }
+                        helperText={
+                          formik.touched.password && formik.errors.password
+                        }
+                        required
+                        sx={{ mb: 1 }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Lock color="primary" />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowPassword(!showPassword)}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          mb: 2,
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Link
+                          component="button"
+                          type="button"
+                          variant="body2"
+                          style={{ textDecoration: "none" }}
+                          onClick={() => setForgotPasswordOpen(true)}
+                        >
+                          Forgot Password?
+                        </Link>
+                        <Link
+                          component="button"
+                          type="button"
+                          variant="body2"
+                          style={{ textDecoration: "none" }}
+                          onClick={() => navigate("/register")}
+                        >
+                          Don&apos;t have an account?
+                        </Link>
+                      </Box>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        size="small"
+                        sx={{ mb: 2 }}
+                      >
+                        {isLoading ? <Loading /> : "Login"}
+                      </Button>
+                    </form>
+
                     <Box
-                      sx={{
-                        mb: 2,
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
+                      sx={{ mb: 2, display: "flex", justifyContent: "center" }}
                     >
-                      <Link
-                        component="button"
-                        type="button"
-                        variant="body2"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => setForgotPasswordOpen(true)}
-                      >
-                        Forgot Password?
-                      </Link>
-                      <Link
-                        component="button"
-                        type="button"
-                        variant="body2"
-                        style={{ textDecoration: "none" }}
-                        onClick={() => navigate("/register")}
-                      >
-                        Don&apos;t have an account?
-                      </Link>
+                      <GoogleLogin
+                        onSuccess={(credentialResponse) => {
+                          handleGoogleSuccess(
+                            setCredentials(
+                              jwtDecode(credentialResponse.credential)
+                            )
+                          );
+                        }}
+                        onError={() => {
+                          toast.error("Login Failed");
+                        }}
+                      />
                     </Box>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      size="small"
-                      sx={{ mb: 2 }}
-                    >
-                      {isLoading ? <Loading /> : "Login"}
-                    </Button>
-                  </form>
+                  </>
                 ) : (
                   <Box>
                     <TextField
@@ -312,10 +384,14 @@ const Login = () => {
           </Grid>
         </Grid>
       </Container>
-      <ForgotPassword
-        open={forgotPasswordOpen}
-        onClose={() => setForgotPasswordOpen(false)}
-      />
+      <Box>
+        {forgotPasswordOpen && (
+          <ForgotPassword
+            open={forgotPasswordOpen}
+            onClose={() => setForgotPasswordOpen(false)}
+          />
+        )}
+      </Box>
     </Box>
   );
 };
