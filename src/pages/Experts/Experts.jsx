@@ -15,8 +15,10 @@ import {
 } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
+import { useNavigate } from "react-router-dom";
 
 const Experts = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [experts, setExperts] = useState([]);
@@ -51,6 +53,11 @@ const Experts = () => {
   useEffect(() => {
     fetchData("professionals/professionalist/", setExperts);
   }, []);
+
+  const handleViewConsultation = (experts) => {
+    console.log(experts);
+    navigate(`/experts/${experts.id}`);
+  };
 
   if (loading) {
     return (
@@ -195,8 +202,10 @@ const Experts = () => {
                       sx={{ mr: 0.5 }}
                     />
                   </Box>
-                  <Button variant="contained" fullWidth>
-                    Book Consultation
+                  <Button variant="contained"
+                    fullWidth
+                    onClick={() => handleViewConsultation(expert)}>
+                    View Profile
                   </Button>
                 </CardContent>
               </Card>

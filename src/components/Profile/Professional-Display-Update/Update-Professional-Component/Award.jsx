@@ -95,6 +95,9 @@ const Award = ({ expertId }) => {
                             name="date_received"
                             value={formData.date_received}
                             onChange={handleChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
