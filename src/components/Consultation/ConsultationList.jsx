@@ -19,25 +19,26 @@ import {
 } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
 
+const getStatusColor = (status) => {
+  switch (status) {
+    case "SCHEDULED":
+      return "primary";
+    case "IN_PROGRESS":
+      return "warning";
+    case "COMPLETED":
+      return "success";
+    case "CANCELLED":
+      return "error";
+    default:
+      return "default";
+  }
+};
+
 const ConsultationList = () => {
+  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
   const [statusFilter, setStatusFilter] = useState("");
   const [consultationList, setConsultationList] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "SCHEDULED":
-        return "primary";
-      case "IN_PROGRESS":
-        return "warning";
-      case "COMPLETED":
-        return "success";
-      case "CANCELLED":
-        return "error";
-      default:
-        return "default";
-    }
-  };
 
   const fetchData = async (url, setData) => {
     try {
@@ -64,7 +65,7 @@ const ConsultationList = () => {
   };
 
   useEffect(() => {
-    fetchData("consultations/consultations/", setConsultationList);
+    fetchData(`consultations/consultation-user/?user=${userId}`, setConsultationList);
   }, []);
 
   function formatScheduledTime(dateString) {
