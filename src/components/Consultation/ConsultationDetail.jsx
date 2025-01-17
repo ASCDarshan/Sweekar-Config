@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Paper,
@@ -15,32 +15,66 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
+import ajaxCall from "../../helpers/ajaxCall";
+import { useParams } from "react-router-dom";
 
 const ConsultationDetail = () => {
-  const consultation = null;
+  const { id } = useParams();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewDialog, setReviewDialog] = useState(false);
+  const [consultation, setConsultation] = useState([]);
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("loginInfo")
+            )?.accessToken}`,
+          },
+          method: "GET",
+        },
+        8000
+      );
+      console.log("response", response);
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(`consultations/consultation-update/${id}/`, setConsultation);
+  }, []);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
           Consultation Details
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Typography variant="subtitle1">Professional</Typography>
+            <Typography variant="subtitle1">Client</Typography>
             <Typography variant="h6">
-              {consultation.professional_name}
+              {consultation?.client_details?.user?.username}
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Status</Typography>
             <Chip
-              label={consultation.status}
+              label={consultation?.status}
               color={
-                consultation.status === "COMPLETED" ? "success" : "primary"
+                consultation?.status === "COMPLETED" ? "success" : "primary"
               }
             />
           </Grid>
@@ -50,28 +84,36 @@ const ConsultationDetail = () => {
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Date & Time</Typography>
             <Typography>
-              {new Date(consultation.scheduled_time).toLocaleString()}
+              {new Date(consultation?.scheduled_time).toLocaleString()}
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Type</Typography>
-            <Typography>{consultation.consultation_type}</Typography>
+            <Typography>{consultation?.consultation_type}</Typography>
           </Grid>
-          {consultation.notes && (
-            <Grid item xs={12}>
+          {consultation?.notes && (
+            <Grid item xs={6}>
               <Typography variant="subtitle1">Notes</Typography>
-              <Typography>{consultation.notes}</Typography>
+              <Typography>{consultation?.notes}</Typography>
             </Grid>
           )}
+          <Grid item xs={6}>
+            <Typography variant="subtitle1">Concerns</Typography>
+            <Typography>{consultation?.concerns}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="subtitle1">Payment Status</Typography>
+            <Typography>{consultation?.payment_status}</Typography>
+          </Grid>
           <Grid item xs={12}>
             <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
-              {consultation.status === "SCHEDULED" && (
-                <Button variant="outlined" color="error" onClick={handleCancel}>
+              {consultation?.status === "SCHEDULED" && (
+                <Button variant="outlined" color="error" >
                   Cancel Consultation
                 </Button>
               )}
 
-              {consultation.status === "COMPLETED" && !consultation.review && (
+              {consultation?.status === "COMPLETED" && !consultation?.review && (
                 <Button
                   variant="contained"
                   onClick={() => setReviewDialog(true)}
@@ -107,7 +149,7 @@ const ConsultationDetail = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setReviewDialog(false)}>Cancel</Button>
-          <Button onClick={handleSubmitReview} variant="contained">
+          <Button variant="contained">
             Submit Review
           </Button>
         </DialogActions>
