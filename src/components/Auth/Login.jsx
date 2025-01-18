@@ -38,11 +38,10 @@ const Login = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [phone, setPhone] = useState("");
-  const [credentials, setCredentials] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +62,7 @@ const Login = () => {
   });
 
   const fetchData = async (url, data) => {
-    setisLoading(true);
+    setIsLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -77,53 +76,68 @@ const Login = () => {
         },
         8000
       );
-      if (response?.status === 200) {
-        formik.resetForm();
-        const result = response?.data;
-        localStorage.setItem(
-          "loginInfo",
-          JSON.stringify({
-            user: result?.user?.id,
-            user_type: result?.user?.user_type,
-            accessToken: result?.tokens?.access,
-            refreshToken: result?.tokens?.refresh,
-          })
-        );
-        toast.success("Login Successful");
-        if (result?.user?.user_type === "PROFESSIONAL") {
-          navigate("/Professional/Dashboard");
-          setisLoading(false);
-        } else if (result?.user?.user_type === "CLIENT") {
-          navigate("/Client/Dashboard");
-          setisLoading(false);
-        } else {
-          navigate("/");
-        }
-      } else if (response.status === 401) {
-        if (response.data.error === "Invalid credentials") {
-          toast.error(response.data.error);
-          setisLoading(false);
-        } else {
-          toast.error(
-            "Email not verified. Please verify your email to log in."
-          );
-        }
-      } else if (response.status === 404) {
-        toast.error("Username or Password is wrong, Please try again...");
-      }
+      handleLoginResponse(response);
     } catch (error) {
       console.log(error);
+      toast.error("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleGoogleSuccess = async () => {
-    setisLoading(true);
+  const handleLoginResponse = (response) => {
+    if (response?.status === 200) {
+      formik.resetForm();
+      const result = response?.data;
+      localStorage.setItem(
+        "loginInfo",
+        JSON.stringify({
+          user: result?.user?.id,
+          user_type: result?.user?.user_type,
+          accessToken: result?.tokens?.access,
+          refreshToken: result?.tokens?.refresh,
+        })
+      );
+      toast.success("Login Successful");
+      navigateBasedOnUserType(result?.user?.user_type);
+    } else if (response?.status === 401) {
+      if (response.data.error === "Invalid credentials") {
+        toast.error(response.data.error);
+      } else {
+        toast.error("Email not verified. Please verify your email to log in.");
+      }
+    } else if (response?.status === 404) {
+      toast.error("Username or Password is wrong, Please try again...");
+    }
+  };
+
+  const navigateBasedOnUserType = (userType) => {
+    switch (userType) {
+      case "PROFESSIONAL":
+        navigate("/Professional/Dashboard");
+        break;
+      case "CLIENT":
+        navigate("/Client/Dashboard");
+        break;
+      default:
+        navigate("/");
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    if (!credentialResponse?.credential) {
+      toast.error("Google login failed. Missing credentials.");
+      return;
+    }
+
+    setIsLoading(true);
     try {
+      const decodedCredentials = jwtDecode(credentialResponse.credential);
       const googleData = {
-        email: credentials.email,
-        family_name: credentials.family_name,
-        given_name: credentials.given_name,
-        aud: credentials.aud,
+        email: decodedCredentials.email,
+        family_name: decodedCredentials.family_name,
+        given_name: decodedCredentials.given_name,
+        aud: decodedCredentials.aud,
       };
 
       const response = await ajaxCall(
@@ -135,37 +149,21 @@ const Login = () => {
           },
           method: "POST",
           body: JSON.stringify(googleData),
+          withCredentials: true
+
         },
         8000
       );
 
-      if (response?.status === 200) {
-        const result = response?.data;
-        localStorage.setItem(
-          "loginInfo",
-          JSON.stringify({
-            user: result?.user?.id,
-            user_type: result?.user?.user_type,
-            accessToken: result?.tokens?.access,
-            refreshToken: result?.tokens?.refresh,
-          })
-        );
-        toast.success("Google Login Successful");
-        if (result?.user?.user_type === "PROFESSIONAL") {
-          navigate("/Professional/Dashboard");
-        } else if (result?.user?.user_type === "CLIENT") {
-          navigate("/Client/Dashboard");
-        } else {
-          navigate("/");
-        }
-      }
+      handleLoginResponse(response);
     } catch (error) {
       console.error("Google login error:", error);
       toast.error("Google login failed. Please try again.");
     } finally {
-      setisLoading(false);
+      setIsLoading(false);
     }
   };
+
   return (
     <Box
       sx={{
@@ -190,20 +188,14 @@ const Login = () => {
                 }}
               >
                 <Box sx={{ mb: 4, textAlign: "center" }}>
-                  <Typography
-                    variant="h4"
-                    gutterBottom
-                    sx={{ fontWeight: 700 }}
-                  >
+                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
                     Sign In
                   </Typography>
                 </Box>
                 <Box sx={{ mb: 3 }}>
                   <Button
                     fullWidth
-                    variant={
-                      loginMethod === "password" ? "contained" : "outlined"
-                    }
+                    variant={loginMethod === "password" ? "contained" : "outlined"}
                     onClick={() => setLoginMethod("password")}
                     sx={{ mb: 1 }}
                   >
@@ -227,9 +219,7 @@ const Login = () => {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={
-                          formik.touched.email && Boolean(formik.errors.email)
-                        }
+                        error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
                         required
                         sx={{ mb: 2 }}
@@ -312,24 +302,17 @@ const Login = () => {
                         variant="contained"
                         size="small"
                         sx={{ mb: 2 }}
+                        disabled={isLoading}
                       >
                         {isLoading ? <Loading /> : "Login"}
                       </Button>
                     </form>
 
-                    <Box
-                      sx={{ mb: 2, display: "flex", justifyContent: "center" }}
-                    >
+                    <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
                       <GoogleLogin
-                        onSuccess={(credentialResponse) => {
-                          handleGoogleSuccess(
-                            setCredentials(
-                              jwtDecode(credentialResponse.credential)
-                            )
-                          );
-                        }}
+                        onSuccess={handleGoogleSuccess}
                         onError={() => {
-                          toast.error("Login Failed");
+                          toast.error("Google login failed");
                         }}
                       />
                     </Box>

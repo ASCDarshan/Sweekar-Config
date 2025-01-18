@@ -41,7 +41,6 @@ const ConsultationDetail = () => {
         },
         8000
       );
-      console.log("response", response);
       if (response?.status === 200) {
         setData(response?.data || []);
       } else {

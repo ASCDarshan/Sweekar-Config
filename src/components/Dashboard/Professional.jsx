@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -13,27 +14,65 @@ import {
   TextField,
   Card,
   CardContent,
-  CircularProgress,
 } from "@mui/material";
 import moment from "moment";
 import "draft-js/dist/Draft.css";
-import { Editor, EditorState } from "draft-js";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
+import ajaxCall from "../../helpers/ajaxCall";
 
 const localizer = momentLocalizer(moment);
 
 const Professional = () => {
-  const consultation = null;
-  const calendarEvents = [];
-  const latestConsultations = [];
-
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
+  const [consultationList, setConsultationList] = useState([]);
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [createEventDialogOpen, setCreateEventDialogOpen] = useState(false);
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+
+  const transformToCalendarEvents = (consultations) => {
+    return consultations.map((consultation) => ({
+      title: consultation.concerns || "Consultation",
+      start: new Date(consultation.scheduled_time),
+      end: new Date(
+        new Date(consultation.scheduled_time).getTime() +
+        moment.duration(consultation.duration).asMilliseconds()
+      ),
+    }));
+  };
+
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        const consultations = response?.data || [];
+        setData(consultations);
+
+        // Transform consultations to calendar events
+        const events = transformToCalendarEvents(consultations);
+        setCalendarEvents(events);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(`consultations/consultation-user/?user=${userId}`, setConsultationList);
+  }, []);
 
   return (
     <Container>
@@ -50,7 +89,7 @@ const Professional = () => {
                 <Assessment fontSize="large" color="primary" />
                 <Box ml={2}>
                   <Typography variant="h6">Total Consultations</Typography>
-                  <Typography variant="h4">152</Typography>
+                  <Typography variant="h4">{consultationList?.length}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -63,7 +102,7 @@ const Professional = () => {
                 <Event fontSize="large" color="secondary" />
                 <Box ml={2}>
                   <Typography variant="h6">Upcoming Events</Typography>
-                  <Typography variant="h4">8</Typography>
+                  <Typography variant="h4">{calendarEvents?.length}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -74,17 +113,17 @@ const Professional = () => {
             <Typography variant="h6" gutterBottom>
               Latest Consultations
             </Typography>
-            {latestConsultations.length > 0 ? (
-              latestConsultations.map((consultation, index) => (
+            {consultationList.length > 0 ? (
+              consultationList.map((consultation, index) => (
                 <Box
                   key={index}
                   display="flex"
                   justifyContent="space-between"
                   mb={1}
                 >
-                  <Typography>{consultation.title}</Typography>
+                  <Typography>{consultation.concerns}</Typography>
                   <Typography color="text.secondary">
-                    {moment(consultation.date).format("MMM D, YYYY")}
+                    {moment(consultation.scheduled_time).format("MMM D, YYYY")}
                   </Typography>
                 </Box>
               ))
@@ -112,14 +151,9 @@ const Professional = () => {
           endAccessor="end"
           style={{ height: 500 }}
         />
+
       </Box>
-      <ConsultationDialog
-        consultation={consultation}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        editorState={editorState}
-        setEditorState={setEditorState}
-      />
+
       <CreateEventDialog
         open={createEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
@@ -128,41 +162,6 @@ const Professional = () => {
   );
 };
 
-const ConsultationDialog = ({
-  consultation,
-  open,
-  onClose,
-  editorState,
-  setEditorState,
-}) => {
-  const loading = false;
-
-  return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Consultation Details</DialogTitle>
-      <DialogContent dividers>
-        <Box sx={{ mb: 2 }}>
-          <Typography>{consultation?.title}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {moment(consultation?.scheduled_time).format("MMMM D, YYYY h:mm A")}
-          </Typography>
-        </Box>
-        <Box>
-          <Editor editorState={editorState} onChange={setEditorState} />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button
-          variant="contained"
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} /> : "Update"}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
 
 const CreateEventDialog = ({ open, onClose, onCreate }) => {
   const [title, setTitle] = useState("");
