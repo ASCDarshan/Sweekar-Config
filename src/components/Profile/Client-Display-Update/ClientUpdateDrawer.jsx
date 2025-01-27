@@ -1,9 +1,14 @@
+/* eslint-disable react/prop-types */
 import { Close } from "@mui/icons-material";
 import {
     Box,
     Button,
+    FormControl,
     Grid,
     IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
     SwipeableDrawer,
     TextField,
     Typography,
@@ -11,7 +16,6 @@ import {
 import { useEffect, useState } from "react";
 import ajaxCall from "../../../helpers/ajaxCall";
 import { toast } from "react-toastify";
-
 
 const ClientUpdateDrawer = ({ open, onClose }) => {
     const user = JSON.parse(localStorage.getItem("loginInfo")).user;
@@ -26,7 +30,8 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "GET",
                 },
@@ -146,17 +151,25 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                type="text"
-                                multiline
-                                rows={4}
-                                label="Blood Group"
-                                name="blood_group"
-                                value={profile.blood_group}
-                                onChange={handleChange}
-                                InputLabelProps={{ shrink: true }}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="blood-group-label">Select Blood Group</InputLabel>
+                                <Select
+                                    labelId="blood-group-label"
+                                    name="blood_group"
+                                    value={profile.blood_group || ""}
+                                    label="Blood Group"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value="A+">A Positive</MenuItem>
+                                    <MenuItem value="B+">B Positive</MenuItem>
+                                    <MenuItem value="A-">A Negative</MenuItem>
+                                    <MenuItem value="B-">B Negative</MenuItem>
+                                    <MenuItem value="O+">O Positive</MenuItem>
+                                    <MenuItem value="O-">O Negative</MenuItem>
+                                    <MenuItem value="AB+">AB Positive</MenuItem>
+                                    <MenuItem value="AB-">AB Negative</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -245,9 +258,7 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                     </Grid>
                 </form>
             </Box>
-
         </SwipeableDrawer>
-
     );
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import {
     Box,
@@ -14,7 +15,6 @@ const Concern = ({ expertId }) => {
     const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
     const [loading, setLoading] = useState(true);
     const [allConcerns, setAllConcerns] = useState([]);
-    const [userConcern, setUserConcern] = useState([]);
     const [selectedConcerns, setSelectedConcerns] = useState([]);
 
     const fetchData = async () => {
@@ -49,7 +49,6 @@ const Concern = ({ expertId }) => {
             );
 
             if (userConcernResponse?.status === 200) {
-                setUserConcern(userConcernResponse?.data || []);
                 const selectedIds = userConcernResponse?.data?.map(item => item.concern) || [];
                 setSelectedConcerns(selectedIds);
             }
@@ -77,7 +76,7 @@ const Concern = ({ expertId }) => {
                         Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
                     },
                     method: "POST",
-                    body: JSON.stringify({ concern: concernId, professional: expertId?.id }),
+                    body: JSON.stringify({ concern: concernId, professional: expertId }),
                 },
                 8000
             );

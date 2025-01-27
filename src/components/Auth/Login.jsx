@@ -100,6 +100,8 @@ const Login = () => {
       );
       toast.success("Login Successful");
       navigateBasedOnUserType(result?.user?.user_type);
+    } else if (response?.status === 400) {
+      toast.error(response?.data?.email[0]);
     } else if (response?.status === 401) {
       if (response.data.error === "Invalid credentials") {
         toast.error(response.data.error);
@@ -149,8 +151,7 @@ const Login = () => {
           },
           method: "POST",
           body: JSON.stringify(googleData),
-          withCredentials: true
-
+          withCredentials: true,
         },
         8000
       );
@@ -188,14 +189,20 @@ const Login = () => {
                 }}
               >
                 <Box sx={{ mb: 4, textAlign: "center" }}>
-                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{ fontWeight: 700 }}
+                  >
                     Sign In
                   </Typography>
                 </Box>
                 <Box sx={{ mb: 3 }}>
                   <Button
                     fullWidth
-                    variant={loginMethod === "password" ? "contained" : "outlined"}
+                    variant={
+                      loginMethod === "password" ? "contained" : "outlined"
+                    }
                     onClick={() => setLoginMethod("password")}
                     sx={{ mb: 1 }}
                   >
@@ -219,7 +226,9 @@ const Login = () => {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        error={
+                          formik.touched.email && Boolean(formik.errors.email)
+                        }
                         helperText={formik.touched.email && formik.errors.email}
                         required
                         sx={{ mb: 2 }}
@@ -308,7 +317,9 @@ const Login = () => {
                       </Button>
                     </form>
 
-                    <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+                    <Box
+                      sx={{ mb: 2, display: "flex", justifyContent: "center" }}
+                    >
                       <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={() => {

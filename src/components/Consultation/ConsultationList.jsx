@@ -18,6 +18,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
+import { useNavigate } from "react-router-dom";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -35,6 +36,7 @@ const getStatusColor = (status) => {
 };
 
 const ConsultationList = () => {
+  const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
   const [statusFilter, setStatusFilter] = useState("");
   const [consultationList, setConsultationList] = useState([]);
@@ -81,6 +83,10 @@ const ConsultationList = () => {
 
     return `${formattedDate}, ${formattedTime}`;
   }
+
+  const handleViewDetails = (consultationId) => {
+    navigate(`/consultation/${consultationId}`);
+  };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, py: 4 }}>
@@ -135,7 +141,7 @@ const ConsultationList = () => {
                     <Button
                       variant="outlined"
                       size="small"
-                      href={`/consultation/${consultation.id}`}
+                      onClick={() => { handleViewDetails(consultation.id) }}
                     >
                       View Details
                     </Button>

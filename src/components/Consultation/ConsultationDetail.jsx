@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ConsultationDetail = () => {
   const { id } = useParams();
@@ -54,6 +55,36 @@ const ConsultationDetail = () => {
   useEffect(() => {
     fetchData(`consultations/consultation-update/${id}/`, setConsultation);
   }, []);
+
+  const handleCancelConsultation = async (id) => {
+    try {
+      const response = await ajaxCall(
+        `consultations/consultation-cancel/${id}/`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("loginInfo")
+            )?.accessToken}`,
+          },
+          method: "PATCH",
+        },
+        8000
+      );
+      if ([200, 201].includes(response.status)) {
+        toast.success("Consultation Cancelled Successfully.");
+      } else if ([400, 404].includes(response.status)) {
+        toast.error("Some Problem Occurred. Please try again.");
+      }
+      else if ([401].includes(response.status)) {
+        toast.error("Invalid Credentials.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -107,7 +138,7 @@ const ConsultationDetail = () => {
           <Grid item xs={12}>
             <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
               {consultation?.status === "SCHEDULED" && (
-                <Button variant="outlined" color="error" >
+                <Button variant="outlined" color="error" onClick={() => handleCancelConsultation(consultation?.id)}>
                   Cancel Consultation
                 </Button>
               )}
