@@ -110,7 +110,7 @@ const Navbar = () => {
           backgroundColor: trigger
             ? "rgba(157, 132, 183, 0.95)"
             : "transparent",
-          height: trigger ? "64px" : "80px",
+          height: trigger ? "75px" : "80px",
           transition: "all 0.3s ease-in-out",
           backdropFilter: trigger ? "blur(10px)" : "none",
           boxShadow: trigger ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",

@@ -1,10 +1,12 @@
-import { Card, CardContent, Container, Grid, styled, Typography } from "@mui/material"
-import { useLocation } from "react-router-dom";
+import { Card, CardContent, Container, Grid, styled, Typography, Button } from "@mui/material"
+import { useLocation, useNavigate } from "react-router-dom";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const BlogDetail = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const blogId = location.state;
 
     const [blogData, setBlogData] = useState([]);
@@ -44,9 +46,24 @@ const BlogDetail = () => {
         backgroundPosition: "center",
         position: "relative",
     }));
+
     return (
         <>
-            <Container sx={{ mt: 1, my: 4 }} >
+            <Container sx={{ mt: 1, my: 2 }}>
+                <Button
+                    startIcon={<ArrowBackIcon />}
+                    onClick={() => navigate(-1)}
+                    sx={{
+                        mb: 2,
+                        color: 'text.primary',
+                        '&:hover': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                        }
+                    }}
+                >
+                    Go Back
+                </Button>
+
                 <Card
                     sx={{ mt: 4, boxShadow: "0 4px 8px rgba(163, 163, 163, 0.5)" }}
                 >

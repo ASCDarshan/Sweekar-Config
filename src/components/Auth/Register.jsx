@@ -7,10 +7,6 @@ import {
   TextField,
   Button,
   Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Grid,
   IconButton,
   InputAdornment,
@@ -73,7 +69,6 @@ const Register = () => {
       first_name: Yup.string().required("First Name is required"),
       last_name: Yup.string().required("Last Name is required"),
       phone: Yup.string().required("Phone number is required"),
-      user_type: Yup.string().required("User Type is required"),
       address: Yup.string().required("Address is required"),
     }),
     onSubmit: (values) => {
@@ -85,7 +80,7 @@ const Register = () => {
         first_name: values.first_name,
         last_name: values.last_name,
         phone: values.phone,
-        user_type: values.user_type,
+        user_type: "CLIENT",
         address: values.address,
       };
       fetchData("users/register/", signupData);
@@ -179,29 +174,6 @@ const Register = () => {
                   ),
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel id="demo-simple-select-label">User Type</InputLabel>
-                <Select
-                  name="user_type"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="User Type"
-                  value={formik.values.user_type}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.user_type && Boolean(formik.errors.user_type)
-                  }
-                  helperText={
-                    formik.touched.user_type && formik.errors.user_type
-                  }
-                >
-                  <MenuItem value="CLIENT">Client</MenuItem>
-                  <MenuItem value="PROFESSIONAL">Professional</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
           </Grid>
         );
