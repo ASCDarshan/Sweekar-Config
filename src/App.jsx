@@ -40,6 +40,17 @@ import ExpertsDetails from "./pages/Experts/ExpertsDetails";
 import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";
 
 const App = () => {
+
+  const noFooterPaths = [
+    '/Client/Dashboard',
+    '/Client/Profile',
+    '/Professional/Dashboard',
+    '/Professional/Profile',
+    '/consultations',
+    '/consultation',
+    '/book-consultation'
+  ];
+
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer theme="colored" position="top-center" autoClose={3000} />
@@ -75,7 +86,7 @@ const App = () => {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
           <MobileBottomNav />
-          <Footer />
+          {!noFooterPaths.includes(location.pathname) && <Footer />}
         </Router>
       </LocalizationProvider>
     </ThemeProvider>
