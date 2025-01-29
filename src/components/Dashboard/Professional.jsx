@@ -59,7 +59,6 @@ const Professional = () => {
         const consultations = response?.data || [];
         setData(consultations);
 
-        // Transform consultations to calendar events
         const events = transformToCalendarEvents(consultations);
         setCalendarEvents(events);
       } else {

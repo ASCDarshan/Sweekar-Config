@@ -28,7 +28,7 @@ import {
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
-import logo from "../../assets/Sweekar FINAL LOGO-02.png";
+import logo from "../../assets/Sweekar.png";
 
 const navItems = [
   { label: "Home", path: "/" },
