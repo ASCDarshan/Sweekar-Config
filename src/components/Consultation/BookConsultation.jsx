@@ -26,10 +26,11 @@ import Loading from "../UI/Loading";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
-// eslint-disable-next-line react/prop-types
 const BookConsultation = ({ preSelectedExpert, onClose }) => {
+  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
   const [activeStep, setActiveStep] = useState(0);
   const [professionals, setProfessionals] = useState([]);
+  const [clientData, setClientData] = useState([]);
   const [selectedProfessional, setSelectedProfessional] = useState(
     preSelectedExpert || null
   );
@@ -66,6 +67,8 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
 
   useEffect(() => {
     fetchData("professionals/professionalist/", setProfessionals);
+    fetchData(`clients/profile-user/?user=${userId}`, setClientData);
+
   }, []);
 
   const handleBookConsultant = async () => {
@@ -83,7 +86,7 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
           method: "POST",
           body: JSON.stringify({
             professional: selectedProfessional.id,
-            client: 1,
+            client: clientData?.id,
             consultation_type: consultationType,
             scheduled_time: selectedDateTime,
             duration: 3600,
