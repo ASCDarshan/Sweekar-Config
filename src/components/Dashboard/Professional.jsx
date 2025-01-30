@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
   Container,
@@ -7,11 +6,6 @@ import {
   Typography,
   Box,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
   Card,
   CardContent,
 } from "@mui/material";
@@ -21,6 +15,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import ajaxCall from "../../helpers/ajaxCall";
+import CreateEventDialog from "./CreateEventDialog";
 
 const localizer = momentLocalizer(moment);
 
@@ -29,6 +24,8 @@ const Professional = () => {
   const [consultationList, setConsultationList] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [createEventDialogOpen, setCreateEventDialogOpen] = useState(false);
+  const [expert, setExpert] = useState({});
+  const [professionalEvent, setProfessionalEvent] = useState([]);
 
   const transformToCalendarEvents = (consultations) => {
     return consultations.map((consultation) => ({
@@ -41,7 +38,17 @@ const Professional = () => {
     }));
   };
 
-  const fetchData = async (url, setData) => {
+  const transformProfessionalEvents = (events) => {
+    const eventArray = Array.isArray(events) ? events : [events];
+
+    return eventArray.map((event) => ({
+      title: event.title || "Professional Event",
+      start: new Date(event.start_date),
+      end: new Date(event.end_date),
+    }));
+  };
+
+  const fetchData = async (url, setData, transformFunction) => {
     try {
       const response = await ajaxCall(
         url,
@@ -49,29 +56,55 @@ const Professional = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
         8000
       );
       if (response?.status === 200) {
-        const consultations = response?.data || [];
-        setData(consultations);
-
-        const events = transformToCalendarEvents(consultations);
-        setCalendarEvents(events);
+        const data = response?.data || [];
+        setData(data);
+        return transformFunction ? transformFunction(data) : [];
       } else {
         console.error("Fetch error:", response);
+        return [];
       }
     } catch (error) {
       console.error("Network error:", error);
+      return [];
     }
   };
 
   useEffect(() => {
-    fetchData(`consultations/consultation-user/?user=${userId}`, setConsultationList);
+    const fetchAllData = async () => {
+      const consultationEvents = await fetchData(
+        `consultations/consultation-user/?user=${userId}`,
+        setConsultationList,
+        transformToCalendarEvents
+      );
+      const professionalEvents = await fetchData(
+        `professionals/event-user/?user=${userId}`,
+        setProfessionalEvent,
+        transformProfessionalEvents
+      );
+      await fetchData(
+        `professionals/professional-user/?user=${userId}`,
+        setExpert
+      );
+
+      setCalendarEvents([...consultationEvents, ...professionalEvents]);
+    };
+    fetchAllData();
   }, []);
+
+  const getUpcomingEvents = (events) => {
+    const today = new Date();
+    return events.filter(event => new Date(event.start) >= today);
+  };
+
+  const upcomingEvents = getUpcomingEvents(calendarEvents);
 
   return (
     <Container>
@@ -88,7 +121,9 @@ const Professional = () => {
                 <Assessment fontSize="large" color="primary" />
                 <Box ml={2}>
                   <Typography variant="h6">Total Consultations</Typography>
-                  <Typography variant="h4">{consultationList?.length}</Typography>
+                  <Typography variant="h4">
+                    {consultationList?.length}
+                  </Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -101,7 +136,8 @@ const Professional = () => {
                 <Event fontSize="large" color="secondary" />
                 <Box ml={2}>
                   <Typography variant="h6">Upcoming Events</Typography>
-                  <Typography variant="h4">{calendarEvents?.length}</Typography>
+                  <Typography variant="h4">{upcomingEvents.length}</Typography>
+
                 </Box>
               </Box>
             </CardContent>
@@ -150,70 +186,13 @@ const Professional = () => {
           endAccessor="end"
           style={{ height: 500 }}
         />
-
       </Box>
-
       <CreateEventDialog
         open={createEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
+        ProfessionalData={expert}
       />
     </Container>
-  );
-};
-
-
-const CreateEventDialog = ({ open, onClose, onCreate }) => {
-  const [title, setTitle] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-
-  const handleSubmit = () => {
-    const newEvent = {
-      title,
-      start: new Date(start),
-      end: new Date(end),
-    };
-    onCreate(newEvent);
-    onClose();
-  };
-
-  return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create New Event</DialogTitle>
-      <DialogContent>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Event Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          type="datetime-local"
-          label="Start Time"
-          value={start}
-          onChange={(e) => setStart(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          type="datetime-local"
-          label="End Time"
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
-          Create
-        </Button>
-      </DialogActions>
-    </Dialog>
   );
 };
 

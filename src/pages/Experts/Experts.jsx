@@ -55,7 +55,6 @@ const Experts = () => {
   }, []);
 
   const handleViewConsultation = (experts) => {
-    console.log(experts);
     navigate(`/experts/${experts.id}`);
   };
 
