@@ -14,8 +14,8 @@ import "draft-js/dist/Draft.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import ajaxCall from "../../helpers/ajaxCall";
-import CreateEventDialog from "./CreateEventDialog";
+import ajaxCall from "../../../helpers/ajaxCall";
+import CreateEventDialog from "../CreateEventDialog";
 
 const localizer = momentLocalizer(moment);
 
