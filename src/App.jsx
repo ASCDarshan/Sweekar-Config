@@ -26,15 +26,15 @@ import Resources from "./pages/Resources/Resources";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 
-import Client from "./components/Dashboard/Client";
-import Professional from "./components/Dashboard/Professional";
+import Client from "./components/Dashboard/ClientDashboard/Client";
+import Professional from "./components/Dashboard/ProfessionalDashboard/Professional";
 // import ProfessionalProfile from "./components/Profile/Professional";
-import ConsultationList from "./components/Consultation/ConsultationList";
 
-import ConsultationDetail from "./components/Consultation/ConsultationDetail";
+import ConsultationList from "./components/Dashboard/ClientDashboard/BookConsultant/ConsultationBooking";
+import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
-import ConsultationBooking from "./components/Dashboard/ConsultationBooking";
+import ConsultationBooking from "./components/Dashboard/ClientDashboard/BookConsultant/ConsultationBooking";
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 import ExpertsDetails from "./pages/Experts/ExpertsDetails";
 import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";

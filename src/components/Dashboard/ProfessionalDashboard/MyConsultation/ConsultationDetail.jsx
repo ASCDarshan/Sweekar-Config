@@ -15,7 +15,7 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
-import ajaxCall from "../../helpers/ajaxCall";
+import ajaxCall from "../../../../helpers/ajaxCall";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 

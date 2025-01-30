@@ -1,5 +1,5 @@
 import { Container } from "@mui/material"
-import BookConsultation from "../Consultation/BookConsultation"
+import BookConsultation from "../../../Consultation/BookConsultation"
 
 const ConsultationBooking = () => {
     return (

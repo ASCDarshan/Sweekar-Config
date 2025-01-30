@@ -17,7 +17,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import ajaxCall from "../../helpers/ajaxCall";
+import ajaxCall from "../../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 
 const getStatusColor = (status) => {
