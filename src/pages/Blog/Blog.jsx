@@ -244,7 +244,7 @@ const Blog = () => {
                       </Typography>
                     </Box>
                     <Box sx={{ mt: "auto" }}>
-                      <Button variant="outlined"
+                      <Button variant="contained"
                         onClick={() => handleReadMore(post.title, post.id)}
                         fullWidth
                       >

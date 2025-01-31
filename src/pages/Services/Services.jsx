@@ -196,8 +196,8 @@ const Services = () => {
         </DialogTitle>
         <DialogContent dividers>
           <BookConsultation
-            preSelectedService={selectedService}
             preSelectedExpert={selectedExpert}
+            preSelectedExpertType={selectedService?.id}
             onClose={handleBookingClose}
           />
         </DialogContent>
