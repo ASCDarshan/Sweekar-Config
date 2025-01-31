@@ -62,6 +62,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
 
   useEffect(() => {
     fetchData(`professionals/professional-filter/?professional_type=${selectedService?.id}`, setExperts);
+
   }, [selectedServiceId]);
 
   if (!experts || experts.length === 0) {
@@ -175,7 +176,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 </Box>
 
               </Box>
-              <Box
+              {/* <Box
                 sx={{
                   mt: 3,
                   p: 2,
@@ -199,7 +200,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 <Typography variant="h6" fontWeight="bold" color="primary">
                   {expert.consultationFee}
                 </Typography>
-              </Box>
+              </Box> */}
               <Button
                 fullWidth
                 variant="contained"

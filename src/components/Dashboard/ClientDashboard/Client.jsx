@@ -217,7 +217,6 @@ const Client = () => {
         </Grid>
       </Grid>
 
-      {/* SwipeableDrawer for Booking Consultation */}
       <SwipeableDrawer
         anchor="right"
         open={openBooking}
