@@ -14,27 +14,32 @@ import {
 } from "@mui/material";
 import { ArrowForward, Close } from "@mui/icons-material";
 import BookConsultation from "../../../components/Consultation/BookConsultation";
+import { id } from "date-fns/locale";
 
 const services = [
   {
+    id: 1,
     title: "Medical Services",
     description:
       "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
     icon: "🏥",
   },
   {
+    id: 2,
     title: "Mental Health",
     description:
       "Connect with therapists and counselors who understand your unique needs.",
     icon: "🧠",
   },
   {
+    id: 3,
     title: "Legal Aid",
     description:
       "Find legal professionals committed to protecting your rights and dignity.",
     icon: "⚖️",
   },
   {
+    id: 4,
     title: "Placement Services",
     description: "Discover inclusive workplaces and employment opportunities.",
     icon: "💼",
@@ -43,8 +48,10 @@ const services = [
 
 const Services = () => {
   const [openBooking, setOpenBooking] = useState(false);
+  const [service, setService] = useState({});
 
-  const handleOpenBooking = () => {
+  const handleOpenBooking = (service) => {
+    setService(service);
     setOpenBooking(true);
   };
 
@@ -112,7 +119,7 @@ const Services = () => {
                       variant="contained"
                       color="primary"
                       endIcon={<ArrowForward />}
-                      onClick={handleOpenBooking}
+                      onClick={() => handleOpenBooking(service)}
                       sx={{
                         textTransform: "none",
                         width: "100%",
@@ -156,7 +163,7 @@ const Services = () => {
             </Box>
           </DialogTitle>
           <DialogContent dividers>
-            <BookConsultation />
+            <BookConsultation preSelectedExpertType={service?.id} />
           </DialogContent>
         </Dialog>
       </Container>
