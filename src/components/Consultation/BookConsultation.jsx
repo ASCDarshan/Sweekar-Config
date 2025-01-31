@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import {
   Stepper,
@@ -26,19 +27,23 @@ import Loading from "../UI/Loading";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
-const BookConsultation = ({ preSelectedExpert, onClose }) => {
-  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
-  const [activeStep, setActiveStep] = useState(0);
+const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType }) => {
+  const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
+
   const [professionals, setProfessionals] = useState([]);
   const [clientData, setClientData] = useState([]);
+
   const [selectedProfessional, setSelectedProfessional] = useState(
     preSelectedExpert || null
   );
+
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [consultationType, setConsultationType] = useState("");
   const [concern, setConcern] = useState("");
   const [notes, setNotes] = useState("");
+
   const [loading, setLoading] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
 
   const fetchData = async (url, setData) => {
     try {
@@ -66,10 +71,17 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
   };
 
   useEffect(() => {
-    fetchData("professionals/professionalist/", setProfessionals);
-    fetchData(`clients/profile-user/?user=${userId}`, setClientData);
+    if (preSelectedExpertType) {
+      fetchData(
+        `professionals/professional-filter/?professional_type=${preSelectedExpertType}`,
+        setProfessionals
+      );
+    } else {
+      fetchData("professionals/professionalist/", setProfessionals);
+    }
 
-  }, []);
+    fetchData(`clients/profile-user/?user=${userId}`, setClientData);
+  }, [preSelectedExpertType, userId]);
 
   const handleBookConsultant = async () => {
     setLoading(true);
@@ -104,7 +116,6 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
         onClose();
       } else {
         toast.error("Failed to book consultation. Please try again later.");
-
       }
     } catch (error) {
       console.error("Network error:", error);
@@ -175,53 +186,61 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
       case 0:
         return (
           <Grid container spacing={3}>
-            {professionals.map((professional) => {
-              return (
-                <Grid item xs={12} md={6} key={professional.id}>
-                  <Card
-                    sx={{
-                      cursor: "pointer",
-                      border:
-                        selectedProfessional?.id === professional.id ? 2 : 0,
-                      borderColor: "primary.main",
-                      transition: "transform 0.2s",
-                      "&:hover": {
-                        transform: "translateY(-4px)",
-                      },
-                    }}
-                    onClick={() => setSelectedProfessional(professional)}
-                  >
-                    <CardContent>
-                      <Typography variant="h6">
-                        {professional.user.username}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {professional.professional_type.title}
-                      </Typography>
-                      <Typography variant="body2">
-                        Experience: {professional.years_of_experience}
-                      </Typography>
-                      <Typography variant="body2">
-                        Languages: {professional.languages_spoken}
-                      </Typography>
-                      <Box sx={{ mt: 1 }}>
-                        <Typography variant="body2">
-                          Specializations:{" "}
-                          {professional.concerns.map((spec, index) => (
-                            <Chip
-                              key={index}
-                              label={spec.name}
-                              size="small"
-                              sx={{ m: 0.5 }}
-                            />
-                          ))}
+            {professionals.length === 0 ? (
+              <Grid item xs={12}>
+                <Typography variant="h6" align="center" sx={{ color: "text.secondary" }}>
+                  There is no expert available for this category.
+                </Typography>
+              </Grid>
+            ) : (
+              professionals.map((professional) => {
+                return (
+                  <Grid item xs={12} md={6} key={professional.id}>
+                    <Card
+                      sx={{
+                        cursor: "pointer",
+                        border:
+                          selectedProfessional?.id === professional.id ? 2 : 0,
+                        borderColor: "primary.main",
+                        transition: "transform 0.2s",
+                        "&:hover": {
+                          transform: "translateY(-4px)",
+                        },
+                      }}
+                      onClick={() => setSelectedProfessional(professional)}
+                    >
+                      <CardContent>
+                        <Typography variant="h6">
+                          {professional.user.username}
                         </Typography>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
+                        <Typography color="textSecondary">
+                          {professional.professional_type.title}
+                        </Typography>
+                        <Typography variant="body2">
+                          Experience: {professional.years_of_experience}
+                        </Typography>
+                        <Typography variant="body2">
+                          Languages: {professional.languages_spoken}
+                        </Typography>
+                        <Box sx={{ mt: 1 }}>
+                          <Typography variant="body2">
+                            Specializations:{" "}
+                            {professional.concerns.map((spec, index) => (
+                              <Chip
+                                key={index}
+                                label={spec.name}
+                                size="small"
+                                sx={{ m: 0.5 }}
+                              />
+                            ))}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })
+            )}
           </Grid>
         );
 
@@ -334,10 +353,10 @@ const BookConsultation = ({ preSelectedExpert, onClose }) => {
           <Button
             variant="contained"
             onClick={handleNext}
-          // disabled={
-          //   (activeStep === 0 && !selectedProfessional) ||
-          //   (activeStep === 1 && (!selectedDateTime || !consultationType))
-          // }
+            disabled={
+              (activeStep === 0 && !selectedProfessional) ||
+              (activeStep === 1 && (!selectedDateTime || !consultationType))
+            }
           >
             Next
           </Button>

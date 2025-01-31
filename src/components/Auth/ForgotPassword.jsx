@@ -58,7 +58,10 @@ const ForgotPassword = ({ open, onClose }) => {
         formik.resetForm();
         onClose();
         navigate("/login");
-      } else {
+      } else if (response?.status === 400) {
+        toast.error("This email is not registered, Try Signing in Instead.");
+      }
+      else {
         toast.error("Failed to send reset link. Please try again later.");
       }
     } catch (error) {

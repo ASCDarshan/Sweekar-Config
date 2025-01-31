@@ -11,12 +11,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {
-  Psychology,
-  Gavel,
-  LocalHospital,
-  Work,
-} from "@mui/icons-material";
+import { Psychology, Gavel, LocalHospital, Work } from "@mui/icons-material";
 
 const servicess = [
   {
@@ -45,8 +40,7 @@ const servicess = [
   },
 ];
 
-const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
-
+const ServiceCard = ({ service, onSelect, isSelected }) => {
   const theme = useTheme();
   const staticData = servicess.find((s) => s.id === service.id);
 
@@ -67,98 +61,111 @@ const ServiceCard = ({ service, onSelect, isSelected, onBooking }) => {
           overflow: "visible",
           bgcolor: isSelected ? `${staticData.color}10` : "background.paper",
           border: isSelected ? `2px solid ${staticData.color}` : "none",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <CardContent sx={{ p: 3 }}>
-          {isSelected && (
-            <Chip
-              icon={<CheckCircle />}
-              label="Selected"
-              color="primary"
-              sx={{
-                position: "absolute",
-                top: -16,
-                right: 16,
-                backgroundColor: staticData.color,
-              }}
-            />
-          )}
-          <Box onClick={() => onSelect(service)}>
-            <Avatar
-              sx={{
-                bgcolor: staticData.color,
-                width: 60,
-                height: 60,
-                mb: 2,
-              }}
-            >
-              {staticData.icon}
-            </Avatar>
-            <Typography variant="h5" gutterBottom fontWeight="bold">
-              {service.title}
-            </Typography>
-            <Typography color="text.secondary" paragraph>
-              {service.description}
-            </Typography>
-            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
-              {service.concern.slice(0, 3).map((feature, idx) => (
-                <Chip
-                  key={feature.id}
-                  label={feature.name}
-                  size="small"
-                  sx={{
-                    bgcolor: `${staticData.color}20`,
-                    color: staticData.color,
-                  }}
-                />
-              ))}
-
-              {service.concern.length > 3 && (
-                <Tooltip title={service.concern.slice(3).map((feature) => feature.name).join(", ")}>
+        <CardContent
+          sx={{
+            p: 3,
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>
+            {isSelected && (
+              <Chip
+                icon={<CheckCircle />}
+                label="Selected"
+                color="primary"
+                sx={{
+                  position: "absolute",
+                  top: -16,
+                  right: 16,
+                  backgroundColor: staticData.color,
+                }}
+              />
+            )}
+            <Box onClick={() => onSelect(service)}>
+              <Avatar
+                sx={{
+                  bgcolor: staticData.color,
+                  width: 60,
+                  height: 60,
+                  mb: 2,
+                }}
+              >
+                {staticData.icon}
+              </Avatar>
+              <Typography variant="h5" gutterBottom fontWeight="bold">
+                {service.title}
+              </Typography>
+              <Typography color="text.secondary" paragraph>
+                {service.description}
+              </Typography>
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
+                {service.concern.slice(0, 3).map((feature, idx) => (
                   <Chip
-                    icon={<Info />}
-                    label={`+${service.concern.length - 3} more`}
+                    key={feature.id}
+                    label={feature.name}
                     size="small"
                     sx={{
-                      bgcolor: `${service.color}20`,
-                      color: service.color,
+                      bgcolor: `${staticData.color}20`,
+                      color: staticData.color,
                     }}
                   />
-                </Tooltip>
-              )}
+                ))}
 
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: "auto",
-              }}
-            >
-              {Object.entries(staticData.stats).map(([key, value]) => (
-                <Box key={key} sx={{ textAlign: "center" }}>
-                  <Typography
-                    variant="h6"
-                    color={staticData.color}
-                    fontWeight="bold"
+                {service.concern.length > 3 && (
+                  <Tooltip
+                    title={service.concern
+                      .slice(3)
+                      .map((feature) => feature.name)
+                      .join(", ")}
                   >
-                    {value}+
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {key}
-                  </Typography>
-                </Box>
-              ))}
+                    <Chip
+                      icon={<Info />}
+                      label={`+${service.concern.length - 3} more`}
+                      size="small"
+                      sx={{
+                        bgcolor: `${service.color}20`,
+                        color: service.color,
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mt: "auto",
+                }}
+              >
+                {Object.entries(staticData.stats).map(([key, value]) => (
+                  <Box key={key} sx={{ textAlign: "center" }}>
+                    <Typography
+                      variant="h6"
+                      color={staticData.color}
+                      fontWeight="bold"
+                    >
+                      {value}+
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {key}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
             </Box>
           </Box>
           <Button
             fullWidth
             variant="contained"
             size="large"
-            onClick={(e) => {
-              e.stopPropagation();
-              onBooking(service);
-            }}
+            onClick={() => onSelect(service)}
             endIcon={<ArrowForward />}
             sx={{
               mt: 2,

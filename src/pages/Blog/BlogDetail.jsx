@@ -73,20 +73,18 @@ const BlogDetail = () => {
                         </Grid>
                     </Grid>
                     <Grid container>
-                        <Grid item xs={12} md={8} mt={4}>
-                            <CardContent>
-                                <Typography variant="h4" gutterBottom>
-                                    {blogData.title}
-                                </Typography>
+                        <CardContent>
+                            <Typography variant="h4" gutterBottom>
+                                {blogData.title}
+                            </Typography>
 
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ mb: 2 }}
-                                    dangerouslySetInnerHTML={{ __html: blogData.text }}
-                                />
-                            </CardContent>
-                        </Grid>
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ mb: 2 }}
+                                dangerouslySetInnerHTML={{ __html: blogData.text }}
+                            />
+                        </CardContent>
                     </Grid>
                 </Card>
             </Container>

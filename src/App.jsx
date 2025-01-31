@@ -28,7 +28,6 @@ import Register from "./components/Auth/Register";
 
 import Client from "./components/Dashboard/ClientDashboard/Client";
 import Professional from "./components/Dashboard/ProfessionalDashboard/Professional";
-// import ProfessionalProfile from "./components/Profile/Professional";
 
 import ConsultationList from "./components/Dashboard/ClientDashboard/BookConsultant/ConsultationBooking";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
@@ -48,7 +47,9 @@ const App = () => {
     '/Professional/Profile',
     '/consultations',
     '/consultation',
-    '/book-consultation'
+    '/book-consultation',
+    '/login',
+    '/register'
   ];
 
   return (
@@ -60,29 +61,29 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blogs/:blogId" element={<BlogDetail />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/experts" element={<Experts />} />
             <Route path="/experts/:id/" element={<ExpertsDetails />} />
             <Route path="/centres" element={<Centres />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/services" element={<Services />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blogs/:blogId" element={<BlogDetail />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             <Route path="/Client/Dashboard" element={<Client />} />
             <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
+            <Route path="/book-consultation" element={<ConsultationBooking />} />
 
             <Route path="/Professional/Dashboard" element={<Professional />} />
             <Route
               path="/Professional/Profile"
               element={<ProfessionalProfileDisplay />}
             />
-
             <Route path="/consultations" element={<ConsultationList />} />
             <Route path="/consultation/:id" element={<ConsultationDetail />} />
-            <Route path="/book-consultation" element={<ConsultationBooking />} />
+
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
           <MobileBottomNav />

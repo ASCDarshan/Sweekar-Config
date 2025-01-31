@@ -56,7 +56,7 @@ const Services = () => {
     <Box sx={{ py: 8, backgroundColor: "#F6F1FF" }}>
       <Container maxWidth="lg">
         <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
-          Beyond therapy and psychiatry at Sweekar's mental health centre
+          Beyond therapy and psychiatry at Sweekar&apos;s mental health centre
         </Typography>
         <Grid container spacing={4}>
           {services.map((service, index) => (
@@ -69,33 +69,44 @@ const Services = () => {
                   "&:hover": {
                     transform: "translateY(-5px)",
                   },
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                <CardContent>
-                  <Typography
-                    variant="h2"
-                    sx={{
-                      fontSize: "3rem",
-                      mb: 2,
-                      textAlign: "center",
-                    }}
-                  >
-                    {service.icon}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    gutterBottom
-                    sx={{ textAlign: "center" }}
-                  >
-                    {service.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2, textAlign: "center" }}
-                  >
-                    {service.description}
-                  </Typography>
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        fontSize: "3rem",
+                        mb: 2,
+                        textAlign: "center",
+                      }}
+                    >
+                      {service.icon}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      sx={{ textAlign: "center" }}
+                    >
+                      {service.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2, textAlign: "center" }}
+                    >
+                      {service.description}
+                    </Typography>
+                  </Box>
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       variant="contained"
@@ -104,7 +115,7 @@ const Services = () => {
                       onClick={handleOpenBooking}
                       sx={{
                         textTransform: "none",
-                        mt: "auto",
+                        width: "100%",
                       }}
                     >
                       Book Consultation
