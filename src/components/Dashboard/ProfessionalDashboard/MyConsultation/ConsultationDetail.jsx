@@ -85,7 +85,6 @@ const ConsultationDetail = () => {
     }
   };
 
-
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3 }}>

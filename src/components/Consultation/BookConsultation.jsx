@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { CircularProgress } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
 import { toast } from "react-toastify";
 import Loading from "../UI/Loading";
@@ -36,7 +37,6 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
   const [selectedProfessional, setSelectedProfessional] = useState(
     preSelectedExpert || null
   );
-
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [consultationType, setConsultationType] = useState("");
   const [concern, setConcern] = useState("");
@@ -211,21 +211,21 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
                     >
                       <CardContent>
                         <Typography variant="h6">
-                          {professional.user.username}
+                          {professional?.user?.username}
                         </Typography>
                         <Typography color="textSecondary">
-                          {professional.professional_type.title}
+                          {professional?.professional_type?.title}
                         </Typography>
                         <Typography variant="body2">
-                          Experience: {professional.years_of_experience}
+                          Experience: {professional?.years_of_experience}
                         </Typography>
                         <Typography variant="body2">
-                          Languages: {professional.languages_spoken}
+                          Languages: {professional?.languages_spoken}
                         </Typography>
                         <Box sx={{ mt: 1 }}>
                           <Typography variant="body2">
                             Specializations:{" "}
-                            {professional.concerns.map((spec, index) => (
+                            {professional?.concerns.map((spec, index) => (
                               <Chip
                                 key={index}
                                 label={spec.name}
@@ -248,7 +248,7 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
         return (
           <Box sx={{ mt: 2 }}>
             <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel>Consultation Type</InputLabel>
+              <InputLabel>Consultation Type* </InputLabel>
               <Select
                 value={consultationType}
                 onChange={(e) => setConsultationType(e.target.value)}
@@ -266,7 +266,7 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
               <TextField
                 fullWidth
                 sx={{ mt: 2 }}
-                label="List of concerns to be discussed"
+                label="List of concerns to be discussed (Preferred)"
                 value={concern}
                 onChange={(e) => setConcern(e.target.value)}
                 variant="outlined"
@@ -334,7 +334,15 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
           </Step>
         ))}
       </Stepper>
-      {renderStepContent(activeStep)}
+
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        renderStepContent(activeStep)
+      )}
+
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
         {activeStep !== 0 && (
           <Button onClick={handleBack} sx={{ mr: 1 }}>

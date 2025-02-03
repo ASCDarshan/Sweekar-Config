@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { ArrowForward, Close } from "@mui/icons-material";
 import BookConsultation from "../../../components/Consultation/BookConsultation";
-import { id } from "date-fns/locale";
 
 const services = [
   {

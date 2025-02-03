@@ -109,7 +109,7 @@ const Professional = () => {
   return (
     <Container>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" gutterBottom mt={3}>
           Professional Dashboard
         </Typography>
       </Box>
@@ -177,7 +177,7 @@ const Professional = () => {
           onClick={() => setCreateEventDialogOpen(true)}
           sx={{ mb: 2 }}
         >
-          Create Event
+          Add  Slot
         </Button>
         <Calendar
           localizer={localizer}

@@ -60,7 +60,7 @@ const Experts = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
         <CircularProgress />
       </Box>
     );
@@ -188,7 +188,12 @@ const Experts = () => {
                         key={spec.id}
                         label={spec.name}
                         size="small"
-                        sx={{ mr: 0.5, mb: 0.5 }}
+                        sx={{
+                          mr: 0.5, mb: 0.5,
+                          bgcolor: "primary.light",
+                          color: "primary.dark",
+                        }}
+
                       />
                     ))}
                   </Box>
@@ -203,7 +208,9 @@ const Experts = () => {
                   </Box>
                   <Button variant="contained"
                     fullWidth
-                    onClick={() => handleViewConsultation(expert)}>
+                    onClick={() => handleViewConsultation(expert)}
+                    size="small"
+                  >
                     View Profile
                   </Button>
                 </CardContent>
