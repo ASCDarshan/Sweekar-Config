@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Box,
@@ -62,7 +63,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
 
   useEffect(() => {
     fetchData(`professionals/professional-filter/?professional_type=${selectedService?.id}`, setExperts);
-
   }, [selectedServiceId]);
 
   if (!experts || experts.length === 0) {

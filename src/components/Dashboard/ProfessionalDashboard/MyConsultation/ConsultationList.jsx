@@ -16,6 +16,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import ajaxCall from "../../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
@@ -40,6 +41,7 @@ const ConsultationList = () => {
   const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
   const [statusFilter, setStatusFilter] = useState("");
   const [consultationList, setConsultationList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
 
   const fetchData = async (url, setData) => {
@@ -63,12 +65,18 @@ const ConsultationList = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData(`consultations/consultation-user/?user=${userId}`, setConsultationList);
-  }, []);
+    let url = `consultations/consultation-user/?user=${userId}`;
+    if (statusFilter) {
+      url = `consultations/consultation-status/?user=${userId}&status=${statusFilter}`;
+    }
+    fetchData(url, setConsultationList);
+  }, [statusFilter]);
 
   function formatScheduledTime(dateString) {
     const date = new Date(dateString);
@@ -120,34 +128,48 @@ const ConsultationList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {consultationList.map((consultation) => (
-                <TableRow key={consultation.id}>
-                  <TableCell>
-                    {formatScheduledTime(consultation.scheduled_time)}
-                  </TableCell>
-                  <TableCell>
-                    {loginInfo.user.user_type === "CLIENT"
-                      ? consultation.professional_details?.user.username
-                      : consultation.client_details?.user.username}
-                  </TableCell>
-                  <TableCell>{consultation.consultation_type}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={consultation.status}
-                      color={getStatusColor(consultation.status)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => { handleViewDetails(consultation.id) }}
-                    >
-                      View Details
-                    </Button>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    <CircularProgress />
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : consultationList.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    No consultation found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                consultationList.map((consultation) => (
+                  <TableRow key={consultation.id}>
+                    <TableCell>
+                      {formatScheduledTime(consultation.scheduled_time)}
+                    </TableCell>
+                    <TableCell>
+                      {loginInfo.user.user_type === "CLIENT"
+                        ? consultation.professional_details?.user.username
+                        : consultation.client_details?.user.username}
+                    </TableCell>
+                    <TableCell>{consultation.consultation_type}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={consultation.status}
+                        color={getStatusColor(consultation.status)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => { handleViewDetails(consultation.id) }}
+                      >
+                        View Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </TableContainer>

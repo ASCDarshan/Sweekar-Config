@@ -7,17 +7,46 @@ import {
   CardContent,
   TextField,
   Button,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+
   Paper,
+  Divider,
+  Link,
 } from "@mui/material";
-import { Phone, LocationOn, Send, AccessTime } from "@mui/icons-material";
+import { Send, DirectionsWalk } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../../components/UI/Loading";
+
+const services = [
+  {
+    id: 1,
+    title: "Medical Services",
+    description:
+      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
+    icon: "🏥",
+  },
+  {
+    id: 2,
+    title: "Mental Health",
+    description:
+      "Connect with therapists and counselors who understand your unique needs.",
+    icon: "🧠",
+  },
+  {
+    id: 3,
+    title: "Legal Aid",
+    description:
+      "Find legal professionals committed to protecting your rights and dignity.",
+    icon: "⚖️",
+  },
+  {
+    id: 4,
+    title: "Placement Services",
+    description: "Discover inclusive workplaces and employment opportunities.",
+    icon: "💼",
+  },
+];
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -132,97 +161,135 @@ const Contact = () => {
       >
         <Grid container spacing={4}>
           <Grid item xs={12} md={5}>
-            <Card
-              elevation={3}
-              sx={{
-                height: "100%",
-                bgcolor: "primary.main",
-                color: "white",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h4" gutterBottom fontWeight="bold">
-                  Get in Touch
-                </Typography>
-                <List sx={{ mt: 4 }}>
-                  <ListItem sx={{ mb: 3 }}>
-                    <ListItemIcon>
-                      <Phone sx={{ color: "white", fontSize: 28 }} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" sx={{ mb: 1 }}>
-                          Phone
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="body1" sx={{ color: "white" }}>
-                          (+91) 85111 26808
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem sx={{ mb: 3 }}>
-                    <ListItemIcon>
-                      <LocationOn sx={{ color: "white", fontSize: 28 }} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" sx={{ mb: 1 }}>
-                          Address
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="body1" sx={{ color: "white" }}>
-                          Shri Maharani Chimnabai Stree Udyogalaya,
-                          <br />
-                          Opp. Sursagar Lake,
-                          <br />
-                          Vadodara. 390001
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem sx={{ mb: 3 }}>
-                    <ListItemIcon>
-                      <AccessTime sx={{ color: "white", fontSize: 28 }} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <Typography variant="h6" sx={{ mb: 1 }}>
-                          Working Hours
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="body1" sx={{ color: "white" }}>
-                          Monday - Saturday
-                          <br />
-                          9:00 AM - 6:00 PM
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                </List>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    bottom: -50,
-                    right: -50,
-                    width: 200,
-                    height: 200,
-                    borderRadius: "50%",
-                    background: "rgba(255, 255, 255, 0.1)",
-                  }}
+            <Card elevation={3}>
+              <Paper
+                elevation={3}
+                sx={{ height: 240, borderRadius: "0px", overflow: "hidden" }}
+              >
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1845.6838688858468!2d73.203417!3d22.301928!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395fc5f564000001%3A0x209077d9d0bca2cf!2sSHREE%20MAHARANI%20CHIMNABAI%20STREE%20UDYOGALAYA!5e0!3m2!1sen!2sin!4v1734520014817!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
+              </Paper>
+
+              <CardContent sx={{ p: 4 }}>
+                <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Box sx={{ mb: 3 }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="500"
+                        sx={{ mb: 1.5, color: 'primary.main' }}
+                      >
+                        Address
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: 'text.secondary',
+                          lineHeight: 1.6
+                        }}
+                      >
+                        Shri Maharani Chimnabai Stree Udyogalaya,
+                        <br />
+                        Opp. Sursagar Lake,
+                        <br />
+                        Vadodara. 390001
+                      </Typography>
+                    </Box>
+
+                    <Box>
+                      <Typography
+                        variant="h6"
+                        fontWeight="500"
+                        sx={{ mb: 1.5, color: 'primary.main' }}
+                      >
+                        Working Hours
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: 'text.secondary',
+                          lineHeight: 1.6
+                        }}
+                      >
+                        Monday - Saturday:
+                        <br />
+                        9:00 AM - 6:00 PM
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Divider orientation="vertical" flexItem />
+
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="h6"
+                      fontWeight="500"
+                      sx={{ mb: 1.5, color: 'primary.main' }}
+                    >
+                      Contact
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'text.secondary',
+                        lineHeight: 1.6
+                      }}
+                    >
+                      Phone:
+                      <br />
+                      <Link
+                        href="tel:+918511126808"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          '&:hover': {
+                            textDecoration: 'underline'
+                          }
+                        }}
+                      >
+                        (+91) 85111 26808
+                      </Link>
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Button
+                  variant="contained"
+                  size="small"
+                  startIcon={<DirectionsWalk />}
+                  fullWidth
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: 'none',
+                  }}
+                  onClick={() =>
+                    window.open(
+                      "https://maps.google.com?q=Maharani+Chimnabai+Stree+Udyogalaya+Vadodara"
+                    )
+                  }
+                >
+                  Get Directions
+                </Button>
               </CardContent>
             </Card>
           </Grid>
+
           <Grid item xs={12} md={7}>
             <Card elevation={3}>
               <CardContent sx={{ p: 4 }}>
-                <Typography variant="h4" gutterBottom fontWeight="bold">
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  fontWeight="bold"
+                  sx={{ color: 'primary.main' }}
+                >
                   Send us a Message
                 </Typography>
                 <Typography
@@ -311,6 +378,10 @@ const Contact = () => {
                         fullWidth
                         startIcon={<Send />}
                         onClick={handleSubmit}
+                        sx={{
+                          borderRadius: 2,
+                          textTransform: 'none',
+                        }}
                       >
                         Send Message
                       </Button>
@@ -324,33 +395,60 @@ const Contact = () => {
       </Container>
       <Box sx={{ bgcolor: "grey.100", py: 8 }}>
         <Container maxWidth="lg">
-          <Typography
-            variant="h4"
-            align="center"
-            gutterBottom
-            fontWeight="bold"
-          >
-            Visit Us
-          </Typography>
-          <Typography
-            variant="body1"
-            align="center"
-            color="text.secondary"
-            sx={{ mb: 4 }}
-          >
-            Find us at our location opposite to Sursagar Lake
-          </Typography>
-          <Paper elevation={3} sx={{ height: 400, borderRadius: 4 }}>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1845.6838688858468!2d73.203417!3d22.301928!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395fc5f564000001%3A0x209077d9d0bca2cf!2sSHREE%20MAHARANI%20CHIMNABAI%20STREE%20UDYOGALAYA!5e0!3m2!1sen!2sin!4v1734520014817!5m2!1sen!2sin"
-              width="100%"
-              height="100%"
-              style={{ border: 0, borderRadius: 16 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </Paper>
+          <Grid container spacing={4}>
+            {services.map((service, index) => (
+              <Grid item xs={12} md={3} key={index}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    boxShadow: 2,
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="h2"
+                        sx={{
+                          fontSize: "3rem",
+                          mb: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        {service.icon}
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{ textAlign: "center" }}
+                      >
+                        {service.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2, textAlign: "center" }}
+                      >
+                        {service.description}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
     </Box>

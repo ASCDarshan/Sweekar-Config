@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import { theme } from "./theme";
 import { CssBaseline } from "@mui/material";
@@ -19,7 +21,6 @@ import Blog from "./pages/Blog/Blog";
 import Contact from "./pages/Contact/Contact";
 import Landing from "./pages/Landing/Landing";
 import Experts from "./pages/Experts/Experts";
-import Centres from "./pages/Centres/Centres";
 import Services from "./pages/Services/Services";
 import Resources from "./pages/Resources/Resources";
 
@@ -29,7 +30,7 @@ import Register from "./components/Auth/Register";
 import Client from "./components/Dashboard/ClientDashboard/Client";
 import Professional from "./components/Dashboard/ProfessionalDashboard/Professional";
 
-import ConsultationList from "./components/Dashboard/ClientDashboard/BookConsultant/ConsultationBooking";
+import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationList";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
@@ -38,9 +39,11 @@ import ProfessionalProfileDisplay from "./components/Profile/Professional-Displa
 import ExpertsDetails from "./pages/Experts/ExpertsDetails";
 import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";
 
-const App = () => {
+const Layout = ({ children }) => {
+  const location = useLocation();
 
   const noFooterPaths = [
+    '/blog',
     '/Client/Dashboard',
     '/Client/Profile',
     '/Professional/Dashboard',
@@ -52,42 +55,54 @@ const App = () => {
     '/register'
   ];
 
+  const shouldHideFooter = noFooterPaths.includes(location.pathname) ||
+    location.pathname.startsWith('/consultation/') || location.pathname.startsWith('/experts');
+
+  return (
+    <>
+      <Navbar />
+      {children}
+      <MobileBottomNav />
+      {!shouldHideFooter && <Footer />}
+    </>
+  );
+};
+
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer theme="colored" position="top-center" autoClose={3000} />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <CssBaseline />
         <Router>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/experts" element={<Experts />} />
-            <Route path="/experts/:id/" element={<ExpertsDetails />} />
-            <Route path="/centres" element={<Centres />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blogs/:blogId" element={<BlogDetail />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/experts" element={<Experts />} />
+              <Route path="/experts/:id/" element={<ExpertsDetails />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blogs/:blogId" element={<BlogDetail />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-            <Route path="/Client/Dashboard" element={<Client />} />
-            <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
-            <Route path="/book-consultation" element={<ConsultationBooking />} />
+              <Route path="/Client/Dashboard" element={<Client />} />
+              <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
+              <Route path="/book-consultation" element={<ConsultationBooking />} />
 
-            <Route path="/Professional/Dashboard" element={<Professional />} />
-            <Route
-              path="/Professional/Profile"
-              element={<ProfessionalProfileDisplay />}
-            />
-            <Route path="/consultations" element={<ConsultationList />} />
-            <Route path="/consultation/:id" element={<ConsultationDetail />} />
+              <Route path="/Professional/Dashboard" element={<Professional />} />
+              <Route
+                path="/Professional/Profile"
+                element={<ProfessionalProfileDisplay />}
+              />
+              <Route path="/consultations" element={<ConsultationList />} />
+              <Route path="/consultation/:id" element={<ConsultationDetail />} />
 
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          <MobileBottomNav />
-          {!noFooterPaths.includes(location.pathname) && <Footer />}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </Layout>
         </Router>
       </LocalizationProvider>
     </ThemeProvider>

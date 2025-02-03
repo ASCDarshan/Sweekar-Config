@@ -1,12 +1,10 @@
 import {
   Container,
   Grid,
-  Paper,
   Typography,
   Button,
   Card,
   CardContent,
-  CardActions,
   Box,
   IconButton,
   Divider,
@@ -16,6 +14,7 @@ import { useEffect, useState } from "react";
 import BookConsultation from "../../Consultation/BookConsultation";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ajaxCall from "../../../helpers/ajaxCall";
+import { toast } from "react-toastify";
 
 const services = [
   {
@@ -52,6 +51,7 @@ const Client = () => {
   const [service, setService] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
   const [upcomingConsultations, setUpcomingconsultations] = useState([]);
+  const [userName, setUserName] = useState();
 
   const handleOpenBooking = (service) => {
     setService(service);
@@ -60,6 +60,16 @@ const Client = () => {
 
   const handleClose = () => {
     setOpenBooking(false);
+  };
+
+  const filterUpcomingSessions = (consultations) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    return consultations.filter((consultation) => {
+      const consultationDate = new Date(consultation.scheduled_time);
+      return consultationDate >= currentDate;
+    });
   };
 
   const fetchData = async (url, setData) => {
@@ -87,13 +97,45 @@ const Client = () => {
   };
 
   useEffect(() => {
-    fetchData(`consultations/consultation-user/?user=${userId}`, setUpcomingconsultations);
+    fetchData(`consultations/consultation-client/?user=${userId}`, setUpcomingconsultations);
+    fetchData(`clients/profile-user/?user=${userId}`, setUserName);
   }, []);
+
+  const handleCancelConsultation = async (id) => {
+    try {
+      const response = await ajaxCall(
+        `consultations/consultation-cancel/${id}/`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("loginInfo")
+            )?.accessToken}`,
+          },
+          method: "PATCH",
+        },
+        8000
+      );
+      if ([200, 201].includes(response.status)) {
+        toast.success("Consultation Cancelled Successfully.");
+      } else if ([400, 404].includes(response.status)) {
+        toast.error("Some Problem Occurred. Please try again.");
+      }
+      else if ([401].includes(response.status)) {
+        toast.error("Invalid Credentials.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filteredConsultations = filterUpcomingSessions(upcomingConsultations);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom mb={4}>
-        Welcome back!
+        Welcome <b>{userName?.user?.username}</b>
       </Typography>
 
       <Grid container spacing={3}>
@@ -106,55 +148,48 @@ const Client = () => {
                   Upcoming Sessions
                 </Typography>
                 <Typography variant="h4">
-                  {upcomingConsultations.length}
+                  {filteredConsultations.length}
                 </Typography>
               </CardContent>
             </Card>
           </Box>
 
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Upcoming Consultations
-            </Typography>
-            <Grid container spacing={2}>
-              {upcomingConsultations.map((consultation) => (
-                <Grid item xs={12} md={6} key={consultation.id}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6">
-                        {consultation.professional_name}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {new Date(consultation.scheduled_time).toLocaleString()}
-                      </Typography>
-                      <Typography variant="body2">
-                        Type: {consultation.consultation_type}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        View Details
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Paper>
+          <Typography variant="h6" gutterBottom >
+            Upcoming Consultations
+          </Typography>
+          <Grid container spacing={2} mt={2}>
+            {filteredConsultations.map((consultation) => (
+              <Grid item xs={12} md={6} key={consultation.id}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6">
+                      {consultation.professional_name}
+                    </Typography>
+                    <Typography color="textSecondary">
+                      {new Date(consultation.scheduled_time).toLocaleString()}
+                    </Typography>
+                    <Typography variant="body2">
+                      Type: {consultation.consultation_type}
+                    </Typography>
+                  </CardContent>
+                  <Button size="small" color="primary" onClick={() => handleCancelConsultation(consultation?.id)}>
+                    Cancel Consultation
+                  </Button>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
 
-        {/* Vertical Divider */}
         <Grid item xs={12} md={1}>
           <Divider orientation="vertical" flexItem sx={{ mx: "auto", height: "100%" }} />
         </Grid>
 
-        {/* Right Section */}
         <Grid item xs={12} md={5}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Book Consultation
           </Typography>
 
-          {/* Small Cards for Services */}
           <Grid container spacing={2}>
             {services.map((service, index) => (
               <Grid item xs={12} sm={6} key={index}>

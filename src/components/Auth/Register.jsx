@@ -106,6 +106,9 @@ const Register = () => {
         setisLoading(false);
         formik.resetForm();
         navigate("/login");
+      }
+      else if (response.status === 400) {
+        toast.error(response.data.password[0])
       } else {
         toast.error("Registration failed. Please try again");
       }
@@ -134,7 +137,7 @@ const Register = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="First Name"
+                label="First Name*"
                 name="first_name"
                 value={formik.values.first_name}
                 onChange={formik.handleChange}
@@ -157,7 +160,7 @@ const Register = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Last Name"
+                label="Last Name*"
                 name="last_name"
                 value={formik.values.last_name}
                 onChange={formik.handleChange}
@@ -183,7 +186,7 @@ const Register = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Username"
+                label="Username*"
                 name="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}
@@ -204,7 +207,7 @@ const Register = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Email"
+                label="Email*"
                 name="email"
                 type="email"
                 value={formik.values.email}
@@ -224,7 +227,7 @@ const Register = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Password"
+                label="Password*"
                 name="password"
                 type={showPassword ? "text" : "password"}
                 value={formik.values.password}
@@ -256,7 +259,7 @@ const Register = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Confirm Password"
+                label="Confirm Password*"
                 name="password2"
                 type={showConfirmPassword ? "text" : "password"}
                 value={formik.values.password2}
@@ -299,7 +302,7 @@ const Register = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Phone"
+                label="Phone*"
                 name="phone"
                 value={formik.values.phone}
                 onChange={formik.handleChange}

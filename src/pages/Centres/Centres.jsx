@@ -21,36 +21,63 @@ import {
   AccessTime,
   DirectionsWalk,
   ArrowForward,
-  EventAvailable,
-  Groups,
-  Gavel,
-  Psychology,
 } from "@mui/icons-material";
 
 const services = [
   {
-    icon: <Psychology fontSize="large" />,
-    title: "Mental Health Support",
+    id: 1,
+    title: "Medical Services",
     description:
-      "Professional counseling and therapy services for LGBTQAI+ individuals and women",
+      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
+    icon: "🏥",
   },
   {
-    icon: <Gavel fontSize="large" />,
+    id: 2,
+    title: "Mental Health",
+    description:
+      "Connect with therapists and counselors who understand your unique needs.",
+    icon: "🧠",
+  },
+  {
+    id: 3,
     title: "Legal Aid",
     description:
-      "Legal assistance and guidance for addressing discrimination and rights protection",
+      "Find legal professionals committed to protecting your rights and dignity.",
+    icon: "⚖️",
   },
   {
-    icon: <Groups fontSize="large" />,
-    title: "Support Groups",
-    description: "Regular community meetings and support group sessions",
-  },
-  {
-    icon: <EventAvailable fontSize="large" />,
-    title: "Scheduled Sessions",
-    description: "Pre-scheduled professional consultations and appointments",
+    id: 4,
+    title: "Placement Services",
+    description: "Discover inclusive workplaces and employment opportunities.",
+    icon: "💼",
   },
 ];
+
+
+// const services = [
+//   {
+//     icon: <Psychology fontSize="large" />,
+//     title: "Mental Health Support",
+//     description:
+//       "Professional counseling and therapy services for LGBTQAI+ individuals and women",
+//   },
+//   {
+//     icon: <Gavel fontSize="large" />,
+//     title: "Legal Aid",
+//     description:
+//       "Legal assistance and guidance for addressing discrimination and rights protection",
+//   },
+//   {
+//     icon: <Groups fontSize="large" />,
+//     title: "Support Groups",
+//     description: "Regular community meetings and support group sessions",
+//   },
+//   {
+//     icon: <EventAvailable fontSize="large" />,
+//     title: "Scheduled Sessions",
+//     description: "Pre-scheduled professional consultations and appointments",
+//   },
+// ];
 
 const Centres = () => {
   return (
@@ -117,12 +144,20 @@ const Centres = () => {
           <Grid item xs={12} md={6}>
             <Slide direction="up" in={true} timeout={1000}>
               <Card elevation={3}>
-                <CardMedia
-                  component="img"
-                  height="300"
-                  image="/path/to/center-image.jpg"
-                  alt="Sweekar Centre"
-                />
+                <Paper
+                  elevation={3}
+                  sx={{ height: 200, borderRadius: "0px", overflow: "hidden" }}
+                >
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1845.6838688858468!2d73.203417!3d22.301928!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395fc5f564000001%3A0x209077d9d0bca2cf!2sSHREE%20MAHARANI%20CHIMNABAI%20STREE%20UDYOGALAYA!5e0!3m2!1sen!2sin!4v1734520014817!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </Paper>
                 <CardContent sx={{ p: 4 }}>
                   <Typography variant="h4" gutterBottom fontWeight="bold">
                     Main Centre
@@ -294,6 +329,60 @@ const Centres = () => {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </Paper>
+          <Grid container spacing={4}>
+            {services.map((service, index) => (
+              <Grid item xs={12} md={3} key={index}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    boxShadow: 2,
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="h2"
+                        sx={{
+                          fontSize: "3rem",
+                          mb: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        {service.icon}
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{ textAlign: "center" }}
+                      >
+                        {service.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2, textAlign: "center" }}
+                      >
+                        {service.description}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
     </Box>

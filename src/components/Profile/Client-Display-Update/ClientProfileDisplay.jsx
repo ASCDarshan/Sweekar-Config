@@ -5,19 +5,13 @@ import {
     Avatar,
     Typography,
     Box,
-    Chip,
     Card,
     CardContent,
     CardHeader,
-    Divider,
-    Rating,
     Stack,
     Button,
 } from "@mui/material";
 import {
-    Psychology,
-    EmojiEvents,
-    People,
     Edit,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -29,6 +23,7 @@ const ClientProfileDisplay = () => {
     const user = JSON.parse(localStorage.getItem("loginInfo"));
     const [client, setClients] = useState([]);
     const [openUpdateDrawer, setOpenUpdateDrawer] = useState(false);
+
 
     const fetchData = async (url, setData) => {
         try {

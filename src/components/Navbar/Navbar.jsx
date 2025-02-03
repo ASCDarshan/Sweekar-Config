@@ -34,7 +34,6 @@ const navItems = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
   { label: "Experts", path: "/experts" },
-  { label: "Centres", path: "/centres" },
   { label: "Blog", path: "/blog" },
   { label: "Resources", path: "/resources" },
   { label: "Reach Us", path: "/contact" },
@@ -109,7 +108,7 @@ const Navbar = () => {
         sx={{
           backgroundColor: trigger
             ? "rgba(157, 132, 183, 0.95)"
-            : "transparent",
+            : "#ece5ff",
           height: trigger ? "75px" : "80px",
           transition: "all 0.3s ease-in-out",
           backdropFilter: trigger ? "blur(10px)" : "none",
@@ -207,7 +206,20 @@ const Navbar = () => {
                 >
                   {user?.user ? (
                     <>
-                      {user.user_type !== "CLIENT" && (
+                      {user.user_type === "CLIENT" ? (
+                        <Button
+                          variant="contained"
+                          onClick={() => navigate("/Client/Dashboard")}
+                          sx={{
+                            bgcolor: "#9D84B7",
+                            "&:hover": {
+                              bgcolor: "rgba(157, 132, 183, 0.9)",
+                            },
+                          }}
+                        >
+                          Dashboard
+                        </Button>
+                      ) : (
                         <Button
                           variant="contained"
                           onClick={() => navigate("/consultations")}
