@@ -15,7 +15,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import ajaxCall from "../../../helpers/ajaxCall";
-import CreateEventDialog from "../CreateEventDialog";
+import CreateEventDialog from "../ProfessionalDashboard/CreateSlot/CreateEventDialog";
 
 const localizer = momentLocalizer(moment);
 

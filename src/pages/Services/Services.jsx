@@ -10,9 +10,8 @@ import {
   DialogContent,
   CircularProgress,
 } from "@mui/material";
-import {
-  Close,
-} from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
+import { toast } from "react-toastify"; // Add this import
 import BookConsultation from "../../components/Consultation/BookConsultation";
 import ServiceCard from "./Services/ServiceCard";
 import ServiceDetailDrawer from "./Services/ServiceDetailDrawer";
@@ -62,15 +61,29 @@ const Services = () => {
     setDetailOpen(true);
   };
 
-  const handleBookingOpen = (service) => {
-    setSelectedService(service);
-    setSelectedExpert(null);
-    setBookingOpen(true);
+  const checkAuthAndOpenBooking = (service) => {
+    const accessToken = JSON.parse(localStorage.getItem("loginInfo"))?.accessToken;
+
+    if (accessToken) {
+      setSelectedService(service);
+      setSelectedExpert(null);
+      setBookingOpen(true);
+    } else {
+      toast.error("Please log in first to book a consultation");
+      setBookingOpen(false);
+    }
   };
 
-  const handleExpertBooking = (expert) => {
-    setSelectedExpert(expert);
-    setBookingOpen(true);
+  const checkAuthAndOpenExpertBooking = (expert) => {
+    const accessToken = JSON.parse(localStorage.getItem("loginInfo"))?.accessToken;
+
+    if (accessToken) {
+      setSelectedExpert(expert);
+      setBookingOpen(true);
+    } else {
+      toast.error("Please log in first to book a consultation");
+      setBookingOpen(false);
+    }
   };
 
   const handleBookingClose = () => {
@@ -152,7 +165,6 @@ const Services = () => {
               <ServiceCard
                 service={service}
                 onSelect={handleServiceSelect}
-                onBooking={handleBookingOpen}
                 isSelected={selectedService?.id === service.id}
               />
             </Grid>
@@ -164,7 +176,7 @@ const Services = () => {
         service={selectedService}
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
-        onBooking={handleBookingOpen}
+        onBooking={checkAuthAndOpenBooking}
       />
 
       <Dialog
@@ -182,7 +194,7 @@ const Services = () => {
           >
             <Typography variant="h6">
               Book {selectedService?.title} Consultation
-              {selectedExpert && ` with ${selectedExpert.name}`}
+              {selectedExpert && ` with ${selectedExpert?.user?.username}`}
             </Typography>
             <IconButton
               edge="end"
@@ -206,7 +218,7 @@ const Services = () => {
       {selectedService && (
         <ExpertsSection
           selectedService={selectedService}
-          onBookExpert={handleExpertBooking}
+          onBookExpert={checkAuthAndOpenExpertBooking}
         />
       )}
 
