@@ -79,7 +79,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
           p: 2,
         }}
       >
-        <Typography variant="h6" color="textSecondary">
+        <Typography variant="h5" color="red">
           No expert available for this service.
         </Typography>
       </Box>

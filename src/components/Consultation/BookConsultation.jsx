@@ -28,7 +28,11 @@ import Loading from "../UI/Loading";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
-const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType }) => {
+const BookConsultation = ({
+  preSelectedExpert,
+  onClose,
+  preSelectedExpertType,
+}) => {
   const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
 
   const [professionals, setProfessionals] = useState([]);
@@ -41,6 +45,7 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
   const [consultationType, setConsultationType] = useState("");
   const [concern, setConcern] = useState("");
   const [notes, setNotes] = useState("");
+  const [eventData, setEventsData] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
@@ -83,6 +88,41 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
     fetchData(`clients/profile-user/?user=${userId}`, setClientData);
   }, [preSelectedExpertType, userId]);
 
+  const fetchEventData = async (url, setData) => {
+    try {
+      const response = await ajaxCall(
+        url,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+          },
+          method: "GET",
+        },
+        8000
+      );
+      if (response?.status === 200) {
+        setData(response?.data || []);
+      } else {
+        console.error("Fetch error:", response);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProfessional) {
+      fetchEventData(
+        `professionals/event-user/?user=${selectedProfessional?.user?.id}`,
+        setEventsData
+      );
+    }
+  }, [selectedProfessional]);
+
   const handleBookConsultant = async () => {
     setLoading(true);
     try {
@@ -92,8 +132,7 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
-              }`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
           },
           method: "POST",
           body: JSON.stringify({
@@ -140,17 +179,28 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
   };
 
   const renderTimeSlots = () => {
-    const slots = [];
-    const startHour = 9;
-    const endHour = 17;
+    if (!eventData) return null;
 
-    for (let hour = startHour; hour < endHour; hour++) {
+    const startDate = new Date(eventData.start_date);
+    const endDate = new Date(eventData.end_date);
+
+    const slots = [];
+    const startHour = startDate.getHours();
+    const startMinute = startDate.getMinutes();
+    const endHour = endDate.getHours();
+    const endMinute = endDate.getMinutes();
+
+    // Generate time slots between start and end time
+    for (let hour = startHour; hour <= endHour; hour++) {
       for (let minute of [0, 30]) {
-        const time = new Date();
+        if (hour === startHour && minute < startMinute) continue;
+        if (hour === endHour && minute > endMinute) continue;
+
+        const time = new Date(startDate);
         time.setHours(hour, minute, 0);
         slots.push({
           time,
-          available: Math.random() > 0.3,
+          available: true,
         });
       }
     }
@@ -188,7 +238,11 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
           <Grid container spacing={3}>
             {professionals.length === 0 ? (
               <Grid item xs={12}>
-                <Typography variant="h6" align="center" sx={{ color: "text.secondary" }}>
+                <Typography
+                  variant="h6"
+                  align="center"
+                  sx={{ color: "text.secondary" }}
+                >
                   There is no expert available for this category.
                 </Typography>
               </Grid>
@@ -245,55 +299,69 @@ const BookConsultation = ({ preSelectedExpert, onClose, preSelectedExpertType })
         );
 
       case 1:
-        return (
-          <Box sx={{ mt: 2 }}>
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel>Consultation Type* </InputLabel>
-              <Select
-                value={consultationType}
-                onChange={(e) => setConsultationType(e.target.value)}
-                label="Consultation Type"
-              >
-                {selectedProfessional.is_available_online && (
-                  <MenuItem value="VIDEO">Video Call</MenuItem>
-                )}
-                <MenuItem value="CHAT">Chat</MenuItem>
-                <MenuItem value="AUDIO">Audio Call</MenuItem>
-                {selectedProfessional.is_available_in_person && (
-                  <MenuItem value="IN_PERSON">In Person</MenuItem>
-                )}
-              </Select>
-              <TextField
-                fullWidth
-                sx={{ mt: 2 }}
-                label="List of concerns to be discussed (Preferred)"
-                value={concern}
-                onChange={(e) => setConcern(e.target.value)}
-                variant="outlined"
-              />
-            </FormControl>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <StaticDatePicker
-                displayStaticWrapperAs="desktop"
-                value={selectedDateTime}
-                onChange={(date) => {
-                  const currentTime = selectedDateTime || new Date();
-                  date.setHours(
-                    currentTime.getHours(),
-                    currentTime.getMinutes()
-                  );
-                  setSelectedDateTime(date);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-                minDate={new Date()}
-                shouldDisableDate={(date) =>
-                  date.getDay() === 0 || date.getDay() === 6
-                }
-              />
-            </LocalizationProvider>
-            {renderTimeSlots()}
-          </Box>
-        );
+        {
+          if (!eventData) {
+            return (
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+                <CircularProgress />
+              </Box>
+            );
+          }
+
+          const startDate = new Date(eventData.start_date);
+
+          return (
+            <Box sx={{ mt: 2 }}>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Consultation Type* </InputLabel>
+                <Select
+                  value={consultationType}
+                  onChange={(e) => setConsultationType(e.target.value)}
+                  label="Consultation Type"
+                >
+                  {selectedProfessional.is_available_online && (
+                    <MenuItem value="VIDEO">Video Call</MenuItem>
+                  )}
+                  <MenuItem value="CHAT">Chat</MenuItem>
+                  <MenuItem value="AUDIO">Audio Call</MenuItem>
+                  {selectedProfessional.is_available_in_person && (
+                    <MenuItem value="IN_PERSON">In Person</MenuItem>
+                  )}
+                </Select>
+                <TextField
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  label="List of concerns to be discussed (Preferred)"
+                  value={concern}
+                  onChange={(e) => setConcern(e.target.value)}
+                  variant="outlined"
+                />
+              </FormControl>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <StaticDatePicker
+                  displayStaticWrapperAs="desktop"
+                  value={selectedDateTime || startDate}
+                  onChange={(date) => {
+                    const currentTime = selectedDateTime || startDate;
+                    date.setHours(
+                      currentTime.getHours(),
+                      currentTime.getMinutes()
+                    );
+                    setSelectedDateTime(date);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  minDate={startDate}
+                  maxDate={startDate}
+                  shouldDisableDate={(date) => {
+                    // Disable all dates except the event date
+                    return date.toDateString() !== startDate.toDateString();
+                  }}
+                />
+              </LocalizationProvider>
+              {renderTimeSlots()}
+            </Box>
+          );
+        }
 
       case 2:
         return (

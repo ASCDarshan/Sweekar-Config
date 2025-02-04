@@ -68,7 +68,9 @@ const Register = () => {
         .required("Confirm Password is required"),
       first_name: Yup.string().required("First Name is required"),
       last_name: Yup.string().required("Last Name is required"),
-      phone: Yup.string().required("Phone number is required"),
+      phone: Yup.string()
+        .required("Phone number is required")
+        .min(10, "Phone number must be at least 10 characters"),
       address: Yup.string().required("Address is required"),
     }),
     onSubmit: (values) => {
@@ -101,19 +103,31 @@ const Register = () => {
         },
         8000
       );
+
       if (response?.status === 201) {
         toast.success("Registration successful.");
         setisLoading(false);
         formik.resetForm();
         navigate("/login");
-      }
-      else if (response.status === 400) {
-        toast.error(response.data.password[0])
+      } else if (response.status === 400) {
+        const errors = response.data;
+        let errorMessage = "";
+
+        for (const key in errors) {
+          if (errors.hasOwnProperty(key)) {
+            errorMessage += `${key}: ${errors[key].join(", ")}\n`;
+          }
+        }
+
+        toast.error(errorMessage.trim());
       } else {
         toast.error("Registration failed. Please try again");
       }
     } catch (error) {
       console.log(error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setisLoading(false);
     }
   };
   const steps = [
@@ -486,7 +500,6 @@ const Register = () => {
                         Next
                       </Button>
                     )}
-
                   </Box>
                 </form>
                 {isMobile && (

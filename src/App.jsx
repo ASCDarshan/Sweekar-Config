@@ -34,7 +34,6 @@ import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyCon
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
 import BlogDetail from "./pages/Blog/BlogDetail";
-import ConsultationBooking from "./components/Dashboard/ClientDashboard/BookConsultant/ConsultationBooking";
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 import ExpertsDetails from "./pages/Experts/ExpertsDetails";
 import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";
@@ -71,7 +70,7 @@ const Layout = ({ children }) => {
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer theme="colored" position="top-center" autoClose={3000} />
+      <ToastContainer theme="colored" position="top-center" autoClose={5000} />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <CssBaseline />
         <Router>
@@ -90,7 +89,6 @@ const App = () => {
 
               <Route path="/Client/Dashboard" element={<Client />} />
               <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
-              <Route path="/book-consultation" element={<ConsultationBooking />} />
 
               <Route path="/Professional/Dashboard" element={<Professional />} />
               <Route

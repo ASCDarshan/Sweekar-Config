@@ -2,7 +2,7 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import ajaxCall from "../../helpers/ajaxCall";
+import ajaxCall from "../../../../helpers/ajaxCall";
 
 const CreateEventDialog = ({ open, onClose, ProfessionalData }) => {
     const professional = ProfessionalData?.id;
