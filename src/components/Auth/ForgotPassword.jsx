@@ -60,8 +60,7 @@ const ForgotPassword = ({ open, onClose }) => {
         navigate("/login");
       } else if (response?.status === 400) {
         toast.error("This email is not registered, Try Signing in Instead.");
-      }
-      else {
+      } else {
         toast.error("Failed to send reset link. Please try again later.");
       }
     } catch (error) {

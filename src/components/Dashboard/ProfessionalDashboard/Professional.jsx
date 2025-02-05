@@ -16,6 +16,7 @@ import { Add, Assessment, Event } from "@mui/icons-material";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import ajaxCall from "../../../helpers/ajaxCall";
 import CreateEventDialog from "../ProfessionalDashboard/CreateSlot/CreateEventDialog";
+import DashboardShimmer from "../../UI/DashboardShimmer";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,6 +27,8 @@ const Professional = () => {
   const [createEventDialogOpen, setCreateEventDialogOpen] = useState(false);
   const [expert, setExpert] = useState({});
   const [professionalEvent, setProfessionalEvent] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   const transformToCalendarEvents = (consultations) => {
     return consultations.map((consultation) => ({
@@ -49,6 +52,7 @@ const Professional = () => {
   };
 
   const fetchData = async (url, setData, transformFunction) => {
+    setLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -69,11 +73,11 @@ const Professional = () => {
         return transformFunction ? transformFunction(data) : [];
       } else {
         console.error("Fetch error:", response);
-        return [];
       }
     } catch (error) {
       console.error("Network error:", error);
-      return [];
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,14 +101,22 @@ const Professional = () => {
       setCalendarEvents([...consultationEvents, ...professionalEvents]);
     };
     fetchAllData();
-  }, []);
+  }, [count, userId]);
 
   const getUpcomingEvents = (events) => {
     const today = new Date();
-    return events.filter(event => new Date(event.start) >= today);
+    return events.filter((event) => new Date(event.start) >= today);
   };
 
   const upcomingEvents = getUpcomingEvents(calendarEvents);
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <DashboardShimmer />
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -137,7 +149,6 @@ const Professional = () => {
                 <Box ml={2}>
                   <Typography variant="h6">Upcoming Events</Typography>
                   <Typography variant="h4">{upcomingEvents.length}</Typography>
-
                 </Box>
               </Box>
             </CardContent>
@@ -177,7 +188,7 @@ const Professional = () => {
           onClick={() => setCreateEventDialogOpen(true)}
           sx={{ mb: 2 }}
         >
-          Add  Slot
+          Add Slot
         </Button>
         <Calendar
           localizer={localizer}
@@ -191,6 +202,7 @@ const Professional = () => {
         open={createEventDialogOpen}
         onClose={() => setCreateEventDialogOpen(false)}
         ProfessionalData={expert}
+        setCount={setCount}
       />
     </Container>
   );

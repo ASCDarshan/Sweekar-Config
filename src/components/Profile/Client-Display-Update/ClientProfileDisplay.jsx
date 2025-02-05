@@ -11,21 +11,21 @@ import {
     Stack,
     Button,
 } from "@mui/material";
-import {
-    Edit,
-} from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ajaxCall from "../../../helpers/ajaxCall";
 import ClientUpdateDrawer from "./ClientUpdateDrawer";
+import UserProfileShimmer from "../../UI/UserProfileShimmer";
 
 const ClientProfileDisplay = () => {
     const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
     const user = JSON.parse(localStorage.getItem("loginInfo"));
     const [client, setClients] = useState([]);
     const [openUpdateDrawer, setOpenUpdateDrawer] = useState(false);
-
+    const [loading, setLoading] = useState(true);
 
     const fetchData = async (url, setData) => {
+        setLoading(true);
         try {
             const response = await ajaxCall(
                 url,
@@ -47,6 +47,8 @@ const ClientProfileDisplay = () => {
             }
         } catch (error) {
             console.error("Network error:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -62,6 +64,13 @@ const ClientProfileDisplay = () => {
         setOpenUpdateDrawer(false);
     };
 
+    if (loading) {
+        return (
+            <Container maxWidth="lg" sx={{ mt: 8 }}>
+                <UserProfileShimmer />
+            </Container>
+        );
+    }
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Paper elevation={3} sx={{ mb: 3, p: 3 }}>
@@ -79,7 +88,6 @@ const ClientProfileDisplay = () => {
                                 {client?.user?.first_name?.charAt(0)}
                                 {client?.user?.last_name?.charAt(0)}
                             </Avatar>
-
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={7}>
@@ -90,7 +98,6 @@ const ClientProfileDisplay = () => {
                             {client.professional_type?.title}
                         </Typography>
                     </Grid>
-
                 </Grid>
             </Paper>
 
@@ -133,7 +140,6 @@ const ClientProfileDisplay = () => {
                             </Typography>
                         </CardContent>
                     </Card>
-
                 </Grid>
 
                 <Grid item xs={12} md={4}>
@@ -144,9 +150,7 @@ const ClientProfileDisplay = () => {
                                     <Typography variant="subtitle2" color="text.secondary">
                                         Blood Group
                                     </Typography>
-                                    <Typography variant="body1">
-                                        {client?.blood_group}
-                                    </Typography>
+                                    <Typography variant="body1">{client?.blood_group}</Typography>
                                 </Box>
                                 <Box>
                                     <Typography variant="subtitle2" color="text.secondary">
@@ -184,9 +188,7 @@ const ClientProfileDisplay = () => {
                                     <Typography variant="subtitle2" color="text.secondary">
                                         Occupation
                                     </Typography>
-                                    <Typography variant="body1">
-                                        {client?.occupation}
-                                    </Typography>
+                                    <Typography variant="body1">{client?.occupation}</Typography>
                                 </Box>
                                 <Box>
                                     <Typography variant="subtitle2" color="text.secondary">

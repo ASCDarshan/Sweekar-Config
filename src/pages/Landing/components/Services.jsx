@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { ArrowForward, Close } from "@mui/icons-material";
 import BookConsultation from "../../../components/Consultation/BookConsultation";
+import { toast } from "react-toastify";
 
 const services = [
   {
@@ -49,9 +50,18 @@ const Services = () => {
   const [openBooking, setOpenBooking] = useState(false);
   const [service, setService] = useState({});
 
-  const handleOpenBooking = (service) => {
-    setService(service);
-    setOpenBooking(true);
+  const checkAuthAndOpenBooking = (service) => {
+    const accessToken = JSON.parse(
+      localStorage.getItem("loginInfo")
+    )?.accessToken;
+
+    if (accessToken) {
+      setService(service);
+      setOpenBooking(true);
+    } else {
+      toast.error("Please log in first to book a consultation");
+      setOpenBooking(false);
+    }
   };
 
   const handleClose = () => {
@@ -118,7 +128,7 @@ const Services = () => {
                       variant="contained"
                       color="primary"
                       endIcon={<ArrowForward />}
-                      onClick={() => handleOpenBooking(service)}
+                      onClick={() => checkAuthAndOpenBooking(service)}
                       sx={{
                         textTransform: "none",
                         width: "100%",

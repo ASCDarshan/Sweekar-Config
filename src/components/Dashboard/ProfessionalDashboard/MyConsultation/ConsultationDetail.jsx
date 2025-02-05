@@ -34,9 +34,8 @@ const ConsultationDetail = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("loginInfo")
-            )?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
@@ -64,9 +63,8 @@ const ConsultationDetail = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("loginInfo")
-            )?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "PATCH",
         },
@@ -76,14 +74,14 @@ const ConsultationDetail = () => {
         toast.success("Consultation Cancelled Successfully.");
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
-      }
-      else if ([401].includes(response.status)) {
+      } else if ([401].includes(response.status)) {
         toast.error("Invalid Credentials.");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -137,19 +135,24 @@ const ConsultationDetail = () => {
           <Grid item xs={12}>
             <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
               {consultation?.status === "SCHEDULED" && (
-                <Button variant="outlined" color="error" onClick={() => handleCancelConsultation(consultation?.id)}>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => handleCancelConsultation(consultation?.id)}
+                >
                   Cancel Consultation
                 </Button>
               )}
 
-              {consultation?.status === "COMPLETED" && !consultation?.review && (
-                <Button
-                  variant="contained"
-                  onClick={() => setReviewDialog(true)}
-                >
-                  Leave Review
-                </Button>
-              )}
+              {consultation?.status === "COMPLETED" &&
+                !consultation?.review && (
+                  <Button
+                    variant="contained"
+                    onClick={() => setReviewDialog(true)}
+                  >
+                    Leave Review
+                  </Button>
+                )}
             </Box>
           </Grid>
         </Grid>
@@ -178,9 +181,7 @@ const ConsultationDetail = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setReviewDialog(false)}>Cancel</Button>
-          <Button variant="contained">
-            Submit Review
-          </Button>
+          <Button variant="contained">Submit Review</Button>
         </DialogActions>
       </Dialog>
     </Container>

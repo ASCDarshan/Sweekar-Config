@@ -40,7 +40,7 @@ const servicess = [
   },
 ];
 
-const ServiceCard = ({ service, onSelect, isSelected }) => {
+const ServiceCard = ({ service, onSelect, isSelected, onDetailOpen }) => {
   const theme = useTheme();
   const staticData = servicess.find((s) => s.id === service.id);
 
@@ -88,7 +88,7 @@ const ServiceCard = ({ service, onSelect, isSelected }) => {
                 }}
               />
             )}
-            <Box onClick={() => onSelect(service)}>
+            <Box onClick={() => onDetailOpen(service)}>
               <Avatar
                 sx={{
                   bgcolor: staticData.color,

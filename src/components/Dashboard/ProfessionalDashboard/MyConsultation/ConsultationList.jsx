@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import ajaxCall from "../../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
+import { DataTableShimmer } from "../../../UI/DataTableShimmer";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -42,9 +43,15 @@ const ConsultationList = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [consultationList, setConsultationList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
 
-  const fetchData = async (url, setData) => {
+  const fetchData = async (url, setData, isFilterChange = false) => {
+    if (isFilterChange) {
+      setFilterLoading(true);
+    } else {
+      setLoading(true);
+    }
     try {
       const response = await ajaxCall(
         url,
@@ -62,11 +69,17 @@ const ConsultationList = () => {
         setData(response?.data || []);
       } else {
         console.error("Fetch error:", response);
+        setData([]);
       }
     } catch (error) {
       console.error("Network error:", error);
+      setData([]);
     } finally {
-      setLoading(false);
+      if (isFilterChange) {
+        setFilterLoading(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -75,26 +88,31 @@ const ConsultationList = () => {
     if (statusFilter) {
       url = `consultations/consultation-status/?user=${userId}&status=${statusFilter}`;
     }
-    fetchData(url, setConsultationList);
+    fetchData(url, setConsultationList, Boolean(statusFilter));
   }, [statusFilter]);
 
   function formatScheduledTime(dateString) {
     const date = new Date(dateString);
-
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options);
-
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
     const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, "0");
     const isAM = hours < 12;
-    const formattedTime = `${hours % 12 || 12}:${minutes} ${isAM ? 'AM' : 'PM'}`;
-
+    const formattedTime = `${hours % 12 || 12}:${minutes} ${isAM ? "AM" : "PM"}`;
     return `${formattedDate}, ${formattedTime}`;
   }
 
   const handleViewDetails = (consultationId) => {
     navigate(`/consultation/${consultationId}`);
   };
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <DataTableShimmer />
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, py: 4 }}>
@@ -121,14 +139,16 @@ const ConsultationList = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date & Time</TableCell>
-                <TableCell>{loginInfo.user.user_type === "CLIENT" ? "Professional" : "Client"}</TableCell>
+                <TableCell>
+                  {loginInfo.user.user_type === "CLIENT" ? "Professional" : "Client"}
+                </TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading ? (
+              {filterLoading ? (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
                     <CircularProgress />
@@ -137,7 +157,7 @@ const ConsultationList = () => {
               ) : consultationList.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
-                    No consultation found
+                    There is no consultation available for this status.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -153,17 +173,10 @@ const ConsultationList = () => {
                     </TableCell>
                     <TableCell>{consultation.consultation_type}</TableCell>
                     <TableCell>
-                      <Chip
-                        label={consultation.status}
-                        color={getStatusColor(consultation.status)}
-                      />
+                      <Chip label={consultation.status} color={getStatusColor(consultation.status)} />
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => { handleViewDetails(consultation.id) }}
-                      >
+                      <Button variant="outlined" size="small" onClick={() => handleViewDetails(consultation.id)}>
                         View Details
                       </Button>
                     </TableCell>

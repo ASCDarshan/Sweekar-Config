@@ -96,7 +96,8 @@ const BookConsultation = ({
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
@@ -132,7 +133,8 @@ const BookConsultation = ({
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "POST",
           body: JSON.stringify({
@@ -181,8 +183,8 @@ const BookConsultation = ({
   const renderTimeSlots = () => {
     if (!eventData) return null;
 
-    const startDate = new Date(eventData.start_date);
-    const endDate = new Date(eventData.end_date);
+    const startDate = new Date(eventData[0].start_date);
+    const endDate = new Date(eventData[0].end_date);
 
     const slots = [];
     const startHour = startDate.getHours();
@@ -190,7 +192,6 @@ const BookConsultation = ({
     const endHour = endDate.getHours();
     const endMinute = endDate.getMinutes();
 
-    // Generate time slots between start and end time
     for (let hour = startHour; hour <= endHour; hour++) {
       for (let minute of [0, 30]) {
         if (hour === startHour && minute < startMinute) continue;
@@ -298,70 +299,69 @@ const BookConsultation = ({
           </Grid>
         );
 
-      case 1:
-        {
-          if (!eventData) {
-            return (
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-                <CircularProgress />
-              </Box>
-            );
-          }
-
-          const startDate = new Date(eventData.start_date);
-
+      case 1: {
+        if (!eventData) {
           return (
-            <Box sx={{ mt: 2 }}>
-              <FormControl fullWidth sx={{ mb: 2 }}>
-                <InputLabel>Consultation Type* </InputLabel>
-                <Select
-                  value={consultationType}
-                  onChange={(e) => setConsultationType(e.target.value)}
-                  label="Consultation Type"
-                >
-                  {selectedProfessional.is_available_online && (
-                    <MenuItem value="VIDEO">Video Call</MenuItem>
-                  )}
-                  <MenuItem value="CHAT">Chat</MenuItem>
-                  <MenuItem value="AUDIO">Audio Call</MenuItem>
-                  {selectedProfessional.is_available_in_person && (
-                    <MenuItem value="IN_PERSON">In Person</MenuItem>
-                  )}
-                </Select>
-                <TextField
-                  fullWidth
-                  sx={{ mt: 2 }}
-                  label="List of concerns to be discussed (Preferred)"
-                  value={concern}
-                  onChange={(e) => setConcern(e.target.value)}
-                  variant="outlined"
-                />
-              </FormControl>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <StaticDatePicker
-                  displayStaticWrapperAs="desktop"
-                  value={selectedDateTime || startDate}
-                  onChange={(date) => {
-                    const currentTime = selectedDateTime || startDate;
-                    date.setHours(
-                      currentTime.getHours(),
-                      currentTime.getMinutes()
-                    );
-                    setSelectedDateTime(date);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                  minDate={startDate}
-                  maxDate={startDate}
-                  shouldDisableDate={(date) => {
-                    // Disable all dates except the event date
-                    return date.toDateString() !== startDate.toDateString();
-                  }}
-                />
-              </LocalizationProvider>
-              {renderTimeSlots()}
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+              <CircularProgress />
             </Box>
           );
         }
+
+        const startDate = new Date(eventData[0].start_date);
+
+        return (
+          <Box sx={{ mt: 2 }}>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Consultation Type* </InputLabel>
+              <Select
+                value={consultationType}
+                onChange={(e) => setConsultationType(e.target.value)}
+                label="Consultation Type"
+              >
+                {selectedProfessional.is_available_online && (
+                  <MenuItem value="VIDEO">Video Call</MenuItem>
+                )}
+                <MenuItem value="CHAT">Chat</MenuItem>
+                <MenuItem value="AUDIO">Audio Call</MenuItem>
+                {selectedProfessional.is_available_in_person && (
+                  <MenuItem value="IN_PERSON">In Person</MenuItem>
+                )}
+              </Select>
+              <TextField
+                fullWidth
+                sx={{ mt: 2 }}
+                label="List of concerns to be discussed (Preferred)"
+                value={concern}
+                onChange={(e) => setConcern(e.target.value)}
+                variant="outlined"
+              />
+            </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <StaticDatePicker
+                displayStaticWrapperAs="desktop"
+                value={selectedDateTime || startDate}
+                onChange={(date) => {
+                  const currentTime = selectedDateTime || startDate;
+                  date.setHours(
+                    currentTime.getHours(),
+                    currentTime.getMinutes()
+                  );
+                  setSelectedDateTime(date);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                minDate={startDate}
+                maxDate={startDate}
+                shouldDisableDate={(date) => {
+                  // Disable all dates except the event date
+                  return date.toDateString() !== startDate.toDateString();
+                }}
+              />
+            </LocalizationProvider>
+            {renderTimeSlots()}
+          </Box>
+        );
+      }
 
       case 2:
         return (

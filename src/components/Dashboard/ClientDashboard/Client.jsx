@@ -15,6 +15,7 @@ import BookConsultation from "../../Consultation/BookConsultation";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ajaxCall from "../../../helpers/ajaxCall";
 import { toast } from "react-toastify";
+import DashboardShimmer from "../../UI/DashboardShimmer";
 
 const services = [
   {
@@ -52,6 +53,7 @@ const Client = () => {
   const [openBooking, setOpenBooking] = useState(false);
   const [upcomingConsultations, setUpcomingconsultations] = useState([]);
   const [userName, setUserName] = useState();
+  const [loading, setLoading] = useState(true);
 
   const handleOpenBooking = (service) => {
     setService(service);
@@ -73,6 +75,7 @@ const Client = () => {
   };
 
   const fetchData = async (url, setData) => {
+    setLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -93,6 +96,8 @@ const Client = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,6 +136,14 @@ const Client = () => {
   };
 
   const filteredConsultations = filterUpcomingSessions(upcomingConsultations);
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <DashboardShimmer />
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
