@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import ajaxCall from "../../../helpers/ajaxCall";
+import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { useEffect, useState } from "react";
 
 const StaticColor = [
@@ -37,8 +38,10 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
   const selectedServiceId = selectedService?.id;
   const staticData = StaticColor.find((s) => s.id === selectedServiceId);
   const [experts, setExperts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
+    setLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -58,12 +61,29 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData(`professionals/professional-filter/?professional_type=${selectedService?.id}`, setExperts);
   }, [selectedServiceId]);
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+    return new Date(dateString).toLocaleString('en-US', options);
+  };
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Box sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery card imageHeight={250} caption row={1} col={3} />
+        </Box>
+      </Container>
+    );
+  }
 
   if (!experts || experts.length === 0) {
     return (
@@ -176,13 +196,11 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 </Box>
 
               </Box>
-              {/* <Box
+              <Box
                 sx={{
                   mt: 3,
                   p: 2,
-                  bgcolor: expert.availability
-                    ? "success.light"
-                    : "warning.light",
+                  bgcolor: expert.availability ? "success.light" : "#90EE90",
                   borderRadius: 2,
                   display: "flex",
                   justifyContent: "space-between",
@@ -194,13 +212,15 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                     Next Available
                   </Typography>
                   <Typography variant="body1" fontWeight="medium">
-                    {expert.nextAvailable}
+                    {expert?.events[0]?.start_date
+                      ? formatDate(expert.events[0].start_date)
+                      : 'N/A'}
                   </Typography>
                 </Box>
                 <Typography variant="h6" fontWeight="bold" color="primary">
-                  {expert.consultationFee}
+                  {expert?.consultation}
                 </Typography>
-              </Box> */}
+              </Box>
               <Button
                 fullWidth
                 variant="contained"

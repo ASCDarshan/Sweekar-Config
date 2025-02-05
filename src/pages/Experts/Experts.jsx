@@ -13,7 +13,7 @@ import {
   Button,
   Rating,
 } from "@mui/material";
-import { CircularProgress } from "@mui/material";
+import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +23,10 @@ const Experts = () => {
   const [filterType, setFilterType] = useState("all");
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingCards, setLoadingCards] = useState(false);
 
   const fetchData = async (url, setData) => {
+    setLoadingCards(true);
     try {
       const response = await ajaxCall(
         url,
@@ -40,29 +42,40 @@ const Experts = () => {
       if (response?.status === 200) {
         setData(response?.data || []);
       } else {
+        setData([]);
         console.error("Fetch error:", response);
       }
     } catch (error) {
       console.error("Network error:", error);
-    }
-    finally {
+      setData([]);
+    } finally {
       setLoading(false);
+      setLoadingCards(false);
     }
   };
 
   useEffect(() => {
-    fetchData("professionals/professionalist/", setExperts);
-  }, []);
+    if (filterType === "all") {
+      fetchData("professionals/professionalist/", setExperts);
+    } else {
+      fetchData(
+        `professionals/professional-type/?professional_type=${filterType}`,
+        setExperts
+      );
+    }
+  }, [filterType]);
 
-  const handleViewConsultation = (experts) => {
-    navigate(`/experts/${experts.id}`);
+  const handleViewConsultation = (expert) => {
+    navigate(`/experts/${expert.id}`);
   };
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Box sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+        </Box>
+      </Container>
     );
   }
 
@@ -144,80 +157,106 @@ const Experts = () => {
                 onChange={(e) => setFilterType(e.target.value)}
               >
                 <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="mental-health">Mental Health</MenuItem>
-                <MenuItem value="legal">Legal</MenuItem>
-                <MenuItem value="medical">Medical</MenuItem>
+                <MenuItem value="1">Mental Health</MenuItem>
+                <MenuItem value="2">Legal</MenuItem>
+                <MenuItem value="3">Medical</MenuItem>
               </TextField>
             </Grid>
           </Grid>
         </Card>
       </Container>
       <Container sx={{ my: 4 }}>
-        <Grid container spacing={3}>
-          {experts.map((expert, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Card
-                sx={{
-                  height: "100%",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                  },
-                }}
-              >
-                <CardContent>
-                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                    <Avatar
-                      src={expert.image}
-                      sx={{ width: 80, height: 80, mr: 2 }}
-                    />
-                    <Box>
-                      <Typography variant="h6">{expert?.user?.first_name} {expert?.user?.last_name}</Typography>
-                      <Typography color="text.secondary" gutterBottom>
-                        {expert.professional_type.title}
-                      </Typography>
-                      <Rating value={expert?.user?.rating} readOnly size="small" />
-                    </Box>
-                  </Box>
-                  <Typography variant="body2" sx={{ mb: 2 }}>
-                    Experience: {expert.years_of_experience} years
-                  </Typography>
-                  <Box sx={{ mb: 2 }}>
-                    {expert.concerns.map((spec) => (
-                      <Chip
-                        key={spec.id}
-                        label={spec.name}
-                        size="small"
-                        sx={{
-                          mr: 0.5, mb: 0.5,
-                          bgcolor: "primary.light",
-                          color: "primary.dark",
-                        }}
-
+        {loadingCards ? (
+          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+        ) : experts.length === 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "200px",
+              textAlign: "center",
+              bgcolor: "#f9f9f9",
+              borderRadius: "8px",
+              p: 2,
+            }}
+          >
+            <Typography variant="h5" color="red">
+              No expert available for this service.
+            </Typography>
+          </Box>
+        ) : (
+          <Grid container spacing={3}>
+            {experts.map((expert, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                      <Avatar
+                        src={expert.image}
+                        sx={{ width: 80, height: 80, mr: 2 }}
                       />
-                    ))}
-                  </Box>
-                  <Box sx={{ mb: 2 }}>
-                    <Chip
-                      key={expert.languages_spoken}
-                      label={expert.languages_spoken}
+                      <Box>
+                        <Typography variant="h6">
+                          {expert?.user?.first_name} {expert?.user?.last_name}
+                        </Typography>
+                        <Typography color="text.secondary" gutterBottom>
+                          {expert.professional_type.title}
+                        </Typography>
+                        <Rating value={expert?.user?.rating} readOnly size="small" />
+                      </Box>
+                    </Box>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      Experience: {expert.years_of_experience} years
+                    </Typography>
+                    <Box sx={{ mb: 2 }}>
+                      {expert.concerns.map((spec) => (
+                        <Chip
+                          key={spec.id}
+                          label={spec.name}
+                          size="small"
+                          sx={{
+                            mr: 0.5,
+                            mb: 0.5,
+                            bgcolor: "primary.light",
+                            color: "primary.dark",
+                          }}
+                        />
+                      ))}
+                    </Box>
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="body2" sx={{ mb: 1 }}>
+                        Languages Spoken:  <Chip
+                          key={expert.languages_spoken}
+                          label={expert.languages_spoken}
+                          size="small"
+                          variant="outlined"
+                          sx={{ mr: 0.5 }}
+                        />
+                      </Typography>
+                    </Box>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => handleViewConsultation(expert)}
                       size="small"
-                      variant="outlined"
-                      sx={{ mr: 0.5 }}
-                    />
-                  </Box>
-                  <Button variant="contained"
-                    fullWidth
-                    onClick={() => handleViewConsultation(expert)}
-                    size="small"
-                  >
-                    View Profile
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    >
+                      View Profile
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
     </Box>
   );

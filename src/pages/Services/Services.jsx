@@ -8,10 +8,10 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  CircularProgress,
 } from "@mui/material";
+import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { Close } from "@mui/icons-material";
-import { toast } from "react-toastify"; // Add this import
+import { toast } from "react-toastify";
 import BookConsultation from "../../components/Consultation/BookConsultation";
 import ServiceCard from "./Services/ServiceCard";
 import ServiceDetailDrawer from "./Services/ServiceDetailDrawer";
@@ -58,6 +58,10 @@ const Services = () => {
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
+  };
+
+  const handleDetailOpen = (service) => {
+    setSelectedService(service);
     setDetailOpen(true);
   };
 
@@ -93,9 +97,11 @@ const Services = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Box sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+        </Box>
+      </Container>
     );
   }
 
@@ -166,6 +172,7 @@ const Services = () => {
                 service={service}
                 onSelect={handleServiceSelect}
                 isSelected={selectedService?.id === service.id}
+                onDetailOpen={handleDetailOpen}
               />
             </Grid>
           ))}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import ajaxCall from "../../../../helpers/ajaxCall";
 
-const CreateEventDialog = ({ open, onClose, ProfessionalData }) => {
+const CreateEventDialog = ({ open, onClose, ProfessionalData, setCount }) => {
     const professional = ProfessionalData?.id;
     const [title, setTitle] = useState("");
     const [start, setStart] = useState("");
@@ -44,6 +44,7 @@ const CreateEventDialog = ({ open, onClose, ProfessionalData }) => {
 
             if ([200, 201].includes(response.status)) {
                 toast.success("Event Created Successfully.");
+                setCount((prevCount) => prevCount + 1);
                 onClose();
             } else {
                 toast.error("Some Problem Occurred. Please try again.");

@@ -11,8 +11,8 @@ import {
   Button,
   TextField,
   MenuItem,
-  CircularProgress,
 } from "@mui/material";
+import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { Search, AccessTime } from "@mui/icons-material";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,11 @@ const Blog = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingBlogs, setLoadingBlogs] = useState(false); // Track loading for category selection
 
-  const fetchData = async (url, setData) => {
+  const fetchData = async (url, setData, isCategoryChange = false) => {
     try {
+      if (isCategoryChange) setLoadingBlogs(true); // Set loading when changing category
       const response = await ajaxCall(
         url,
         {
@@ -46,12 +48,11 @@ const Blog = () => {
       } else {
         console.error("Fetch error:", response);
       }
-
     } catch (error) {
       console.error("Network error:", error);
-    }
-    finally {
-      setLoading(false);
+    } finally {
+      if (isCategoryChange) setLoadingBlogs(false);
+      else setLoading(false);
     }
   };
 
@@ -65,9 +66,9 @@ const Blog = () => {
     setSelectedCategory(categoryId);
 
     if (categoryId === "All") {
-      fetchData("blog/bloglistview/", setBlogs);
+      fetchData("blog/bloglistview/", setBlogs, true);
     } else {
-      fetchData(`blog/bloglistview/?category_id=${categoryId}`, setBlogs);
+      fetchData(`blog/bloglistview/?category_id=${categoryId}`, setBlogs, true);
     }
   };
 
@@ -75,25 +76,22 @@ const Blog = () => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = text;
     const plainText = tempDiv.textContent || tempDiv.innerText;
-    const words = plainText.split(/\s+/).slice(0, wordLimit).join(" ");
-    return words;
+    return plainText.split(/\s+/).slice(0, wordLimit).join(" ");
   };
 
-  const slugify = (text) => {
-    return text.toLowerCase().replace(/\s+/g, "-");
-  };
-
+  const slugify = (text) => text.toLowerCase().replace(/\s+/g, "-");
 
   const handleReadMore = (blogName, BlogId) => {
     navigate(`/blogs/${slugify(blogName)}`, { state: BlogId });
   };
 
-
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Box sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+        </Box>
+      </Container>
     );
   }
 
@@ -129,28 +127,6 @@ const Blog = () => {
             Resources, stories and updates from the Sweekar community
           </Typography>
         </Container>
-        <Box
-          sx={{
-            position: "absolute",
-            top: -50,
-            right: -50,
-            width: 200,
-            height: 200,
-            borderRadius: "50%",
-            background: "rgba(157, 132, 183, 0.1)",
-          }}
-        />
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: -30,
-            left: -30,
-            width: 150,
-            height: 150,
-            borderRadius: "50%",
-            background: "rgba(157, 132, 183, 0.1)",
-          }}
-        />
       </Box>
       <Container sx={{ mt: 4, mb: 4 }}>
         <Card sx={{ p: 3 }}>
@@ -172,7 +148,7 @@ const Blog = () => {
                 value={selectedCategory || ""}
                 onChange={handleCategoryChange}
               >
-                <MenuItem value="All" >All</MenuItem>
+                <MenuItem value="All">All</MenuItem>
                 {categoryList.map((category) => (
                   <MenuItem key={category.id} value={category.id}>
                     {category.name}
@@ -183,81 +159,97 @@ const Blog = () => {
           </Grid>
         </Card>
       </Container>
-      <Container sx={{ mb: 6 }}>
-        <Grid container spacing={4}>
-          {blogs.length === 0 ? (
-            <Box sx={{ textAlign: 'center', mt: 4 }}>
-              <Typography variant="h6" color="text.secondary">
-                There is no blog for this category.
-              </Typography>
-            </Box>
-          ) : (
-            blogs.map((post) => (
-              <Grid item xs={12} md={4} key={post.id}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "translateY(-5px)",
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={post.image}
-                    alt={post.title}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Box sx={{ mb: 2 }}>
-                      <Chip
-                        label={
-                          post.category.name || "Uncategorized"
-                        }
-                        color="primary"
-                        size="small"
-                      />
-                    </Box>
-                    <Typography variant="h5" gutterBottom>
-                      {post.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 2 }}
-                      dangerouslySetInnerHTML={{ __html: getExcerpt(post.text, 30) }}
+
+      {loadingBlogs ? (
+        <Container sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery card imageHeight={250} caption row={1} col={3} />
+        </Container>
+      ) : (
+        <Container sx={{ mb: 6 }}>
+          <Grid container spacing={4}>
+            {blogs.length === 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "200px",
+                  textAlign: "center",
+                  borderRadius: "8px",
+                  p: 2,
+                }}
+              >
+                <Typography variant="h5" color="red">
+                  There is no blog for this category.
+                </Typography>
+              </Box>
+            ) : (
+              blogs.map((post) => (
+                <Grid item xs={12} md={4} key={post.id}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      transition: "transform 0.2s",
+                      "&:hover": {
+                        transform: "translateY(-5px)",
+                      },
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={post.image}
+                      alt={post.title}
                     />
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "text.secondary",
-                        mb: 2,
-                      }}
-                    >
-                      <AccessTime sx={{ fontSize: 16, mr: 0.5 }} />
-                      <Typography variant="caption">
-                        {post.date || "Unknown Date"}
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Box sx={{ mb: 2 }}>
+                        <Chip
+                          label={post.category.name || "Uncategorized"}
+                          color="primary"
+                          size="small"
+                        />
+                      </Box>
+                      <Typography variant="h5" gutterBottom>
+                        {post.title}
                       </Typography>
-                    </Box>
-                    <Box sx={{ mt: "auto" }}>
-                      <Button variant="contained"
-                        onClick={() => handleReadMore(post.title, post.id)}
-                        fullWidth
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                        dangerouslySetInnerHTML={{ __html: getExcerpt(post.text, 30) }}
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          color: "text.secondary",
+                          mb: 2,
+                        }}
                       >
-                        Read More
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
-          )}
-        </Grid>
-      </Container>
+                        <AccessTime sx={{ fontSize: 16, mr: 0.5 }} />
+                        <Typography variant="caption">
+                          {post.date || "Unknown Date"}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ mt: "auto" }}>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleReadMore(post.title, post.id)}
+                          fullWidth
+                        >
+                          Read More
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </Container>
+      )}
     </Box>
   );
 };

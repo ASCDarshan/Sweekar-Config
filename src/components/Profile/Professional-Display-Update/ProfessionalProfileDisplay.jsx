@@ -27,14 +27,17 @@ import {
 import ajaxCall from "../../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
 import ProfessionalUpdateDrawer from "./ProfessionalUpdateDrawer";
+import UserProfileShimmer from "../../UI/UserProfileShimmer";
 
 const ProfessionalProfileDisplay = () => {
     const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
     const user = JSON.parse(localStorage.getItem("loginInfo"));
     const [expert, setExpert] = useState({});
     const [openUpdateDrawer, setOpenUpdateDrawer] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const fetchData = async (url, setData) => {
+        setLoading(true);
         try {
             const response = await ajaxCall(
                 url,
@@ -56,6 +59,8 @@ const ProfessionalProfileDisplay = () => {
             }
         } catch (error) {
             console.error("Network error:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -70,6 +75,14 @@ const ProfessionalProfileDisplay = () => {
     const closeUpdateDrawer = () => {
         setOpenUpdateDrawer(false);
     };
+
+    if (loading) {
+        return (
+            <Container maxWidth="lg" sx={{ mt: 8 }}>
+                <UserProfileShimmer />
+            </Container>
+        );
+    }
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
