@@ -67,19 +67,35 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
   };
 
   useEffect(() => {
-    fetchData(`professionals/professional-filter/?professional_type=${selectedService?.id}`, setExperts);
+    fetchData(
+      `professionals/professional-filter/?professional_type=${selectedService?.id}`,
+      setExperts
+    );
   }, [selectedServiceId]);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-    return new Date(dateString).toLocaleString('en-US', options);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return new Date(dateString).toLocaleString("en-US", options);
   };
 
   if (loading) {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Box sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={1} col={3} />
+          <ShimmerSimpleGallery
+            card
+            imageHeight={250}
+            caption
+            row={1}
+            col={3}
+          />
         </Box>
       </Container>
     );
@@ -149,7 +165,9 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   <Typography variant="h6" gutterBottom>
                     {expert?.user?.username}
                   </Typography>
-                  <Typography color="text.secondary">{expert?.professional_type?.title} Specialist </Typography>
+                  <Typography color="text.secondary">
+                    {expert?.professional_type?.title} Specialist{" "}
+                  </Typography>
                   <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
                     <Rating value={expert.rating} readOnly size="small" />
                     <Typography variant="body2" sx={{ ml: 1 }}>
@@ -164,7 +182,9 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   <Typography variant="body2" color="text.secondary">
                     Experience
                   </Typography>
-                  <Typography variant="body1">{expert?.years_of_experience} + years</Typography>
+                  <Typography variant="body1">
+                    {expert?.years_of_experience} + years
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body2" color="text.secondary">
@@ -194,7 +214,6 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                     />
                   ))}
                 </Box>
-
               </Box>
               <Box
                 sx={{
@@ -214,7 +233,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   <Typography variant="body1" fontWeight="medium">
                     {expert?.events[0]?.start_date
                       ? formatDate(expert.events[0].start_date)
-                      : 'N/A'}
+                      : "N/A"}
                   </Typography>
                 </Box>
                 <Typography variant="h6" fontWeight="bold" color="primary">

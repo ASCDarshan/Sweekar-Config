@@ -6,8 +6,6 @@ import { theme } from "./theme";
 import { CssBaseline } from "@mui/material";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-
-console.log('============client id==============', import.meta.env.VITE_GOOGLE_CLIENT_ID)
 ReactDOM.createRoot(document.getElementById("root")).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <React.StrictMode>

@@ -32,8 +32,9 @@ const BookConsultation = ({
   preSelectedExpert,
   onClose,
   preSelectedExpertType,
+  setCount
 }) => {
-  const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
+  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
 
   const [professionals, setProfessionals] = useState([]);
   const [clientData, setClientData] = useState([]);
@@ -46,6 +47,7 @@ const BookConsultation = ({
   const [concern, setConcern] = useState("");
   const [notes, setNotes] = useState("");
   const [eventData, setEventsData] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
@@ -153,6 +155,7 @@ const BookConsultation = ({
       );
 
       if ([200, 201].includes(response.status)) {
+        setCount((prevCount) => prevCount + 1);
         toast.success("Consultation Booked Successfully.");
         onClose();
       } else {
@@ -181,30 +184,40 @@ const BookConsultation = ({
   };
 
   const renderTimeSlots = () => {
-    if (!eventData) return null;
+    if (!eventData || !selectedDate) return null;
 
-    const startDate = new Date(eventData[0].start_date);
-    const endDate = new Date(eventData[0].end_date);
+    const dateKey = selectedDate.toDateString();
+    const eventsForDate = eventData.filter(
+      (event) => new Date(event.start_date).toDateString() === dateKey
+    );
+
+    if (!eventsForDate.length) return null;
 
     const slots = [];
-    const startHour = startDate.getHours();
-    const startMinute = startDate.getMinutes();
-    const endHour = endDate.getHours();
-    const endMinute = endDate.getMinutes();
 
-    for (let hour = startHour; hour <= endHour; hour++) {
-      for (let minute of [0, 30]) {
-        if (hour === startHour && minute < startMinute) continue;
-        if (hour === endHour && minute > endMinute) continue;
+    eventsForDate.forEach((event) => {
+      const startDate = new Date(event.start_date);
+      const endDate = new Date(event.end_date);
 
-        const time = new Date(startDate);
-        time.setHours(hour, minute, 0);
-        slots.push({
-          time,
-          available: true,
-        });
+      const startHour = startDate.getHours();
+      const startMinute = startDate.getMinutes();
+      const endHour = endDate.getHours();
+      const endMinute = endDate.getMinutes();
+
+      for (let hour = startHour; hour <= endHour; hour++) {
+        for (let minute of [0, 30]) {
+          if (hour === startHour && minute < startMinute) continue;
+          if (hour === endHour && minute > endMinute) continue;
+
+          const time = new Date(startDate);
+          time.setHours(hour, minute, 0);
+          slots.push({
+            time,
+            available: true,
+          });
+        }
       }
-    }
+    });
 
     return (
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -280,7 +293,7 @@ const BookConsultation = ({
                         <Box sx={{ mt: 1 }}>
                           <Typography variant="body2">
                             Specializations:{" "}
-                            {professional?.concerns.map((spec, index) => (
+                            {professional?.professional_type?.concern.map((spec, index) => (
                               <Chip
                                 key={index}
                                 label={spec.name}
@@ -308,7 +321,23 @@ const BookConsultation = ({
           );
         }
 
-        const startDate = new Date(eventData[0].start_date);
+        const eventsByDate = eventData.reduce((acc, event) => {
+          const dateKey = new Date(event.start_date).toDateString();
+          if (!acc[dateKey]) {
+            acc[dateKey] = [];
+          }
+          acc[dateKey].push(event);
+          return acc;
+        }, {});
+
+        const uniqueDates = Object.keys(eventsByDate).map(
+          (date) => new Date(date)
+        );
+
+        const handleDateChange = (date) => {
+          setSelectedDate(date);
+          setSelectedDateTime(null);
+        };
 
         return (
           <Box sx={{ mt: 2 }}>
@@ -340,21 +369,15 @@ const BookConsultation = ({
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <StaticDatePicker
                 displayStaticWrapperAs="desktop"
-                value={selectedDateTime || startDate}
-                onChange={(date) => {
-                  const currentTime = selectedDateTime || startDate;
-                  date.setHours(
-                    currentTime.getHours(),
-                    currentTime.getMinutes()
-                  );
-                  setSelectedDateTime(date);
-                }}
+                value={selectedDate || new Date(eventData[0].start_date)}
+                onChange={handleDateChange}
                 renderInput={(params) => <TextField {...params} />}
-                minDate={startDate}
-                maxDate={startDate}
                 shouldDisableDate={(date) => {
-                  // Disable all dates except the event date
-                  return date.toDateString() !== startDate.toDateString();
+                  // Disable dates that don't have any events
+                  return !uniqueDates.some(
+                    (uniqueDate) =>
+                      uniqueDate.toDateString() === date.toDateString()
+                  );
                 }}
               />
             </LocalizationProvider>

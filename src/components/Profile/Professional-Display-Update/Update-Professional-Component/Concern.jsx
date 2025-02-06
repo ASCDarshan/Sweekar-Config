@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
     Box,
     Grid,
     FormControl,
     InputLabel,
     Select,
-    MenuItem
-} from '@mui/material';
-import { toast } from 'react-toastify';
-import ajaxCall from '../../../../helpers/ajaxCall';
+    MenuItem,
+} from "@mui/material";
+import { toast } from "react-toastify";
+import ajaxCall from "../../../../helpers/ajaxCall";
 
 const Concern = ({ expertId }) => {
     const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
@@ -20,12 +20,13 @@ const Concern = ({ expertId }) => {
     const fetchData = async () => {
         try {
             const concernsResponse = await ajaxCall(
-                'professionals/concerns/',
+                "professionals/concerns/",
                 {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "GET",
                 },
@@ -41,7 +42,8 @@ const Concern = ({ expertId }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "GET",
                 },
@@ -49,7 +51,8 @@ const Concern = ({ expertId }) => {
             );
 
             if (userConcernResponse?.status === 200) {
-                const selectedIds = userConcernResponse?.data?.map(item => item.concern) || [];
+                const selectedIds =
+                    userConcernResponse?.data?.map((item) => item.concern) || [];
                 setSelectedConcerns(selectedIds);
             }
         } catch (error) {
@@ -73,7 +76,8 @@ const Concern = ({ expertId }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "POST",
                     body: JSON.stringify({ concern: concernId, professional: expertId }),
@@ -99,7 +103,9 @@ const Concern = ({ expertId }) => {
         const newSelectedIds = event.target.value;
         setSelectedConcerns(newSelectedIds);
 
-        const addedIds = newSelectedIds.filter(id => !selectedConcerns.includes(id));
+        const addedIds = newSelectedIds.filter(
+            (id) => !selectedConcerns.includes(id)
+        );
 
         if (addedIds.length > 0) {
             handleUpdate(addedIds[0]);

@@ -106,12 +106,10 @@ const Navbar = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: trigger
-            ? "rgba(157, 132, 183, 0.95)"
-            : "#ece5ff",
+          backgroundColor: trigger ? "rgba(121, 94, 151, 0.44)" : "rgba(207, 199, 231, 0.85)",
           height: trigger ? "75px" : "80px",
           transition: "all 0.3s ease-in-out",
-          backdropFilter: trigger ? "blur(10px)" : "none",
+          backdropFilter: "blur(10px)",
           boxShadow: trigger ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
         }}
       >

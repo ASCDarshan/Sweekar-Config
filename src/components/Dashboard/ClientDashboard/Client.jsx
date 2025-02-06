@@ -8,6 +8,7 @@ import {
   Box,
   IconButton,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import { ArrowForward, Close, Schedule } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -20,17 +21,17 @@ import DashboardShimmer from "../../UI/DashboardShimmer";
 const services = [
   {
     id: 1,
-    title: "Medical Services",
-    description:
-      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
-    icon: "🏥",
-  },
-  {
-    id: 2,
     title: "Mental Health",
     description:
       "Connect with therapists and counselors who understand your unique needs.",
     icon: "🧠",
+  },
+  {
+    id: 2,
+    title: "Medical Services",
+    description:
+      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
+    icon: "🏥",
   },
   {
     id: 3,
@@ -53,7 +54,9 @@ const Client = () => {
   const [openBooking, setOpenBooking] = useState(false);
   const [upcomingConsultations, setUpcomingconsultations] = useState([]);
   const [userName, setUserName] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingCancel, setLoadingcancel] = useState(false);
+  const [count, setCount] = useState(0);
 
   const handleOpenBooking = (service) => {
     setService(service);
@@ -65,13 +68,21 @@ const Client = () => {
   };
 
   const filterUpcomingSessions = (consultations) => {
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+    const currentDateTime = new Date();
 
-    return consultations.filter((consultation) => {
-      const consultationDate = new Date(consultation.scheduled_time);
-      return consultationDate >= currentDate;
+    const futureConsultations = consultations.filter((consultation) => {
+      const consultationDateTime = new Date(consultation.scheduled_time);
+      return (
+        consultationDateTime > currentDateTime &&
+        consultation.status !== "CANCELLED"
+      );
     });
+
+    futureConsultations.sort((a, b) => {
+      return new Date(a.scheduled_time) - new Date(b.scheduled_time);
+    });
+
+    return futureConsultations.slice(0, 1);
   };
 
   const fetchData = async (url, setData) => {
@@ -83,7 +94,8 @@ const Client = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
@@ -102,11 +114,15 @@ const Client = () => {
   };
 
   useEffect(() => {
-    fetchData(`consultations/consultation-client/?user=${userId}`, setUpcomingconsultations);
+    fetchData(
+      `consultations/consultation-client/?user=${userId}`,
+      setUpcomingconsultations
+    );
     fetchData(`clients/profile-user/?user=${userId}`, setUserName);
-  }, []);
+  }, [count]);
 
   const handleCancelConsultation = async (id) => {
+    setLoadingcancel(true);
     try {
       const response = await ajaxCall(
         `consultations/consultation-cancel/${id}/`,
@@ -114,9 +130,8 @@ const Client = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("loginInfo")
-            )?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "PATCH",
         },
@@ -126,12 +141,13 @@ const Client = () => {
         toast.success("Consultation Cancelled Successfully.");
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
-      }
-      else if ([401].includes(response.status)) {
+      } else if ([401].includes(response.status)) {
         toast.error("Invalid Credentials.");
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadingcancel(false);
     }
   };
 
@@ -158,7 +174,7 @@ const Client = () => {
               <CardContent>
                 <Schedule color="primary" sx={{ fontSize: 40 }} />
                 <Typography variant="h6" component="div">
-                  Upcoming Sessions
+                  Next Upcoming Session
                 </Typography>
                 <Typography variant="h4">
                   {filteredConsultations.length}
@@ -167,35 +183,66 @@ const Client = () => {
             </Card>
           </Box>
 
-          <Typography variant="h6" gutterBottom >
-            Upcoming Consultations
+          <Typography variant="h6" gutterBottom>
+            Next Consultation
           </Typography>
           <Grid container spacing={2} mt={2}>
-            {filteredConsultations.map((consultation) => (
-              <Grid item xs={12} md={6} key={consultation.id}>
+            {filteredConsultations.length > 0 ? (
+              <Grid item xs={12}>
                 <Card>
                   <CardContent>
                     <Typography variant="h6">
-                      {consultation.professional_name}
+                      {filteredConsultations[0].professional_name}
                     </Typography>
                     <Typography color="textSecondary">
-                      {new Date(consultation.scheduled_time).toLocaleString()}
+                      {new Date(
+                        filteredConsultations[0].scheduled_time
+                      ).toLocaleString()}
                     </Typography>
                     <Typography variant="body2">
-                      Type: {consultation.consultation_type}
+                      Type: {filteredConsultations[0].consultation_type}
                     </Typography>
                   </CardContent>
-                  <Button size="small" color="primary" onClick={() => handleCancelConsultation(consultation?.id)}>
-                    Cancel Consultation
-                  </Button>
+                  {loadingCancel ? (
+                    <CircularProgress />
+                  ) : (
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() =>
+                        handleCancelConsultation(filteredConsultations[0]?.id)
+                      }
+                    >
+                      Cancel Consultation
+                    </Button>
+                  )}
                 </Card>
               </Grid>
-            ))}
+            ) : (
+              <Grid item xs={12}>
+                <Card>
+                  <CardContent>
+                    <Typography
+                      variant="body1"
+                      textAlign="center"
+                      color="text.secondary"
+                    >
+                      No upcoming consultations. Book a consultation to get
+                      started!
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
           </Grid>
         </Grid>
 
         <Grid item xs={12} md={1}>
-          <Divider orientation="vertical" flexItem sx={{ mx: "auto", height: "100%" }} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ mx: "auto", height: "100%" }}
+          />
         </Grid>
 
         <Grid item xs={12} md={5}>
@@ -297,7 +344,11 @@ const Client = () => {
           </IconButton>
         </Box>
         <Box sx={{ p: 2 }}>
-          <BookConsultation preSelectedExpertType={service?.id} />
+          <BookConsultation
+            preSelectedExpertType={service?.id}
+            setCount={setCount}
+            onClose={handleClose}
+          />
         </Box>
       </SwipeableDrawer>
     </Container>

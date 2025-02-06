@@ -19,17 +19,17 @@ import { toast } from "react-toastify";
 const services = [
   {
     id: 1,
-    title: "Medical Services",
-    description:
-      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
-    icon: "🏥",
-  },
-  {
-    id: 2,
     title: "Mental Health",
     description:
       "Connect with therapists and counselors who understand your unique needs.",
     icon: "🧠",
+  },
+  {
+    id: 2,
+    title: "Medical Services",
+    description:
+      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
+    icon: "🏥",
   },
   {
     id: 3,
@@ -59,7 +59,7 @@ const Services = () => {
       setService(service);
       setOpenBooking(true);
     } else {
-      toast.error("Please log in first to book a consultation");
+      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
       setOpenBooking(false);
     }
   };

@@ -1,6 +1,7 @@
 import { Box, Container, Typography, Grid, Fade, Slide } from "@mui/material";
 import { useEffect, useState } from "react";
 import LocationSelector from "./Location";
+import BackgroundImg from "../../../assets/BackgroundImg.jpeg";
 
 const Hero = () => {
   const [showContent, setShowContent] = useState(false);
@@ -72,9 +73,10 @@ const Hero = () => {
             <Fade in={showContent} timeout={2000}>
               <Box
                 sx={{
-                  height: "400px",
-                  background:
-                    "linear-gradient(135deg, #9D84B7 0%, #7A5BA1 100%)",
+                  height: "340px",
+                  backgroundImage: `url(${BackgroundImg})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   borderRadius: "20px",
                   position: "relative",
                   overflow: "hidden",
