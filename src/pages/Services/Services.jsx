@@ -73,7 +73,7 @@ const Services = () => {
       setSelectedExpert(null);
       setBookingOpen(true);
     } else {
-      toast.error("Please log in first to book a consultation");
+      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
       setBookingOpen(false);
     }
   };
@@ -85,7 +85,7 @@ const Services = () => {
       setSelectedExpert(expert);
       setBookingOpen(true);
     } else {
-      toast.error("Please log in first to book a consultation");
+      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
       setBookingOpen(false);
     }
   };
