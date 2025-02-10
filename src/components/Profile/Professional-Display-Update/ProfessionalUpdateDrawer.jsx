@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Close } from "@mui/icons-material"
 import { Box, IconButton, SwipeableDrawer, Typography } from "@mui/material"
 import BasicInformation from "./Update-Professional-Component/BasicInformation"
 import Award from "./Update-Professional-Component/Award"
 import Concern from "./Update-Professional-Component/Concern"
 
-// eslint-disable-next-line react/prop-types
 const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
     return (
         <SwipeableDrawer

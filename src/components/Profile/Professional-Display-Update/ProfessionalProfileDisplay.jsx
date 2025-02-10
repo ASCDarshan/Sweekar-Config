@@ -66,7 +66,7 @@ const ProfessionalProfileDisplay = () => {
 
     useEffect(() => {
         fetchData(`professionals/professional-user/?user=${userId}`, setExpert);
-    }, []);
+    }, [userId]);
 
     const handleUpdateClick = () => {
         setOpenUpdateDrawer(true);

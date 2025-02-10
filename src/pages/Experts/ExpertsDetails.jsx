@@ -38,7 +38,7 @@ const ExpertsDetails = () => {
 
     useEffect(() => {
         fetchData(`professionals/professional-update/${id}/`, setExpert);
-    }, []);
+    }, [id]);
 
     if (loading) {
         return (

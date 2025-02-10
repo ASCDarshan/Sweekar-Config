@@ -119,7 +119,7 @@ const Client = () => {
       setUpcomingconsultations
     );
     fetchData(`clients/profile-user/?user=${userId}`, setUserName);
-  }, [count]);
+  }, [count, userId]);
 
   const handleCancelConsultation = async (id) => {
     setLoadingcancel(true);
