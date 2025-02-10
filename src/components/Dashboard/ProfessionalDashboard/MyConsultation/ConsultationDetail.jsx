@@ -53,7 +53,7 @@ const ConsultationDetail = () => {
 
   useEffect(() => {
     fetchData(`consultations/consultation-update/${id}/`, setConsultation);
-  }, []);
+  }, [id]);
 
   const handleCancelConsultation = async (id) => {
     try {
@@ -81,7 +81,6 @@ const ConsultationDetail = () => {
       console.log(error);
     }
   };
-
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>

@@ -89,7 +89,7 @@ const ConsultationList = () => {
       url = `consultations/consultation-status/?user=${userId}&status=${statusFilter}`;
     }
     fetchData(url, setConsultationList, Boolean(statusFilter));
-  }, [statusFilter]);
+  }, [statusFilter, userId]);
 
   function formatScheduledTime(dateString) {
     const date = new Date(dateString);
