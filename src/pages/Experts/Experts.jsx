@@ -16,6 +16,7 @@ import {
 import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
+import ServiceShimmer from "../../components/UI/ServiceShimmer";
 
 const Experts = () => {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ const Experts = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Box sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+          <ServiceShimmer />
         </Box>
       </Container>
     );

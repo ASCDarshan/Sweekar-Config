@@ -6,14 +6,12 @@ import {
   DialogActions,
   Button,
   Typography,
-  Alert,
   Box,
   TextField,
 } from "@mui/material";
 
 const OTPVerification = ({ open, onClose, phone }) => {
   const [otp, setOTP] = useState("");
-  const [error, setError] = useState("");
   const [countdown, setCountdown] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
@@ -54,12 +52,6 @@ const OTPVerification = ({ open, onClose, phone }) => {
           Please enter the OTP sent to {phone}
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
         <TextField
           fullWidth
           label="OTP"
@@ -79,7 +71,7 @@ const OTPVerification = ({ open, onClose, phone }) => {
             {countdown > 0 ? (
               `Resend OTP in ${countdown}s`
             ) : (
-              <Button onClick={handleResendOTP} disabled={!canResend}>
+              <Button disabled={!canResend}>
                 Resend OTP
               </Button>
             )}
@@ -90,7 +82,6 @@ const OTPVerification = ({ open, onClose, phone }) => {
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
-          onClick={handleVerifyOTP}
           disabled={otp.length !== 6}
         >
           Verify
