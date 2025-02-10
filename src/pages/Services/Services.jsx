@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
-import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import BookConsultation from "../../components/Consultation/BookConsultation";
@@ -18,6 +17,7 @@ import ServiceDetailDrawer from "./Services/ServiceDetailDrawer";
 import ExpertsSection from "./Services/ExpertsSection";
 import NeedHelp from "../../components/Needhelp/NeedHelp";
 import ajaxCall from "../../helpers/ajaxCall";
+import ServiceShimmer from "../../components/UI/ServiceShimmer";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -99,7 +99,7 @@ const Services = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Box sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+          <ServiceShimmer />
         </Box>
       </Container>
     );

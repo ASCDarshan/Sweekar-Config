@@ -3,12 +3,15 @@ import ajaxCall from "../../helpers/ajaxCall";
 import { useParams } from "react-router-dom";
 import { Avatar, Box, Card, CardContent, CardHeader, Chip, Container, Divider, Grid, Paper, Rating, Stack, Typography } from "@mui/material";
 import { AccessTime, EmojiEvents, Language, LocationOn, People, Psychology, VerifiedUser } from "@mui/icons-material";
+import UserProfileShimmer from "../../components/UI/UserProfileShimmer";
 
 const ExpertsDetails = () => {
     const { id } = useParams();
 
     const [expert, setExpert] = useState([]);
+    const [loading, setLoading] = useState(true);
     const fetchData = async (url, setData) => {
+        setLoading(true);
         try {
             const response = await ajaxCall(
                 url,
@@ -28,12 +31,22 @@ const ExpertsDetails = () => {
             }
         } catch (error) {
             console.error("Network error:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         fetchData(`professionals/professional-update/${id}/`, setExpert);
     }, []);
+
+    if (loading) {
+        return (
+            <Container maxWidth="lg" sx={{ mt: 8 }}>
+                <UserProfileShimmer />
+            </Container>
+        );
+    }
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Paper elevation={3} sx={{ mb: 3, p: 3 }}>

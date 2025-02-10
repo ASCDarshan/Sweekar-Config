@@ -127,7 +127,6 @@ const Login = () => {
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
-    console.log(credentialResponse);
     if (!credentialResponse?.credential) {
       toast.error("Google login failed. Missing credentials.");
       return;

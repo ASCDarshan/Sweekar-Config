@@ -16,6 +16,7 @@ import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { Search, AccessTime } from "@mui/icons-material";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
+import ServiceShimmer from "../../components/UI/ServiceShimmer";
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ const Blog = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
-  const [loadingBlogs, setLoadingBlogs] = useState(false); // Track loading for category selection
+  const [loadingBlogs, setLoadingBlogs] = useState(false);
 
   const fetchData = async (url, setData, isCategoryChange = false) => {
     try {
-      if (isCategoryChange) setLoadingBlogs(true); // Set loading when changing category
+      if (isCategoryChange) setLoadingBlogs(true);
       const response = await ajaxCall(
         url,
         {
@@ -89,7 +90,7 @@ const Blog = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Box sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
+          <ServiceShimmer />
         </Box>
       </Container>
     );
