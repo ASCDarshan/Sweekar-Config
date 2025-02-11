@@ -21,10 +21,12 @@ import { toast } from "react-toastify";
 
 const ConsultationDetail = () => {
   const { id } = useParams();
+  const userType = JSON.parse(localStorage.getItem("loginInfo"))?.user_type;
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewDialog, setReviewDialog] = useState(false);
   const [consultation, setConsultation] = useState([]);
+  const [cancelDialog, setCancelDialog] = useState(false);
 
   const fetchData = async (url, setData) => {
     try {
@@ -55,7 +57,7 @@ const ConsultationDetail = () => {
     fetchData(`consultations/consultation-update/${id}/`, setConsultation);
   }, [id]);
 
-  const handleCancelConsultation = async (id) => {
+  const handleCancelConsultation = async () => {
     try {
       const response = await ajaxCall(
         `consultations/consultation-cancel/${id}/`,
@@ -72,6 +74,8 @@ const ConsultationDetail = () => {
       );
       if ([200, 201].includes(response.status)) {
         toast.success("Consultation Cancelled Successfully.");
+        setCancelDialog(false);
+        fetchData(`consultations/consultation-update/${id}/`, setConsultation);
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
       } else if ([401].includes(response.status)) {
@@ -90,9 +94,17 @@ const ConsultationDetail = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Typography variant="subtitle1">Client</Typography>
+            {userType === "CLIENT" && (
+              <Typography variant="subtitle1">Professional</Typography>
+            )}
+            {userType === "PROFESSIONAL" && (
+              <Typography variant="subtitle1">Client</Typography>
+            )}
             <Typography variant="h6">
-              {consultation?.client_details?.user?.username}
+              {userType === "CLIENT" &&
+                consultation?.professional_details?.user?.username}
+              {userType === "PROFESSIONAL" &&
+                consultation?.client_details?.user?.username}
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -137,7 +149,7 @@ const ConsultationDetail = () => {
                 <Button
                   variant="outlined"
                   color="error"
-                  onClick={() => handleCancelConsultation(consultation?.id)}
+                  onClick={() => setCancelDialog(true)}
                 >
                   Cancel Consultation
                 </Button>
@@ -156,6 +168,7 @@ const ConsultationDetail = () => {
           </Grid>
         </Grid>
       </Paper>
+
       <Dialog open={reviewDialog} onClose={() => setReviewDialog(false)}>
         <DialogTitle>Leave a Review</DialogTitle>
         <DialogContent>
@@ -181,6 +194,20 @@ const ConsultationDetail = () => {
         <DialogActions>
           <Button onClick={() => setReviewDialog(false)}>Cancel</Button>
           <Button variant="contained">Submit Review</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={cancelDialog} onClose={() => setCancelDialog(false)}>
+        <DialogTitle>Are you sure you want to cancel this consultation?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setCancelDialog(false)}>No</Button>
+          <Button
+            variant="contained"
+            onClick={handleCancelConsultation}
+            size="small"
+          >
+            Yes, Cancel
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>
