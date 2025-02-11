@@ -17,6 +17,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ajaxCall from "../../../helpers/ajaxCall";
 import { toast } from "react-toastify";
 import DashboardShimmer from "../../UI/DashboardShimmer";
+import { useNavigate } from "react-router-dom";
 
 const services = [
   {
@@ -49,6 +50,7 @@ const services = [
 ];
 
 const Client = () => {
+  const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
   const [service, setService] = useState([]);
   const [openBooking, setOpenBooking] = useState(false);
@@ -65,6 +67,10 @@ const Client = () => {
 
   const handleClose = () => {
     setOpenBooking(false);
+  };
+
+  const handleViewDetails = (consultationId) => {
+    navigate(`/consultation/${consultationId}`);
   };
 
   const filterUpcomingSessions = (consultations) => {
@@ -206,15 +212,20 @@ const Client = () => {
                   {loadingCancel ? (
                     <CircularProgress />
                   ) : (
-                    <Button
-                      size="small"
-                      color="primary"
-                      onClick={() =>
-                        handleCancelConsultation(filteredConsultations[0]?.id)
-                      }
-                    >
-                      Cancel Consultation
-                    </Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          textTransform: "none",
+                          fontSize: "0.75rem",
+                          py: 0.5,
+                        }}
+                        onClick={() => handleViewDetails(filteredConsultations[0]?.id)}
+                      >
+                        View Consultation
+                      </Button>
+                    </Box>
                   )}
                 </Card>
               </Grid>
