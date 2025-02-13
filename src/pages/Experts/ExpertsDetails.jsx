@@ -1,8 +1,25 @@
 import { useEffect, useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useParams } from "react-router-dom";
-import { Avatar, Box, Card, CardContent, CardHeader, Chip, Container, Divider, Grid, Paper, Rating, Stack, Typography } from "@mui/material";
-import { AccessTime, EmojiEvents, Language, LocationOn, People, Psychology, VerifiedUser } from "@mui/icons-material";
+import {
+    Avatar,
+    Box,
+    Chip,
+    Container,
+    Divider,
+    Grid,
+    Paper,
+    Rating,
+    Stack,
+    Typography,
+} from "@mui/material";
+import {
+    AccessTime,
+    EmojiEvents,
+    Language,
+    LocationOn,
+    VerifiedUser,
+} from "@mui/icons-material";
 import UserProfileShimmer from "../../components/UI/UserProfileShimmer";
 
 const ExpertsDetails = () => {
@@ -49,16 +66,17 @@ const ExpertsDetails = () => {
     }
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
-            <Paper elevation={3} sx={{ mb: 3, p: 3 }}>
-                <Grid container spacing={3} alignItems="center">
-                    <Grid item xs={12} md={2} sx={{ textAlign: "center" }}>
-                        <Box position="relative" display="inline-block">
+            <Grid container spacing={4}>
+                <Grid item xs={12} md={4}>
+                    <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
+                        <Box position="relative" display="inline-block" mb={3}>
                             <Avatar
                                 sx={{
-                                    width: 120,
-                                    height: 120,
-                                    fontSize: "2.5rem",
+                                    width: 180,
+                                    height: 180,
+                                    fontSize: "3rem",
                                     bgcolor: "primary.main",
+                                    mb: 2,
                                 }}
                             >
                                 {expert?.user?.first_name?.charAt(0)}
@@ -80,15 +98,66 @@ const ExpertsDetails = () => {
                                 }}
                             />
                         </Box>
-                    </Grid>
-                    <Grid item xs={12} md={7}>
+
                         <Typography variant="h4" gutterBottom>
                             {expert?.user?.first_name} {expert?.user?.last_name}
                         </Typography>
                         <Typography variant="h6" color="text.secondary" gutterBottom>
                             {expert.professional_type?.title}
                         </Typography>
-                        <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+
+                        <Box sx={{ mt: 4, mb: 3 }}>
+                            <Typography variant="h6" gutterBottom>
+                                Average user rating
+                            </Typography>
+                            <Typography variant="h3" color="primary" gutterBottom>
+                                {expert?.rating?.toFixed(1)}
+                            </Typography>
+                            <Rating
+                                value={expert?.rating || 0}
+                                precision={0.1}
+                                readOnly
+                                size="large"
+                            />
+                            <Typography variant="body2" color="text.secondary">
+                                ({expert?.total_consultations} consultations)
+                            </Typography>
+                        </Box>
+
+                        <Box sx={{ mt: 2 }}>
+                            <Typography variant="h6" gutterBottom>
+                                Session Details
+                            </Typography>
+                            <Typography variant="h4" color="primary" gutterBottom>
+                                ₹{expert?.hourly_rate}
+                            </Typography>
+                            <Typography
+                                variant="subtitle2"
+                                color="text.secondary"
+                                gutterBottom
+                            >
+                                per session
+                            </Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    mt: 1,
+                                }}
+                            >
+                                <AccessTime sx={{ fontSize: 20, mr: 1 }} />
+                                <Typography variant="body2">
+                                    {expert?.session_duration} min session
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ mt: 3, justifyContent: "center" }}
+                        >
                             {expert?.is_available_online && (
                                 <Chip
                                     icon={<Language />}
@@ -106,50 +175,97 @@ const ExpertsDetails = () => {
                                 />
                             )}
                         </Stack>
-                    </Grid>
-                    <Grid item xs={12} md={3} sx={{ textAlign: "center" }}>
-                        <Typography variant="h4" color="primary" gutterBottom>
-                            ₹{expert?.hourly_rate}
-                        </Typography>
-                        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                            per session
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                mt: 1,
-                            }}
-                        >
-                            <AccessTime sx={{ fontSize: 20, mr: 1 }} />
-                            <Typography variant="body2">
-                                {expert?.session_duration} min session
-                            </Typography>
-                        </Box>
-                    </Grid>
+                    </Paper>
                 </Grid>
-            </Paper>
 
-            <Grid container spacing={3}>
                 <Grid item xs={12} md={8}>
-                    <Card sx={{ mb: 3 }}>
-                        <CardHeader title="About" />
-                        <CardContent>
+                    <Stack spacing={4}>
+                        <Paper elevation={3} sx={{ p: 3 }}>
+                            <Typography variant="h5" gutterBottom color="primary">
+                                About me
+                            </Typography>
                             <Typography variant="body1" color="text.secondary">
                                 {expert.biography}
                             </Typography>
-                        </CardContent>
-                    </Card>
+                        </Paper>
 
-                    {expert?.awards?.length > 0 && (
-                        <Card>
-                            <CardHeader
-                                title="Awards & Achievements"
-                                avatar={<EmojiEvents color="primary" />}
-                            />
-                            <CardContent>
-                                <Stack spacing={2}>
+                        <Paper elevation={3} sx={{ p: 3 }}>
+                            <Typography variant="h5" gutterBottom color="primary">
+                                Languages known
+                            </Typography>
+                            <Typography variant="body1" color="text.secondary">
+                                {expert?.languages_spoken}
+                            </Typography>
+                        </Paper>
+
+                        <Paper elevation={3} sx={{ p: 3 }}>
+                            <Typography variant="h5" gutterBottom color="primary">
+                                Professional Info
+                            </Typography>
+                            <Stack spacing={2}>
+                                <Box>
+                                    <Typography variant="subtitle2" color="text.secondary">
+                                        Experience
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {expert?.years_of_experience} years
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography variant="subtitle2" color="text.secondary">
+                                        License Number
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {expert?.license_number}
+                                    </Typography>
+                                </Box>
+                            </Stack>
+                        </Paper>
+
+                        <Paper elevation={3} sx={{ p: 3 }}>
+                            <Typography variant="h5" gutterBottom color="primary">
+                                Area of expertise
+                            </Typography>
+                            <Stack direction="row" flexWrap="wrap" gap={1}>
+                                {expert?.concerns?.map((concern) => (
+                                    <Chip
+                                        key={concern.id}
+                                        label={concern.name}
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                ))}
+                            </Stack>
+                        </Paper>
+
+                        <Paper elevation={3} sx={{ p: 3 }}>
+                            <Typography variant="h5" gutterBottom color="primary">
+                                Specializations
+                            </Typography>
+                            <Stack direction="row" flexWrap="wrap" gap={1}>
+                                {expert?.specializations?.map((spec, index) => (
+                                    <Chip
+                                        key={index}
+                                        label={spec}
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                ))}
+                            </Stack>
+                        </Paper>
+
+                        {expert?.awards?.length > 0 && (
+                            <Paper elevation={3} sx={{ p: 3 }}>
+                                <Typography
+                                    variant="h5"
+                                    gutterBottom
+                                    color="primary"
+                                    sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                                >
+                                    <EmojiEvents />
+                                    Awards & Achievements
+                                </Typography>
+                                <Stack spacing={3}>
                                     {expert?.awards.map((award) => (
                                         <Box key={award.id}>
                                             <Typography variant="h6" gutterBottom>
@@ -169,86 +285,13 @@ const ExpertsDetails = () => {
                                         </Box>
                                     ))}
                                 </Stack>
-                            </CardContent>
-                        </Card>
-                    )}
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ mb: 3 }}>
-                        <CardHeader title="Professional Info" />
-                        <CardContent>
-                            <Stack spacing={2}>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        Experience
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        {expert?.years_of_experience} years
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        Languages
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        {expert?.languages_spoken}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        License Number
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        {expert?.license_number}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        Rating
-                                    </Typography>
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                        <Rating value={expert?.rating} precision={0.1} readOnly />
-                                        <Typography>({expert?.rating?.toFixed(1)})</Typography>
-                                    </Box>
-                                </Box>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        Total Consultations
-                                    </Typography>
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                        <People />
-                                        <Typography>{expert?.total_consultations}</Typography>
-                                    </Box>
-                                </Box>
-                            </Stack>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader
-                            title="Specializations"
-                            avatar={<Psychology color="primary" />}
-                        />
-                        <CardContent>
-                            <Stack direction="row" flexWrap="wrap" gap={1}>
-                                {expert?.concerns?.map((concern) => (
-                                    <Chip
-                                        key={concern.id}
-                                        label={concern.name}
-                                        variant="outlined"
-                                        size="small"
-                                    />
-                                ))}
-                            </Stack>
-                        </CardContent>
-                    </Card>
+                            </Paper>
+                        )}
+                    </Stack>
                 </Grid>
             </Grid>
-
-
         </Container>
-    )
-}
+    );
+};
 
-export default ExpertsDetails
+export default ExpertsDetails;
