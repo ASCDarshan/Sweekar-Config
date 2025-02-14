@@ -1,13 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import {
-    Box,
-    Grid,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-} from "@mui/material";
+import { Box, Grid, Typography, Chip } from "@mui/material";
 import { toast } from "react-toastify";
 import ajaxCall from "../../../../helpers/ajaxCall";
 
@@ -67,7 +60,11 @@ const Concern = ({ expertId }) => {
         fetchData();
     }, []);
 
-    const handleUpdate = async (concernId) => {
+    const handleChipClick = async (concernId) => {
+        if (selectedConcerns.includes(concernId)) {
+            return;
+        }
+
         setLoading(true);
         try {
             const response = await ajaxCall(
@@ -76,8 +73,7 @@ const Concern = ({ expertId }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
-                            }`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
                     },
                     method: "POST",
                     body: JSON.stringify({ concern: concernId, professional: expertId }),
@@ -86,53 +82,43 @@ const Concern = ({ expertId }) => {
             );
 
             if ([200, 201].includes(response.status)) {
-                toast.success("Concern updated successfully");
+                toast.success("Specialization added successfully");
                 await fetchData();
             } else {
-                toast.error("Failed to update concern");
+                toast.error("Failed to add specialization");
             }
         } catch (error) {
             console.error("Update error:", error);
-            toast.error("Failed to update concern");
+            toast.error("Failed to add specialization");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleConcernChange = (event) => {
-        const newSelectedIds = event.target.value;
-        setSelectedConcerns(newSelectedIds);
-
-        const addedIds = newSelectedIds.filter(
-            (id) => !selectedConcerns.includes(id)
-        );
-
-        if (addedIds.length > 0) {
-            handleUpdate(addedIds[0]);
-        }
-    };
-
     return (
-        <Box sx={{ p: 2 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <FormControl fullWidth>
-                        <InputLabel>Specializations</InputLabel>
-                        <Select
-                            multiple
-                            value={selectedConcerns}
-                            label="Specializations"
-                            onChange={handleConcernChange}
+        <Box sx={{ p: 3 }}>
+            <Typography variant="h5" gutterBottom color="primary">
+                Area of expertise (Modify concerns with a click)
+            </Typography>
+            <Grid container spacing={1}>
+                {allConcerns.map((concern) => (
+                    <Grid item key={concern.id}>
+                        <Chip
+                            label={concern.name}
+                            onClick={() => handleChipClick(concern.id)}
+                            color={selectedConcerns.includes(concern.id) ? "primary" : "default"}
+                            variant={selectedConcerns.includes(concern.id) ? "filled" : "outlined"}
                             disabled={loading}
-                        >
-                            {allConcerns.map((concern) => (
-                                <MenuItem key={concern.id} value={concern.id}>
-                                    {concern.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: selectedConcerns.includes(concern.id)
+                                        ? 'primary.main'
+                                        : 'action.hover'
+                                }
+                            }}
+                        />
+                    </Grid>
+                ))}
             </Grid>
         </Box>
     );

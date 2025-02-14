@@ -1,5 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField,
+} from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ajaxCall from "../../../../helpers/ajaxCall";
@@ -34,7 +42,8 @@ const CreateEventDialog = ({ open, onClose, ProfessionalData, setCount }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "POST",
                     body: JSON.stringify(formData),
@@ -52,8 +61,7 @@ const CreateEventDialog = ({ open, onClose, ProfessionalData, setCount }) => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to create event.");
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
@@ -92,12 +100,13 @@ const CreateEventDialog = ({ open, onClose, ProfessionalData, setCount }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} disabled={loading}>Cancel</Button>
+                <Button onClick={onClose} disabled={loading}>
+                    Cancel
+                </Button>
                 <Button variant="contained" onClick={handleSubmit} disabled={loading}>
                     {loading ? <CircularProgress size={24} color="inherit" /> : "Create"}
                 </Button>
             </DialogActions>
-
         </Dialog>
     );
 };

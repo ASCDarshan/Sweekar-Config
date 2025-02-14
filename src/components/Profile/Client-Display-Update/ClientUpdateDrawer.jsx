@@ -131,16 +131,6 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Allergies"
-                                name="allergies"
-                                value={profile.allergies}
-                                onChange={handleChange}
-                                InputLabelProps={{ shrink: true }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
                                 label="Date of Birth"
                                 type="date"
                                 name="date_of_birth"
@@ -150,9 +140,12 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                                 InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+
+                        <Grid item xs={12} sm={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="blood-group-label">Select Blood Group</InputLabel>
+                                <InputLabel id="blood-group-label">
+                                    Select Blood Group
+                                </InputLabel>
                                 <Select
                                     labelId="blood-group-label"
                                     name="blood_group"
@@ -171,18 +164,7 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Current Medications"
-                                type="text"
-                                name="current_medications"
-                                value={profile.current_medications}
-                                onChange={handleChange}
-                                InputProps={{ inputProps: { min: 0 } }}
-                                InputLabelProps={{ shrink: true }}
-                            />
-                        </Grid>
+
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
@@ -231,15 +213,42 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
                                 InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+
+                        <Grid item xs={12} sm={12}>
                             <TextField
                                 fullWidth
                                 label="Medical History"
-                                type="text"
                                 name="medical_history"
                                 value={profile.medical_history}
                                 onChange={handleChange}
-                                InputProps={{ inputProps: { min: 0 } }}
+                                multiline
+                                rows={4}
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} sm={12}>
+                            <TextField
+                                fullWidth
+                                label="Allergies"
+                                name="allergies"
+                                value={profile.allergies}
+                                onChange={handleChange}
+                                multiline
+                                rows={4}
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} sm={12}>
+                            <TextField
+                                fullWidth
+                                label="Current Medications"
+                                name="current_medications"
+                                value={profile.current_medications}
+                                onChange={handleChange}
+                                multiline
+                                rows={4}
                                 InputLabelProps={{ shrink: true }}
                             />
                         </Grid>

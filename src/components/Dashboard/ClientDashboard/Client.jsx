@@ -8,14 +8,12 @@ import {
   Box,
   IconButton,
   Divider,
-  CircularProgress,
 } from "@mui/material";
 import { ArrowForward, Close, Schedule } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import BookConsultation from "../../Consultation/BookConsultation";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ajaxCall from "../../../helpers/ajaxCall";
-import { toast } from "react-toastify";
 import DashboardShimmer from "../../UI/DashboardShimmer";
 import { useNavigate } from "react-router-dom";
 
@@ -57,7 +55,6 @@ const Client = () => {
   const [upcomingConsultations, setUpcomingconsultations] = useState([]);
   const [userName, setUserName] = useState();
   const [loading, setLoading] = useState(false);
-  const [loadingCancel, setLoadingcancel] = useState(false);
   const [count, setCount] = useState(0);
 
   const handleOpenBooking = (service) => {
@@ -127,36 +124,6 @@ const Client = () => {
     fetchData(`clients/profile-user/?user=${userId}`, setUserName);
   }, [count, userId]);
 
-  const handleCancelConsultation = async (id) => {
-    setLoadingcancel(true);
-    try {
-      const response = await ajaxCall(
-        `consultations/consultation-cancel/${id}/`,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
-              }`,
-          },
-          method: "PATCH",
-        },
-        8000
-      );
-      if ([200, 201].includes(response.status)) {
-        toast.success("Consultation Cancelled Successfully.");
-      } else if ([400, 404].includes(response.status)) {
-        toast.error("Some Problem Occurred. Please try again.");
-      } else if ([401].includes(response.status)) {
-        toast.error("Invalid Credentials.");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoadingcancel(false);
-    }
-  };
-
   const filteredConsultations = filterUpcomingSessions(upcomingConsultations);
 
   if (loading) {
@@ -209,24 +176,21 @@ const Client = () => {
                       Type: {filteredConsultations[0].consultation_type}
                     </Typography>
                   </CardContent>
-                  {loadingCancel ? (
-                    <CircularProgress />
-                  ) : (
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          textTransform: "none",
-                          fontSize: "0.75rem",
-                          py: 0.5,
-                        }}
-                        onClick={() => handleViewDetails(filteredConsultations[0]?.id)}
-                      >
-                        View Consultation
-                      </Button>
-                    </Box>
-                  )}
+
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        textTransform: "none",
+                        fontSize: "0.75rem",
+                        py: 0.5,
+                      }}
+                      onClick={() => handleViewDetails(filteredConsultations[0]?.id)}
+                    >
+                      View Consultation
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ) : (

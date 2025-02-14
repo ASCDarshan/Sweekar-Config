@@ -72,7 +72,7 @@ const ClientProfileDisplay = () => {
         );
     }
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Container maxWidth="lg" sx={{ py: 6 }}>
             <Paper elevation={3} sx={{ mb: 3, p: 3 }}>
                 <Grid container spacing={3} alignItems="center">
                     <Grid item xs={12} md={2} sx={{ textAlign: "center" }}>

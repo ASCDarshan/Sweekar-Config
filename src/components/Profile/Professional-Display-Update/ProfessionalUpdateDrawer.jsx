@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import { Close } from "@mui/icons-material"
-import { Box, IconButton, SwipeableDrawer, Typography } from "@mui/material"
-import BasicInformation from "./Update-Professional-Component/BasicInformation"
-import Award from "./Update-Professional-Component/Award"
-import Concern from "./Update-Professional-Component/Concern"
+import { Close } from "@mui/icons-material";
+import { Box, IconButton, SwipeableDrawer, Typography } from "@mui/material";
+import BasicInformation from "./Update-Professional-Component/BasicInformation";
+import Award from "./Update-Professional-Component/Award";
 
 const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
     return (
@@ -41,19 +40,13 @@ const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
                 <BasicInformation ExpertDetails={ExpertDetails} />
             </Box>
             <Typography variant="h6" gutterBottom fontWeight="bold">
-                Concerns
-            </Typography>
-            <Box sx={{ mb: 3 }}>
-                <Concern expertId={ExpertDetails?.id} />
-            </Box>
-            <Typography variant="h6" gutterBottom fontWeight="bold">
                 Awards
             </Typography>
             <Box sx={{ mb: 3 }}>
                 <Award expertId={ExpertDetails?.id} />
             </Box>
         </SwipeableDrawer>
-    )
-}
+    );
+};
 
-export default ProfessionalUpdateDrawer
+export default ProfessionalUpdateDrawer;

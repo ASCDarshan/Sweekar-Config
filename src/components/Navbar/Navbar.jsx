@@ -340,26 +340,6 @@ const Navbar = () => {
           </IconButton>
         </Box>
 
-        {user?.user && (
-          <Box sx={{ px: 2, pb: 2 }}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                navigate("/consultations");
-                handleDrawerToggle();
-              }}
-              sx={{
-                bgcolor: "#9D84B7",
-                "&:hover": {
-                  bgcolor: "rgba(157, 132, 183, 0.9)",
-                },
-              }}
-            >
-              My Consultations
-            </Button>
-          </Box>
-        )}
 
         <List>
           {navItems.map((item) => (
