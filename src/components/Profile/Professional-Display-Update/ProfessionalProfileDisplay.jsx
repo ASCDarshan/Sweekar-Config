@@ -23,6 +23,7 @@ import ajaxCall from "../../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
 import ProfessionalUpdateDrawer from "./ProfessionalUpdateDrawer";
 import UserProfileShimmer from "../../UI/UserProfileShimmer";
+import Concern from "./Update-Professional-Component/Concern";
 
 const ProfessionalProfileDisplay = () => {
     const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
@@ -187,6 +188,10 @@ const ProfessionalProfileDisplay = () => {
 
                 <Grid item xs={12} md={8}>
                     <Stack spacing={4}>
+                        <Paper elevation={3} sx={{ p: 1 }}>
+                            <Concern expertId={expert.id} />
+                        </Paper>
+
                         <Paper elevation={3} sx={{ p: 3 }}>
                             <Typography variant="h5" gutterBottom color="primary">
                                 About me
@@ -218,46 +223,7 @@ const ProfessionalProfileDisplay = () => {
                                         {expert?.years_of_experience} years
                                     </Typography>
                                 </Box>
-                                <Box>
-                                    <Typography variant="subtitle2" color="text.secondary">
-                                        License Number
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        {expert?.license_number}
-                                    </Typography>
-                                </Box>
-                            </Stack>
-                        </Paper>
 
-                        <Paper elevation={3} sx={{ p: 3 }}>
-                            <Typography variant="h5" gutterBottom color="primary">
-                                Area of expertise
-                            </Typography>
-                            <Stack direction="row" flexWrap="wrap" gap={1}>
-                                {expert?.concerns?.map((concern) => (
-                                    <Chip
-                                        key={concern.id}
-                                        label={concern.name}
-                                        variant="outlined"
-                                        size="small"
-                                    />
-                                ))}
-                            </Stack>
-                        </Paper>
-
-                        <Paper elevation={3} sx={{ p: 3 }}>
-                            <Typography variant="h5" gutterBottom color="primary">
-                                Specializations
-                            </Typography>
-                            <Stack direction="row" flexWrap="wrap" gap={1}>
-                                {expert?.specializations?.map((spec, index) => (
-                                    <Chip
-                                        key={index}
-                                        label={spec}
-                                        variant="outlined"
-                                        size="small"
-                                    />
-                                ))}
                             </Stack>
                         </Paper>
 
