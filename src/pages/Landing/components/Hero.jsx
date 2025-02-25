@@ -1,14 +1,42 @@
-import { Box, Container, Typography, Grid, Fade, Slide } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Fade,
+  Slide,
+  Button,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import LocationSelector from "./Location";
 import BackgroundImg from "../../../assets/BackgroundImg.jpeg";
 
 const Hero = () => {
   const [showContent, setShowContent] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     setShowContent(true);
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      setDeferredPrompt(event);
+    });
   }, []);
+
+  const handleInstallApp = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the install prompt");
+        } else {
+          console.log("User dismissed the install prompt");
+        }
+        setDeferredPrompt(null);
+      });
+    }
+  };
 
   return (
     <Box
@@ -65,10 +93,24 @@ const Hero = () => {
                     <LocationSelector />
                   </Box>
                 </Slide>
+                <Slide direction="up" in={showContent} timeout={1600}>
+                  <Button
+                    variant="contained"
+                    onClick={handleInstallApp}
+                    sx={{
+                      bgcolor: "#9D84B7",
+                      "&:hover": {
+                        bgcolor: "rgba(157, 132, 183, 0.9)",
+                      },
+                    }}
+                    disabled={!deferredPrompt}
+                  >
+                    Install App
+                  </Button>
+                </Slide>
               </Box>
             </Fade>
           </Grid>
-
           <Grid item xs={12} md={6}>
             <Fade in={showContent} timeout={2000}>
               <Box
