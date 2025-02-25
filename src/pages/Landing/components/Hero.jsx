@@ -17,13 +17,25 @@ const Hero = () => {
 
   useEffect(() => {
     setShowContent(true);
-
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
-    });
   }, []);
 
+  // Listen for the 'beforeinstallprompt' event
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setDeferredPrompt(event); // Save the event for later use
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () =>
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+  }, []);
+
+  // Function to handle PWA installation
   const handleInstallApp = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -94,19 +106,18 @@ const Hero = () => {
                   </Box>
                 </Slide>
                 <Slide direction="up" in={showContent} timeout={1600}>
-                  <Button
-                    variant="contained"
-                    onClick={handleInstallApp}
-                    sx={{
-                      bgcolor: "#9D84B7",
-                      "&:hover": {
-                        bgcolor: "rgba(157, 132, 183, 0.9)",
-                      },
-                    }}
-                    disabled={!deferredPrompt}
-                  >
-                    Install App
-                  </Button>
+                    <Button
+                      variant="contained"
+                      onClick={handleInstallApp}
+                      sx={{
+                        bgcolor: "#9D84B7",
+                        "&:hover": {
+                          bgcolor: "rgba(157, 132, 183, 0.9)",
+                        },
+                      }}
+                    >
+                      Install App
+                    </Button>
                 </Slide>
               </Box>
             </Fade>
