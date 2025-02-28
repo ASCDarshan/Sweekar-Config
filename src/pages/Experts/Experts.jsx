@@ -210,7 +210,7 @@ const Experts = () => {
                           {expert?.user?.first_name} {expert?.user?.last_name}
                         </Typography>
                         <Typography color="text.secondary" gutterBottom>
-                          {expert.professional_type.title}
+                          {expert?.professional_type?.title}
                         </Typography>
                         <Rating value={expert?.user?.rating} readOnly size="small" />
                       </Box>
