@@ -17,7 +17,6 @@ import {
   TextField,
   Chip,
 } from "@mui/material";
-import { format } from "date-fns";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -32,9 +31,9 @@ const BookConsultation = ({
   preSelectedExpert,
   onClose,
   preSelectedExpertType,
-  setCount
+  setCount,
 }) => {
-  const userId = JSON.parse(localStorage.getItem("loginInfo")).user;
+  const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
 
   const [professionals, setProfessionals] = useState([]);
   const [clientData, setClientData] = useState([]);
@@ -47,7 +46,6 @@ const BookConsultation = ({
   const [concern, setConcern] = useState("");
   const [notes, setNotes] = useState("");
   const [eventData, setEventsData] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
@@ -184,40 +182,32 @@ const BookConsultation = ({
   };
 
   const renderTimeSlots = () => {
-    if (!eventData || !selectedDate) return null;
+    if (!eventData || eventData.length === 0)
+      return <Typography>No slots available for this expert</Typography>;
 
-    const dateKey = selectedDate.toDateString();
-    const eventsForDate = eventData.filter(
-      (event) => new Date(event.start_date).toDateString() === dateKey
-    );
-
-    if (!eventsForDate.length) return null;
+    const startDate = new Date(eventData[0].start_date);
+    const endDate = new Date(eventData[0].end_date);
 
     const slots = [];
+    const startHour = startDate.getUTCHours();
+    const startMinute = startDate.getUTCMinutes();
+    const endHour = endDate.getUTCHours();
+    const endMinute = endDate.getUTCMinutes();
 
-    eventsForDate.forEach((event) => {
-      const startDate = new Date(event.start_date);
-      const endDate = new Date(event.end_date);
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute of [0, 30]) {
+        if (hour === startHour && minute < startMinute) continue;
+        if (hour === endHour && minute > endMinute) continue;
 
-      const startHour = startDate.getHours();
-      const startMinute = startDate.getMinutes();
-      const endHour = endDate.getHours();
-      const endMinute = endDate.getMinutes();
+        const time = new Date(startDate);
+        time.setUTCHours(hour, minute, 0, 0);
 
-      for (let hour = startHour; hour <= endHour; hour++) {
-        for (let minute of [0, 30]) {
-          if (hour === startHour && minute < startMinute) continue;
-          if (hour === endHour && minute > endMinute) continue;
-
-          const time = new Date(startDate);
-          time.setHours(hour, minute, 0);
-          slots.push({
-            time,
-            available: true,
-          });
-        }
+        slots.push({
+          time,
+          available: true,
+        });
       }
-    });
+    }
 
     return (
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -232,12 +222,13 @@ const BookConsultation = ({
                 py: 1,
                 bgcolor:
                   selectedDateTime &&
-                    selectedDateTime.getTime() === slot.time.getTime()
+                    selectedDateTime.toISOString() === slot.time.toISOString()
                     ? "primary.light"
                     : "inherit",
               }}
             >
-              {format(slot.time, "HH:mm")}
+              {slot.time.getUTCHours().toString().padStart(2, "0")}:
+              {slot.time.getUTCMinutes().toString().padStart(2, "0")}
             </Button>
           </Grid>
         ))}
@@ -293,14 +284,16 @@ const BookConsultation = ({
                         <Box sx={{ mt: 1 }}>
                           <Typography variant="body2">
                             Specializations:{" "}
-                            {professional?.professional_type?.concern.map((spec, index) => (
-                              <Chip
-                                key={index}
-                                label={spec.name}
-                                size="small"
-                                sx={{ m: 0.5 }}
-                              />
-                            ))}
+                            {professional?.professional_type?.concern.map(
+                              (spec, index) => (
+                                <Chip
+                                  key={index}
+                                  label={spec.name}
+                                  size="small"
+                                  sx={{ m: 0.5 }}
+                                />
+                              )
+                            )}
                           </Typography>
                         </Box>
                       </CardContent>
@@ -313,31 +306,16 @@ const BookConsultation = ({
         );
 
       case 1: {
-        if (!eventData) {
+        if (!eventData || eventData.length === 0) {
           return (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-              <CircularProgress />
+              <Typography variant="h6" color="textSecondary">
+                There are no slots for this expert.
+              </Typography>
             </Box>
           );
         }
-
-        const eventsByDate = eventData.reduce((acc, event) => {
-          const dateKey = new Date(event.start_date).toDateString();
-          if (!acc[dateKey]) {
-            acc[dateKey] = [];
-          }
-          acc[dateKey].push(event);
-          return acc;
-        }, {});
-
-        const uniqueDates = Object.keys(eventsByDate).map(
-          (date) => new Date(date)
-        );
-
-        const handleDateChange = (date) => {
-          setSelectedDate(date);
-          setSelectedDateTime(null);
-        };
+        const startDate = new Date(eventData[0].start_date);
 
         return (
           <Box sx={{ mt: 2 }}>
@@ -369,15 +347,20 @@ const BookConsultation = ({
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <StaticDatePicker
                 displayStaticWrapperAs="desktop"
-                value={selectedDate || new Date(eventData[0].start_date)}
-                onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
-                shouldDisableDate={(date) => {
-                  // Disable dates that don't have any events
-                  return !uniqueDates.some(
-                    (uniqueDate) =>
-                      uniqueDate.toDateString() === date.toDateString()
+                value={selectedDateTime || startDate}
+                onChange={(date) => {
+                  const currentTime = selectedDateTime || startDate;
+                  date.setHours(
+                    currentTime.getHours(),
+                    currentTime.getMinutes()
                   );
+                  setSelectedDateTime(date);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                minDate={startDate}
+                maxDate={startDate}
+                shouldDisableDate={(date) => {
+                  return date.toDateString() !== startDate.toDateString();
                 }}
               />
             </LocalizationProvider>

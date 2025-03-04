@@ -81,6 +81,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
+      timeZone: "UTC",
     };
     return new Date(dateString).toLocaleString("en-US", options);
   };
