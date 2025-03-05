@@ -1,88 +1,85 @@
-import { Box, Container, Typography, Grid, Card, CardContent, Fade } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent } from '@mui/material';
 import { useInView } from 'react-intersection-observer';
 
 const visionPoints = [
   {
-    title: "LGBTQAI+ Community & Women Focus",
+    title: "LGBTQAI+ & Women Focus",
     description: "Community members often face unique challenges accessing safe and inclusive services.",
-    icon: "🌈"
+    icon: "⚧️"
   },
   {
     title: "Bridging Service Gaps",
     description: "Lack of easily accessible verified resources can lead to discrimination and poor experiences.",
-    icon: "🌉"
+    icon: "🤝"
   },
   {
     title: "Centralized Directory",
     description: "Offering a centralized, vetted directory of compassionate and inclusive service providers.",
-    icon: "📚"
+    icon: "📖"
   }
 ];
 
 const Vision = () => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <Box
       ref={ref}
       sx={{
         py: 8,
-        backgroundColor: 'primary.light',
+        background: 'linear-gradient(to bottom,rgb(243 240 232),rgb(243 240 232))',
         position: 'relative',
         overflow: 'hidden'
       }}
     >
       <Container maxWidth="lg">
-        <Fade in={inView} timeout={1000}>
-          <Box>
-            <Typography
-              variant="h3"
-              align="center"
-              gutterBottom
-              sx={{
-                fontWeight: 700,
-                mb: 6,
-                color: 'primary.dark'
-              }}
-            >
-              Why Sweekar? – The Vision
-            </Typography>
-            <Grid container spacing={4}>
-              {visionPoints.map((point, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <Fade in={inView} timeout={1000 + (index * 200)}>
-                    <Card
-                      sx={{
-                        height: '100%',
-                        backgroundColor: 'white',
-                        boxShadow: 2,
-                        '&:hover': {
-                          transform: 'translateY(-5px)',
-                          transition: 'transform 0.3s ease-in-out'
-                        }
-                      }}
-                    >
-                      <CardContent sx={{ p: 4 }}>
-                        <Typography variant="h1" sx={{ mb: 2, fontSize: '3rem' }}>
-                          {point.icon}
-                        </Typography>
-                        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-                          {point.title}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                          {point.description}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Fade>
-                </Grid>
-              ))}
+        <Typography
+          variant="h4"
+          align="left"
+          gutterBottom
+          sx={{
+            fontWeight: 700,
+            mb: 4,
+            color: '#000'
+          }}
+        >
+          Why Sweekar?
+        </Typography>
+        <Grid container spacing={4} justifyContent="center">
+          {visionPoints.map((point, index) => (
+            <Grid item xs={12} sm={10} md={3.5} key={index}>
+              <Card
+                sx={{
+                  height: 'auto',
+                  minHeight: 320,
+                  backgroundColor: 'white',
+                  boxShadow: 2,
+                  borderRadius: 3,
+                  border: '3px solid transparent',
+                  backgroundImage: 'linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)',
+                  backgroundOrigin: 'border-box',
+                  backgroundClip: 'content-box, border-box',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)'
+                  }
+                }}
+              >
+                <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                  <Typography variant="h2" sx={{ mb: 2, fontSize: '3rem' }}>
+                    {point.icon}
+                  </Typography>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 700, color: '#000' }}>
+                    {point.title}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {point.description}
+                  </Typography>
+                </CardContent>
+              </Card>
             </Grid>
-          </Box>
-        </Fade>
+          ))}
+        </Grid>
       </Container>
     </Box>
   );
