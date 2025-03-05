@@ -106,7 +106,7 @@ const Navbar = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: trigger ? "rgba(121, 94, 151, 0.44)" : "rgba(207, 199, 231, 0.85)",
+          backgroundColor: trigger ? "rgba(121, 94, 151, 0.9)" : "rgba(255, 255, 255, 0.95)", // Adjusted colors
           height: trigger ? "75px" : "80px",
           transition: "all 0.3s ease-in-out",
           backdropFilter: "blur(10px)",
@@ -165,28 +165,10 @@ const Navbar = () => {
                 >
                   {navItems.map((item) => (
                     <Button
-                      key={item.label}
-                      onClick={() => navigate(item.path)}
                       sx={{
-                        padding: "6px 8px",
-                        fontSize: "0.95rem",
-                        position: "relative",
+                        color: trigger ? "white" : "#5C3D8C",
                         textTransform: "none",
-                        color: trigger ? "white" : "black",
-                        "&::after": {
-                          content: '""',
-                          position: "absolute",
-                          width: "0",
-                          height: "2px",
-                          bottom: 0,
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          backgroundColor: trigger ? "white" : "#9D84B7",
-                          transition: "width 0.3s ease-in-out",
-                        },
-                        "&:hover::after": {
-                          width: "80%",
-                        },
+                        fontWeight: 500,
                       }}
                     >
                       {item.label}
