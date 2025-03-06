@@ -49,7 +49,7 @@ const Hero = () => {
                 }}
               >
                 <Box component="span" sx={{ display: "block", mb: 1 }}>
-                  Empowering{" "}
+                  Safe & Inclusive{" "}
                   <Box
                     component="span"
                     sx={{
@@ -68,7 +68,7 @@ const Hero = () => {
                       },
                     }}
                   >
-                    Services
+                    Professional Services
                   </Box>
                 </Box>
                 for LGBTQAI+ & Women
@@ -80,7 +80,7 @@ const Hero = () => {
                   color: "#555",
                   mb: 3,
                   fontWeight: 400,
-                  fontSize: { xs: "0.9rem", md: "1rem" },
+                  fontSize: { xs: "1rem", md: "1.4rem" },
                   lineHeight: 1.6,
                   opacity: loaded ? 1 : 0,
                   transform: loaded ? "translateY(0)" : "translateY(20px)",
@@ -92,6 +92,14 @@ const Hero = () => {
                 environment tailored to your unique needs.
               </Typography>
 
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  mb: 1,
+                }}
+              >
+                All Centers
+              </Typography>
               <Box
                 sx={{
                   opacity: loaded ? 1 : 0,

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Box, Container, Typography, Chip, Paper } from "@mui/material";
+import { Box, Container, Typography, Chip } from "@mui/material";
 
 const concerns = [
-  "Anxiety disorders",
-  "Depressive disorders",
+  "Anxiety Disorders",
+  "Depressive Disorders",
   "Adult ADHD",
-  "Relationship skills",
+  "Relationship Skills",
 ];
 
 const Concerns = () => {
@@ -20,55 +20,68 @@ const Concerns = () => {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ mt: -4, mb: 6, position: "relative", zIndex: 2 }}
-    >
-      <Paper
-        elevation={3}
+    <Container maxWidth="md" sx={{ textAlign: "start", py: 6, pl: 2 }}>
+      <Typography
+        variant="h4"
         sx={{
-          p: 4,
-          borderRadius: 4,
-          backgroundColor: "white",
+          fontWeight: "bold",
+          mb: 1,
+          textAlign: "left",
         }}
       >
-        <Typography variant="h5" gutterBottom>
-          Find a mental health professional who understands your needs.
-        </Typography>
-        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
-          CHOOSE UP TO 3 OF THE CLOSEST OPTIONS
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 1,
-          }}
-        >
-          {concerns.map((concern) => (
-            <Chip
-              key={concern}
-              label={concern}
-              onClick={() => handleConcernClick(concern)}
-              sx={{
-                borderRadius: "16px",
-                px: 2,
-                backgroundColor: selectedConcerns.includes(concern)
-                  ? "primary.main"
-                  : "grey.100",
-                color: selectedConcerns.includes(concern)
-                  ? "white"
-                  : "text.primary",
-                "&:hover": {
-                  backgroundColor: selectedConcerns.includes(concern)
-                    ? "primary.dark"
-                    : "grey.200",
-                },
-              }}
-            />
-          ))}
-        </Box>
-      </Paper>
+        Find A Mental Health Professional <br />
+        Who Understands Your Needs.
+      </Typography>
+
+      <Typography
+        variant="subtitle1"
+        sx={{
+          textTransform: "uppercase",
+          color: "text.secondary",
+          mb: 3,
+          textAlign: "left",
+        }}
+      >
+        Choose up to 3 of the closest options
+      </Typography>
+
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, justifyContent: "flex-start" }}>
+        {concerns.map((concern) => (
+          <Chip
+            key={concern}
+            label={concern}
+            onClick={() => handleConcernClick(concern)}
+            sx={{
+              px: 2.5,
+              py: 1,
+              fontSize: "16px",
+              fontWeight: "500",
+              cursor: "pointer",
+              color: "black",
+              border: "2px solid transparent",
+              borderRadius: "25px",
+              backgroundClip: "padding-box",
+              backgroundColor: selectedConcerns.includes(concern) ? "rgba(203, 65, 241, 0.49)" : "transparent",
+              "&:hover": {
+                backgroundColor: "rgba(255, 140, 0, 0.2)",
+              },
+              position: "relative",
+
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                borderRadius: "inherit",
+                padding: "3px",
+                background: " linear-gradient(to bottom, #d4145a, #fbb03b)",
+                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+              },
+            }}
+          />
+        ))}
+      </Box>
     </Container>
   );
 };

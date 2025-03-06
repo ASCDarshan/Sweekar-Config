@@ -28,12 +28,21 @@ const features = [
       "Being collaborators in your care, we are committed to understanding your concerns.",
   },
 ];
+
 const Features = () => {
-  
   return (
-    <Box sx={{ py: 8, backgroundColor: "#2C1810", color: "white" }}>
+    <Box sx={{ py: 8, backgroundColor: "#F5F1E8", color: "#000" }}>
       <Container maxWidth="lg">
-        <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
+        <Typography
+          variant="h4"
+          align="left"
+          gutterBottom
+          sx={{
+            mb: 6,
+            fontWeight: 700,
+            fontSize: "2.5rem"
+          }}
+        >
           What makes Sweekar unique?
         </Typography>
         <Grid container spacing={4}>
@@ -43,33 +52,36 @@ const Features = () => {
                 sx={{
                   height: "100%",
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#000",
                   boxShadow: "none",
-                  textAlign: "center",
+                  textAlign: "left",
                 }}
               >
-                <CardContent>
-                  <Box
+                <CardContent sx={{ p: 0 }}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
                     sx={{
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                      width: 80,
-                      height: 80,
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 20px",
-                      "& svg": {
-                        fontSize: 40,
-                      },
+                      position: "relative",
+                      pb: 1,
+                      mb: 2,
+                      fontWeight: 700,
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        width: "50%",
+                        height: "4px",
+                        background: 'linear-gradient(to right, #d4145a, #fbb03b)',
+                      }
                     }}
                   >
-                    {feature.icon}
-                  </Box>
-                  <Typography variant="h6" gutterBottom>
                     {feature.title}
                   </Typography>
-                  <Typography>{feature.description}</Typography>
+                  <Typography variant="body1" sx={{ color: "#333" }}>
+                    {feature.description}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
