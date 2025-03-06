@@ -69,76 +69,137 @@ const Services = () => {
   };
 
   return (
-    <Box sx={{ py: 8, backgroundColor: "#F6F1FF" }}>
+    <Box
+      sx={{
+        py: 8,
+        background: "linear-gradient(135deg, rgb(227 221 206), rgb(227 221 206))",
+      }}
+    >
       <Container maxWidth="lg">
-        <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
-          Beyond therapy and psychiatry at Sweekar&apos;s mental health centre
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{
+            mb: 6,
+            fontWeight: "bold",
+            position: "relative",
+            display: "inline-block",
+            "&::after": {
+              content: "''",
+              position: "absolute",
+              left: "50%",
+              bottom: "-10px",
+              width: "50px",
+              height: "4px",
+              transform: "translateX(-50%)",
+            },
+          }}
+        >
+          Beyond Therapy and Psychiatry at Sweekar&apos;s Mental Mealth centre
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent="center">
           {services.map((service, index) => (
             <Grid item xs={12} md={3} key={index}>
-              <Card
+              <Box
                 sx={{
-                  height: "100%",
-                  boxShadow: 2,
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
+                  position: "relative",
+                  borderRadius: "16px",
+                  display: "inline-block",
+                  "&::before": {
+                    content: "''",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "16px",
+                    padding: "4px",
+                    WebkitMask:
+                      "linear-gradient(white, white) content-box, linear-gradient(white, white)",
+                    WebkitMaskComposite: "destination-out",
+                    maskComposite: "exclude",
                   },
-                  display: "flex",
-                  flexDirection: "column",
                 }}
               >
-                <CardContent
+                <Card
                   sx={{
-                    flexGrow: 1,
+                    height: "300px",
+                    boxShadow: 2,
+                    backgroundColor: "white",
+                    borderRadius: 2,
+                    transition: "transform 0.2s",
+                    border: "3px solid transparent",
+                    backgroundImage:
+                      "linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)",
+                    backgroundOrigin: "border-box",
+                    backgroundClip: "content-box, border-box",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between",
                   }}
                 >
-                  <Box>
-                    <Typography
-                      variant="h2"
-                      sx={{
-                        fontSize: "3rem",
-                        mb: 2,
-                        textAlign: "center",
-                      }}
-                    >
-                      {service.icon}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      gutterBottom
-                      sx={{ textAlign: "center" }}
-                    >
-                      {service.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 2, textAlign: "center" }}
-                    >
-                      {service.description}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      endIcon={<ArrowForward />}
-                      onClick={() => checkAuthAndOpenBooking(service)}
-                      sx={{
-                        textTransform: "none",
-                        width: "100%",
-                      }}
-                    >
-                      Book Consultation
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="h2"
+                        sx={{
+                          fontSize: "3rem",
+                          mb: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        {service.icon}
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{ textAlign: "center", fontWeight: "bold" }}
+                      >
+                        {service.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2, textAlign: "center" }}
+                      >
+                        {service.description}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        endIcon={<ArrowForward />}
+                        onClick={() => checkAuthAndOpenBooking(service)}
+                        sx={{
+                          textTransform: "none",
+                          width: "100%",
+                          borderRadius: "12px",
+                          borderColor: "black",
+                          backgroundColor: "white",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "#f5f5f5",
+                            borderColor: "black",
+                          }
+                        }}
+                      >
+                        Book Consultation
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           ))}
         </Grid>

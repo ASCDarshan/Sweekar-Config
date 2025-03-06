@@ -51,10 +51,10 @@ const Vision = () => {
               <Card
                 sx={{
                   height: 'auto',
-                  minHeight: 320,
+                  minHeight: 280,
                   backgroundColor: 'white',
                   boxShadow: 2,
-                  borderRadius: 3,
+                  borderRadius: 2,
                   border: '3px solid transparent',
                   backgroundImage: 'linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)',
                   backgroundOrigin: 'border-box',

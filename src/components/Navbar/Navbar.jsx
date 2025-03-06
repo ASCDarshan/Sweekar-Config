@@ -165,6 +165,8 @@ const Navbar = () => {
                 >
                   {navItems.map((item) => (
                     <Button
+                      key={item.label}
+                      onClick={() => navigate(item.path)}
                       sx={{
                         color: trigger ? "white" : "#5C3D8C",
                         textTransform: "none",
@@ -287,7 +289,7 @@ const Navbar = () => {
                         sx={{
                           bgcolor: "#9D84B7",
                           "&:hover": {
-                            bgcolor: "rgba(157, 132, 183, 0.9)",
+                            bgcolor: "rgba(255, 255, 255, 0.9)",
                           },
                         }}
                       >

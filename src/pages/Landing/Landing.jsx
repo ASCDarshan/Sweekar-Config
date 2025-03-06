@@ -12,9 +12,9 @@ const Landing = () => {
     <Box>
       <HeroSection />
       <VisionSection />
+      <ServicesSection />
       <ImportanceSection />
       <ConcernsSection />
-      <ServicesSection />
       <FeaturesSection />
       <FAQSection />
     </Box>
