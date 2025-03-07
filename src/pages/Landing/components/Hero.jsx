@@ -1,7 +1,9 @@
 import { Box, Container, Typography, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import LocationSelector from "./Location";
-import BackgroundImg from "../../../assets/Sweekar.png";
+import LogoImg from "../../../assets/Sweekar.png";
+import BackgroundImg from "../../../assets/HeroBanner.jpg";
+
 
 const Hero = () => {
   const [loaded, setLoaded] = useState(false);
@@ -15,7 +17,9 @@ const Hero = () => {
       sx={{
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(135deg,rgb(227 221 206),rgb(227 221 206))",
+        backgroundImage: `url(${BackgroundImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         pt: { xs: 4, md: 6 },
         pb: { xs: 8, md: 10 },
       }}
@@ -154,7 +158,7 @@ const Hero = () => {
               />
               <Box
                 component="img"
-                src={BackgroundImg}
+                src={LogoImg}
                 alt="Hero Background"
                 sx={{
                   position: "relative",

@@ -38,6 +38,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
   const selectedServiceId = selectedService?.id;
   const staticData = StaticColor.find((s) => s.id === selectedServiceId);
   const [experts, setExperts] = useState([]);
+  const [concerns, setConcerns] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
@@ -70,6 +71,10 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
     fetchData(
       `professionals/professional-filter/?professional_type=${selectedService?.id}`,
       setExperts
+    );
+    fetchData(
+      "professionals/concerns",
+      setConcerns
     );
   }, [selectedServiceId]);
 

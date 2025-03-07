@@ -27,7 +27,7 @@ const Vision = () => {
       ref={ref}
       sx={{
         py: 8,
-        background: 'linear-gradient(to bottom,rgb(243 240 232),rgb(243 240 232))',
+        background: "linear-gradient(135deg, rgb(227 221 206), rgb(227 221 206))",
         position: 'relative',
         overflow: 'hidden'
       }}
