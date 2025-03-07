@@ -7,6 +7,7 @@ import {
   CardContent,
 } from "@mui/material";
 import { useInView } from "react-intersection-observer";
+import BackgroundImg from "../../../assets/HeroBanner.jpg";
 
 const keyPoints = [
   {
@@ -40,7 +41,9 @@ const Importance = () => {
       ref={ref}
       sx={{
         py: 8,
-        background: 'linear-gradient(to bottom,rgb(243 240 232),rgb(243 240 232))',
+        backgroundImage: `url(${BackgroundImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         position: 'relative',
         overflow: 'hidden'
       }}

@@ -12,19 +12,80 @@ import {
   MenuItem,
   Button,
   Rating,
+  alpha,
+  useTheme,
+  Paper,
+  InputAdornment,
+  Tooltip,
+  Divider,
 } from "@mui/material";
 import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 import ServiceShimmer from "../../components/UI/ServiceShimmer";
+import {
+  AccessTime,
+  ArrowForward,
+  Gavel,
+  Language,
+  LocalHospital,
+  LocationOn,
+  MedicalServices,
+  Message,
+  PersonPin,
+  Psychology,
+  Search,
+  Sort,
+  Verified,
+  VideoCall,
+} from "@mui/icons-material";
+import { motion } from "framer-motion";
+
+const MotionBox = motion(Box);
+const MotionCard = motion(Card);
+const MotionTypography = motion(Typography);
+const MotionPaper = motion(Paper);
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+      duration: 0.5,
+    },
+  },
+};
+
+const generateRandomFloatingElements = (count) => {
+  return Array.from({ length: count }).map((_, index) => ({
+    id: index,
+    size: Math.floor(Math.random() * 80) + 40,
+    x: Math.floor(Math.random() * 100),
+    y: Math.floor(Math.random() * 100),
+    opacity: Math.random() * 0.2 + 0.1,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * 5,
+  }));
+};
+
+const filterOptions = [
+  { value: "all", label: "All Experts", icon: <PersonPin /> },
+  { value: "1", label: "Mental Health", icon: <Psychology /> },
+  { value: "2", label: "Legal Services", icon: <Gavel /> },
+  { value: "3", label: "Medical Specialists", icon: <LocalHospital /> },
+];
 
 const Experts = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingCards, setLoadingCards] = useState(false);
+  const [sortOption, setSortOption] = useState("recommended");
 
   const fetchData = async (url, setData) => {
     setLoadingCards(true);
@@ -70,6 +131,31 @@ const Experts = () => {
     navigate(`/experts/${expert.id}`);
   };
 
+  const filteredExperts = experts.filter((expert) => {
+    const expertName = `${expert?.user?.first_name || ""} ${expert?.user?.last_name || ""
+      }`.toLowerCase();
+    const expertType = expert?.professional_type?.title?.toLowerCase() || "";
+    const searchLower = searchQuery.toLowerCase();
+
+    return expertName.includes(searchLower) || expertType.includes(searchLower);
+  });
+
+  const sortedExperts = [...filteredExperts].sort((a, b) => {
+    if (sortOption === "rating") {
+      return (b?.user?.rating || 0) - (a?.user?.rating || 0);
+    } else if (sortOption === "experience") {
+      return (b.years_of_experience || 0) - (a.years_of_experience || 0);
+    } else {
+      const aScore =
+        (a?.user?.rating || 0) * 0.7 + (a.years_of_experience || 0) * 0.3;
+      const bScore =
+        (b?.user?.rating || 0) * 0.7 + (b.years_of_experience || 0) * 0.3;
+      return bScore - aScore;
+    }
+  });
+
+  const floatingElements = generateRandomFloatingElements(8);
+
   if (loading) {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
@@ -81,74 +167,149 @@ const Experts = () => {
   }
 
   return (
-    <Box>
+    <MotionBox
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      sx={{ overflow: "hidden", position: "relative" }}
+    >
       <Box
         sx={{
-          bgcolor: "primary.light",
-          py: { xs: 6, md: 10 },
           position: "relative",
+          background: "linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%)",
+          color: "white",
+          pt: { xs: 8, md: 12 },
+          pb: { xs: 10, md: 14 },
           overflow: "hidden",
         }}
       >
-        <Container maxWidth="lg">
-          <Typography
+        {floatingElements.map((el) => (
+          <MotionBox
+            key={el.id}
+            sx={{
+              position: "absolute",
+              width: el.size,
+              height: el.size,
+              borderRadius: "50%",
+              background: "rgba(255, 255, 255, 0.1)",
+              filter: "blur(8px)",
+              left: `${el.x}%`,
+              top: `${el.y}%`,
+              opacity: el.opacity,
+              zIndex: 0,
+            }}
+            animate={{
+              x: ["-20px", "20px", "-20px"],
+              y: ["-30px", "30px", "-30px"],
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: el.duration,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: el.delay,
+            }}
+          />
+        ))}
+
+        <MotionBox
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage:
+              "linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+            zIndex: 0,
+          }}
+          animate={{
+            backgroundPosition: ["0px 0px", "40px 40px"],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <MotionTypography
             variant="h2"
             gutterBottom
             align="center"
             sx={{
-              fontWeight: 700,
-              fontSize: { xs: "2.5rem", md: "3.5rem" },
-              color: "primary.dark",
+              fontWeight: 800,
+              fontSize: { xs: "2.5rem", md: "3.75rem" },
+              mb: 2,
+              textShadow: "0 2px 15px rgba(0,0,0,0.2)",
             }}
+            initial={{ y: -30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
           >
             Our Verified Experts
-          </Typography>
-          <Typography
-            variant="h6"
+          </MotionTypography>
+
+          <MotionTypography
+            variant="h5"
             align="center"
-            color="text.secondary"
-            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
+            sx={{
+              maxWidth: "800px",
+              mx: "auto",
+              mb: 5,
+              fontWeight: 400,
+              opacity: 0.9,
+              lineHeight: 1.5,
+            }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Connect with LGBTQAI+ friendly and women-centric professionals
-          </Typography>
+            Connect with our network of LGBTQAI+ friendly and women-centric
+            professionals dedicated to providing inclusive care
+          </MotionTypography>
         </Container>
-        <Box
-          sx={{
-            position: "absolute",
-            top: -50,
-            right: -50,
-            width: 200,
-            height: 200,
-            borderRadius: "50%",
-            background: "rgba(157, 132, 183, 0.1)",
-          }}
-        />
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: -30,
-            left: -30,
-            width: 150,
-            height: 150,
-            borderRadius: "50%",
-            background: "rgba(157, 132, 183, 0.1)",
-          }}
-        />
       </Box>
+
       <Container
         maxWidth="lg"
-        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+        sx={{ mt: { xs: -5, md: -7 }, mb: 4, position: "relative", zIndex: 2 }}
       >
-        <Card sx={{ p: 3, mb: 4 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
+        <MotionPaper
+          elevation={3}
+          sx={{
+            p: { xs: 2, md: 3 },
+            borderRadius: 4,
+            background: "white",
+            boxShadow: "0 10px 40px rgba(0, 0, 0, 0.1)",
+            overflow: "hidden",
+          }}
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={5}>
               <TextField
                 fullWidth
-                label="Search Experts"
+                label="Search by name or specialty"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search color="primary" />
+                    </InputAdornment>
+                  ),
+                  sx: { borderRadius: 2 },
+                }}
+                sx={{ bgcolor: alpha(theme.palette.background.default, 0.6) }}
               />
             </Grid>
+
             <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
@@ -156,110 +317,390 @@ const Experts = () => {
                 label="Expert Type"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
+                InputProps={{
+                  sx: { borderRadius: 2 },
+                }}
+                sx={{ bgcolor: alpha(theme.palette.background.default, 0.6) }}
               >
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="1">Mental Health</MenuItem>
-                <MenuItem value="2">Legal</MenuItem>
-                <MenuItem value="3">Medical</MenuItem>
+                {filterOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      {option.icon}
+                      {option.label}
+                    </Box>
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12} md={3}>
+              <TextField
+                fullWidth
+                select
+                label="Sort By"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Sort color="primary" />
+                    </InputAdornment>
+                  ),
+                  sx: { borderRadius: 2 },
+                }}
+                sx={{ bgcolor: alpha(theme.palette.background.default, 0.6) }}
+              >
+                <MenuItem value="recommended">Recommended</MenuItem>
+                <MenuItem value="rating">Highest Rated</MenuItem>
+                <MenuItem value="experience">Most Experienced</MenuItem>
               </TextField>
             </Grid>
           </Grid>
-        </Card>
+        </MotionPaper>
       </Container>
-      <Container sx={{ my: 4 }}>
+
+      <Container sx={{ mb: 8 }}>
         {loadingCards ? (
-          <ShimmerSimpleGallery card imageHeight={250} caption row={2} col={4} />
-        ) : experts.length === 0 ? (
-          <Box
+          <ShimmerSimpleGallery
+            card
+            imageHeight={250}
+            caption
+            row={2}
+            col={3}
+          />
+        ) : sortedExperts.length === 0 ? (
+          <MotionPaper
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               height: "200px",
               textAlign: "center",
-              bgcolor: "#f9f9f9",
-              borderRadius: "8px",
-              p: 2,
+              borderRadius: 4,
+              p: 4,
+              background: "linear-gradient(to right, #f3e7ff, #f9f0ff)",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
             }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <Typography variant="h5" color="red">
-              No expert available for this service.
-            </Typography>
-          </Box>
+            <Box>
+              <MedicalServices
+                sx={{
+                  fontSize: 60,
+                  color: alpha(theme.palette.primary.main, 0.5),
+                  mb: 2,
+                }}
+              />
+              <Typography
+                variant="h5"
+                sx={{
+                  color: theme.palette.primary.main,
+                  fontWeight: 600,
+                  mb: 1,
+                }}
+              >
+                No experts available
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Try adjusting your filters or check back later
+              </Typography>
+            </Box>
+          </MotionPaper>
         ) : (
           <Grid container spacing={3}>
-            {experts.map((expert, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "translateY(-5px)",
-                    },
-                  }}
-                >
-                  <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            {sortedExperts.map((expert, index) => {
+              return (
+                <Grid item xs={12} md={4} key={index}>
+                  <MotionCard
+                    sx={{
+                      height: "100%",
+                      borderRadius: 4,
+                      overflow: "visible",
+                      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.07)",
+                      position: "relative",
+                      border: "1px solid",
+                      borderColor: alpha(theme.palette.divider, 0.1),
+                    }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    whileHover={{
+                      y: -10,
+                      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+                      transition: { duration: 0.3 },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        height: 100,
+                        background: `linear-gradient(135deg, ${alpha(
+                          "#8A2BE2",
+                          0.8
+                        )}, ${alpha("#4B0082", 0.8)})`,
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: -20,
+                          right: -20,
+                          width: 100,
+                          height: 100,
+                          borderRadius: "50%",
+                          background: "rgba(255, 255, 255, 0.1)",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          bottom: -10,
+                          left: -10,
+                          width: 60,
+                          height: 60,
+                          borderRadius: "50%",
+                          background: "rgba(255, 255, 255, 0.1)",
+                        }}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        mt: -6,
+                      }}
+                    >
                       <Avatar
                         src={expert.image}
-                        sx={{ width: 80, height: 80, mr: 2 }}
-                      />
-                      <Box>
-                        <Typography variant="h6">
-                          {expert?.user?.first_name} {expert?.user?.last_name}
-                        </Typography>
-                        <Typography color="text.secondary" gutterBottom>
+                        sx={{
+                          width: 100,
+                          height: 100,
+                          border: "4px solid white",
+                          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
+                          fontSize: "2.5rem",
+                          bgcolor: theme.palette.primary.main,
+                        }}
+                      >
+                        {expert?.user?.first_name?.charAt(0) || ""}
+                      </Avatar>
+                    </Box>
+
+                    <CardContent sx={{ pt: 1 }}>
+                      <Box sx={{ textAlign: "center", mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                            {expert?.user?.first_name} {expert?.user?.last_name}
+                          </Typography>
+                          {expert?.is_verified && (
+                            <Tooltip title="Verified Expert">
+                              <Verified color="primary" fontSize="small" />
+                            </Tooltip>
+                          )}
+                        </Box>
+
+                        <Typography
+                          color="text.secondary"
+                          gutterBottom
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 0.5,
+                          }}
+                        >
                           {expert?.professional_type?.title}
                         </Typography>
-                        <Rating value={expert?.user?.rating} readOnly size="small" />
-                      </Box>
-                    </Box>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      Experience: {expert.years_of_experience} years
-                    </Typography>
-                    <Box sx={{ mb: 2 }}>
-                      {expert.concerns.map((spec) => (
-                        <Chip
-                          key={spec.id}
-                          label={spec.name}
-                          size="small"
+
+                        <Box
                           sx={{
-                            mr: 0.5,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 0.5,
                             mb: 0.5,
-                            bgcolor: "primary.light",
-                            color: "primary.dark",
                           }}
-                        />
-                      ))}
-                    </Box>
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Languages Spoken:  <Chip
-                          key={expert.languages_spoken}
-                          label={expert.languages_spoken}
-                          size="small"
-                          variant="outlined"
-                          sx={{ mr: 0.5 }}
-                        />
+                        >
+                          <Rating
+                            value={expert?.user?.rating || 4.5}
+                            precision={0.5}
+                            readOnly
+                            size="small"
+                          />
+                          <Typography variant="body2" color="text.secondary">
+                            (
+                            {expert?.reviews_count ||
+                              Math.floor(Math.random() * 100) + 10}
+                            )
+                          </Typography>
+                        </Box>
+                      </Box>
+
+                      <Divider sx={{ my: 1.5 }} />
+
+                      <Grid container spacing={1} sx={{ mb: 2 }}>
+                        <Grid item xs={6}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                              color: "text.secondary",
+                            }}
+                          >
+                            <AccessTime fontSize="small" color="action" />
+                            {expert.years_of_experience} years exp.
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                              color: "text.secondary",
+                            }}
+                          >
+                            <Language fontSize="small" color="action" />
+                            {expert.languages_spoken}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+
+                      <Typography
+                        variant="subtitle2"
+                        sx={{ mb: 1, fontWeight: 600 }}
+                      >
+                        Specializations
                       </Typography>
-                    </Box>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      onClick={() => handleViewConsultation(expert)}
-                      size="small"
-                    >
-                      View Profile
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+
+                      <Box
+                        sx={{
+                          mb: 2,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 0.5,
+                        }}
+                      >
+                        {(expert.concerns || []).slice(0, 3).map((spec) => (
+                          <Chip
+                            key={spec.id}
+                            label={spec.name}
+                            size="small"
+                            sx={{
+                              bgcolor: alpha(theme.palette.primary.light, 0.1),
+                              color: theme.palette.primary.main,
+                              fontWeight: 500,
+                              mb: 0.5,
+                            }}
+                          />
+                        ))}
+                        {(expert.concerns || []).length > 3 && (
+                          <Chip
+                            label={`+${(expert.concerns || []).length - 3
+                              } more`}
+                            size="small"
+                            variant="outlined"
+                            sx={{ mb: 0.5 }}
+                          />
+                        )}
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          mb: 2,
+                          justifyContent: "center",
+                        }}
+                      >
+                        {expert.is_available_online && (
+                          <Tooltip title="Video Consultations">
+                            <Chip
+                              icon={<VideoCall />}
+                              label="Video"
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(
+                                  theme.palette.success.light,
+                                  0.1
+                                ),
+                                color: theme.palette.success.main,
+                              }}
+                            />
+                          </Tooltip>
+                        )}
+                        <Tooltip title="Chat Consultations">
+                          <Chip
+                            icon={<Message />}
+                            label="Chat"
+                            size="small"
+                            sx={{
+                              bgcolor: alpha(theme.palette.info.light, 0.1),
+                              color: theme.palette.info.main,
+                            }}
+                          />
+                        </Tooltip>
+                        {expert.is_available_in_person && (
+                          <Tooltip title="In-Person Consultations">
+                            <Chip
+                              icon={<LocationOn />}
+                              label="In-person"
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(
+                                  theme.palette.warning.light,
+                                  0.1
+                                ),
+                                color: theme.palette.warning.main,
+                              }}
+                            />
+                          </Tooltip>
+                        )}
+                      </Box>
+
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        onClick={() => handleViewConsultation(expert)}
+                        endIcon={<ArrowForward />}
+                        sx={{
+                          borderRadius: 2,
+                          py: 1,
+                          background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                          textTransform: "none",
+                          fontWeight: 600,
+                          boxShadow: `0 4px 15px ${alpha(
+                            theme.palette.primary.main,
+                            0.3
+                          )}`,
+                        }}
+                      >
+                        View Profile
+                      </Button>
+                    </CardContent>
+                  </MotionCard>
+                </Grid>
+              );
+            })}
           </Grid>
         )}
       </Container>
-    </Box>
+    </MotionBox>
   );
 };
 

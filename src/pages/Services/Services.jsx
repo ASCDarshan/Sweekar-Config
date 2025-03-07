@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Fade,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
@@ -66,26 +67,34 @@ const Services = () => {
   };
 
   const checkAuthAndOpenBooking = (service) => {
-    const accessToken = JSON.parse(localStorage.getItem("loginInfo"))?.accessToken;
+    const accessToken = JSON.parse(
+      localStorage.getItem("loginInfo")
+    )?.accessToken;
 
     if (accessToken) {
       setSelectedService(service);
       setSelectedExpert(null);
       setBookingOpen(true);
     } else {
-      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
+      toast.error(
+        "You need to be logged in to book a consultation. Please sign in to continue."
+      );
       setBookingOpen(false);
     }
   };
 
   const checkAuthAndOpenExpertBooking = (expert) => {
-    const accessToken = JSON.parse(localStorage.getItem("loginInfo"))?.accessToken;
+    const accessToken = JSON.parse(
+      localStorage.getItem("loginInfo")
+    )?.accessToken;
 
     if (accessToken) {
       setSelectedExpert(expert);
       setBookingOpen(true);
     } else {
-      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
+      toast.error(
+        "You need to be logged in to book a consultation. Please sign in to continue."
+      );
       setBookingOpen(false);
     }
   };
@@ -192,20 +201,33 @@ const Services = () => {
         maxWidth="md"
         fullWidth
         scroll="paper"
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
+            overflow: "hidden",
+          }
+        }}
+        TransitionComponent={Fade}
+        TransitionProps={{ timeout: 500 }}
       >
-        <DialogTitle>
+        <DialogTitle sx={{
+          p: 3,
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "white",
+        }}>
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="h6">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Book {selectedService?.title} Consultation
               {selectedExpert && ` with ${selectedExpert?.user?.username}`}
             </Typography>
             <IconButton
               edge="end"
-              color="inherit"
+              sx={{ color: "white" }}
               onClick={handleBookingClose}
               aria-label="close"
             >
@@ -213,7 +235,7 @@ const Services = () => {
             </IconButton>
           </Box>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers sx={{ p: 0 }}>
           <BookConsultation
             preSelectedExpert={selectedExpert}
             preSelectedExpertType={selectedService?.id}
@@ -230,7 +252,6 @@ const Services = () => {
       )}
 
       <NeedHelp />
-
     </Box>
   );
 };

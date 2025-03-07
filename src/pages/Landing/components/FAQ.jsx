@@ -5,6 +5,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Box,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 
@@ -31,38 +32,43 @@ const faqs = [
       "You can book a session through our website by selecting your preferred professional and time slot, or contact our client care team for assistance.",
   },
 ];
+
 const FAQ = () => {
   const [expanded, setExpanded] = useState(false);
-  
+
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
-        Frequently Asked Questions
-      </Typography>
-      {faqs.map((faq, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === index}
-          onChange={() => setExpanded(expanded === index ? false : index)}
-          sx={{
-            mb: 2,
-            "&:before": { display: "none" },
-            boxShadow: "none",
-            border: "1px solid",
-            borderColor: "grey.200",
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>
-              {faq.question}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography color="text.secondary">{faq.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </Container>
+    <Box sx={{ backgroundColor: "#F5F1E8", py: 8 }}>
+      <Container maxWidth="lg">
+        <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
+          Frequently Asked Questions
+        </Typography>
+        {
+          faqs.map((faq, index) => (
+            <Accordion
+              key={index}
+              expanded={expanded === index}
+              onChange={() => setExpanded(expanded === index ? false : index)}
+              sx={{
+                mb: 2,
+                "&:before": { display: "none" },
+                boxShadow: "none",
+                border: "1px solid",
+                borderColor: "grey.200",
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>
+                  {faq.question}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography color="text.secondary">{faq.answer}</Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        }
+      </Container>
+    </Box>
   );
 };
 
