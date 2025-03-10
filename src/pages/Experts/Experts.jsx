@@ -31,19 +31,18 @@ import {
   LocalHospital,
   LocationOn,
   MedicalServices,
-  Message,
   PersonPin,
   Psychology,
   Search,
   Sort,
   Verified,
-  VideoCall,
+
 } from "@mui/icons-material";
+import CallIcon from '@mui/icons-material/Call';
 import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 const MotionCard = motion(Card);
-const MotionTypography = motion(Typography);
 const MotionPaper = motion(Paper);
 
 const containerVariants = {
@@ -56,18 +55,6 @@ const containerVariants = {
       duration: 0.5,
     },
   },
-};
-
-const generateRandomFloatingElements = (count) => {
-  return Array.from({ length: count }).map((_, index) => ({
-    id: index,
-    size: Math.floor(Math.random() * 80) + 40,
-    x: Math.floor(Math.random() * 100),
-    y: Math.floor(Math.random() * 100),
-    opacity: Math.random() * 0.2 + 0.1,
-    duration: Math.random() * 20 + 10,
-    delay: Math.random() * 5,
-  }));
 };
 
 const filterOptions = [
@@ -154,8 +141,6 @@ const Experts = () => {
     }
   });
 
-  const floatingElements = generateRandomFloatingElements(8);
-
   if (loading) {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
@@ -175,103 +160,57 @@ const Experts = () => {
     >
       <Box
         sx={{
+          bgcolor: "#f5f1e8",
+          py: { xs: 6, md: 10 },
           position: "relative",
-          background: "linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%)",
-          color: "white",
-          pt: { xs: 8, md: 12 },
-          pb: { xs: 10, md: 14 },
           overflow: "hidden",
         }}
       >
-        {floatingElements.map((el) => (
-          <MotionBox
-            key={el.id}
-            sx={{
-              position: "absolute",
-              width: el.size,
-              height: el.size,
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.1)",
-              filter: "blur(8px)",
-              left: `${el.x}%`,
-              top: `${el.y}%`,
-              opacity: el.opacity,
-              zIndex: 0,
-            }}
-            animate={{
-              x: ["-20px", "20px", "-20px"],
-              y: ["-30px", "30px", "-30px"],
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: el.duration,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-              delay: el.delay,
-            }}
-          />
-        ))}
-
-        <MotionBox
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage:
-              "linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            zIndex: 0,
-          }}
-          animate={{
-            backgroundPosition: ["0px 0px", "40px 40px"],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
-          <MotionTypography
+        <Container maxWidth="lg">
+          <Typography
             variant="h2"
             gutterBottom
             align="center"
             sx={{
-              fontWeight: 800,
-              fontSize: { xs: "2.5rem", md: "3.75rem" },
-              mb: 2,
-              textShadow: "0 2px 15px rgba(0,0,0,0.2)",
+              fontWeight: 700,
+              fontSize: { xs: "2.5rem", md: "3.5rem" },
+              color: "primary.dark",
             }}
-            initial={{ y: -30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
           >
             Our Verified Experts
-          </MotionTypography>
-
-          <MotionTypography
-            variant="h5"
+          </Typography>
+          <Typography
+            variant="h6"
             align="center"
-            sx={{
-              maxWidth: "800px",
-              mx: "auto",
-              mb: 5,
-              fontWeight: 400,
-              opacity: 0.9,
-              lineHeight: 1.5,
-            }}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            color="text.secondary"
+            sx={{ maxWidth: "800px", mx: "auto", mb: 4 }}
           >
             Connect with our network of LGBTQAI+ friendly and women-centric
             professionals dedicated to providing inclusive care
-          </MotionTypography>
+          </Typography>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
 
       <Container
@@ -403,7 +342,7 @@ const Experts = () => {
               >
                 No experts available
               </Typography>
-              <Typography variant="body1" color="text.secondary">
+              <Typography variant="body1" color="text.primary">
                 Try adjusting your filters or check back later
               </Typography>
             </Box>
@@ -437,7 +376,7 @@ const Experts = () => {
                       sx={{
                         height: 100,
                         background: `linear-gradient(135deg, ${alpha(
-                          "#8A2BE2",
+                          "#f5f1e8",
                           0.8
                         )}, ${alpha("#4B0082", 0.8)})`,
                         position: "relative",
@@ -511,7 +450,7 @@ const Experts = () => {
                         </Box>
 
                         <Typography
-                          color="text.secondary"
+                          color="text.primary"
                           gutterBottom
                           sx={{
                             display: "flex",
@@ -538,7 +477,7 @@ const Experts = () => {
                             readOnly
                             size="small"
                           />
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" color="text.primary">
                             (
                             {expert?.reviews_count ||
                               Math.floor(Math.random() * 100) + 10}
@@ -557,7 +496,7 @@ const Experts = () => {
                               display: "flex",
                               alignItems: "center",
                               gap: 0.5,
-                              color: "text.secondary",
+                              color: "text.primary",
                             }}
                           >
                             <AccessTime fontSize="small" color="action" />
@@ -571,7 +510,7 @@ const Experts = () => {
                               display: "flex",
                               alignItems: "center",
                               gap: 0.5,
-                              color: "text.secondary",
+                              color: "text.primary",
                             }}
                           >
                             <Language fontSize="small" color="action" />
@@ -580,12 +519,12 @@ const Experts = () => {
                         </Grid>
                       </Grid>
 
-                      <Typography
+                      {expert.concerns && expert.concerns.length > 0 && <Typography
                         variant="subtitle2"
                         sx={{ mb: 1, fontWeight: 600 }}
                       >
                         Specializations
-                      </Typography>
+                      </Typography>}
 
                       <Box
                         sx={{
@@ -631,8 +570,8 @@ const Experts = () => {
                         {expert.is_available_online && (
                           <Tooltip title="Video Consultations">
                             <Chip
-                              icon={<VideoCall />}
-                              label="Video"
+                              icon={<CallIcon />}
+                              label="Audio"
                               size="small"
                               sx={{
                                 bgcolor: alpha(
@@ -644,17 +583,7 @@ const Experts = () => {
                             />
                           </Tooltip>
                         )}
-                        <Tooltip title="Chat Consultations">
-                          <Chip
-                            icon={<Message />}
-                            label="Chat"
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(theme.palette.info.light, 0.1),
-                              color: theme.palette.info.main,
-                            }}
-                          />
-                        </Tooltip>
+
                         {expert.is_available_in_person && (
                           <Tooltip title="In-Person Consultations">
                             <Chip
@@ -681,7 +610,7 @@ const Experts = () => {
                         sx={{
                           borderRadius: 2,
                           py: 1,
-                          background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                          background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})`,
                           textTransform: "none",
                           fontWeight: 600,
                           boxShadow: `0 4px 15px ${alpha(

@@ -137,8 +137,13 @@ const ConsultationDetail = () => {
           )}
           <Grid item xs={6}>
             <Typography variant="subtitle1">Concerns</Typography>
-            <Typography>{consultation?.concerns}</Typography>
+            <Typography>
+              {consultation?.professional_details?.concerns
+                .map((concern) => concern.name)
+                .join(", ")}
+            </Typography>
           </Grid>
+
           <Grid item xs={6}>
             <Typography variant="subtitle1">Payment Status</Typography>
             <Typography>{consultation?.payment_status}</Typography>

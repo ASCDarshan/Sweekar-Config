@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     alpha,
     Avatar,
@@ -23,7 +23,6 @@ import {
 import {
     AccessTime,
     CalendarMonth,
-    ChatOutlined,
     EmojiEvents,
     Favorite,
     FavoriteBorder,
@@ -38,6 +37,7 @@ import {
     VideocamOutlined,
     Work,
 } from "@mui/icons-material";
+import CallIcon from '@mui/icons-material/Call';
 import UserProfileShimmer from "../../components/UI/UserProfileShimmer";
 import { motion } from "framer-motion";
 import { TabContext, TabPanel } from "@mui/lab";
@@ -77,6 +77,7 @@ const ExpertsDetails = () => {
     const theme = useTheme();
     const { id } = useParams();
     const user = JSON.parse(localStorage.getItem("loginInfo"));
+    const navigate = useNavigate();
 
     const [expert, setExpert] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -425,7 +426,6 @@ const ExpertsDetails = () => {
                                     </Typography>
                                 </MotionPaper>
                             </Box>
-
                         </Grid2>
                     </Grid2>
                 </Box>
@@ -446,58 +446,6 @@ const ExpertsDetails = () => {
                     gap: 4,
                 }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <IconButton
-                        sx={{
-                            bgcolor: alpha(theme.palette.success.main, 0.1),
-                            p: 2,
-                            mb: 1,
-                            "&:hover": {
-                                bgcolor: alpha(theme.palette.success.main, 0.2),
-                            },
-                        }}
-                    >
-                        <VideocamOutlined
-                            sx={{ color: theme.palette.success.main, fontSize: 28 }}
-                        />
-                    </IconButton>
-                    <Typography variant="body2" fontWeight={500}>
-                        Video Call
-                    </Typography>
-                </Box>
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <IconButton
-                        sx={{
-                            bgcolor: alpha(theme.palette.info.main, 0.1),
-                            p: 2,
-                            mb: 1,
-                            "&:hover": {
-                                bgcolor: alpha(theme.palette.info.main, 0.2),
-                            },
-                        }}
-                    >
-                        <ChatOutlined
-                            sx={{ color: theme.palette.info.main, fontSize: 28 }}
-                        />
-                    </IconButton>
-                    <Typography variant="body2" fontWeight={500}>
-                        Chat
-                    </Typography>
-                </Box>
-
                 <Box
                     sx={{
                         display: "flex",
@@ -622,19 +570,21 @@ const ExpertsDetails = () => {
                                 </Typography>
                             </Box>
                         ))}
-                        {user.user_type === "PROFESSIONAL" && expert?.user?.id === user.user && (
-                            <Button
-                                fullWidth
-                                variant="outlined"
-                                sx={{
-                                    borderRadius: 2,
-                                    textTransform: "none",
-                                    mt: 2,
-                                }}
-                            >
-                                View Full Schedule
-                            </Button>
-                        )}
+                        {user.user_type === "PROFESSIONAL" &&
+                            expert?.user?.id === user.user && (
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    sx={{
+                                        borderRadius: 2,
+                                        textTransform: "none",
+                                        mt: 2,
+                                    }}
+                                    onClick={() => navigate("/Professional/Dashboard")}
+                                >
+                                    View Full Schedule
+                                </Button>
+                            )}
                     </MotionPaper>
 
                     <MotionPaper
@@ -693,7 +643,7 @@ const ExpertsDetails = () => {
                             {expert?.is_available_online && (
                                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                                     <Chip
-                                        icon={<VideocamOutlined />}
+                                        icon={<CallIcon />}
                                         label="Online Consultations"
                                         color="success"
                                         variant="outlined"

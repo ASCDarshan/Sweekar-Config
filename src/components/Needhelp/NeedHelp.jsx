@@ -16,8 +16,8 @@ const NeedHelp = () => {
           p: 6,
           textAlign: "center",
           borderRadius: 4,
-          background: "linear-gradient(45deg, #9D84B7 0%, #7A5BA1 100%)",
-          color: "white",
+          background: "rgb(227 221 206)",
+          color: "black",
         }}
       >
         <Typography variant="h4" gutterBottom fontWeight="bold">
