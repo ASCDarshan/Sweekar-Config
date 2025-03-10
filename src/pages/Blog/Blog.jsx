@@ -100,7 +100,7 @@ const Blog = () => {
     <Box>
       <Box
         sx={{
-          bgcolor: "primary.light",
+          bgcolor: "#f5f1e8",
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",
@@ -128,8 +128,33 @@ const Blog = () => {
             Resources, stories and updates from the Sweekar community
           </Typography>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(157, 132, 183, 0.1)",
+          }}
+        />
       </Box>
-      <Container sx={{ mt: 4, mb: 4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+      >
         <Card sx={{ p: 3 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -160,10 +185,15 @@ const Blog = () => {
           </Grid>
         </Card>
       </Container>
-
       {loadingBlogs ? (
         <Container sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={1} col={3} />
+          <ShimmerSimpleGallery
+            card
+            imageHeight={250}
+            caption
+            row={1}
+            col={3}
+          />
         </Container>
       ) : (
         <Container sx={{ mb: 6 }}>
@@ -219,7 +249,9 @@ const Blog = () => {
                         variant="body2"
                         color="text.secondary"
                         sx={{ mb: 2 }}
-                        dangerouslySetInnerHTML={{ __html: getExcerpt(post.text, 30) }}
+                        dangerouslySetInnerHTML={{
+                          __html: getExcerpt(post.text, 30),
+                        }}
                       />
                       <Box
                         sx={{

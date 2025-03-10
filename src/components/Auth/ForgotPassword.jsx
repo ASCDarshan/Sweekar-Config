@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -15,9 +16,11 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { Email } from "@mui/icons-material";
 import ajaxCall from "../../helpers/ajaxCall";
+import { useState } from "react";
 
 const ForgotPassword = ({ open, onClose }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -39,6 +42,7 @@ const ForgotPassword = ({ open, onClose }) => {
   });
 
   const fetchData = async (url, data) => {
+    setLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -66,7 +70,10 @@ const ForgotPassword = ({ open, onClose }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
+
   };
 
   return (
@@ -111,9 +118,15 @@ const ForgotPassword = ({ open, onClose }) => {
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained">
-            Send
-          </Button>
+          {loading ? (
+            <Button disabled>
+              <CircularProgress size={24} />
+            </Button>
+          ) : (
+            <Button type="submit" variant="contained">
+              Send
+            </Button>
+          )}
         </DialogActions>
       </form>
     </Dialog>

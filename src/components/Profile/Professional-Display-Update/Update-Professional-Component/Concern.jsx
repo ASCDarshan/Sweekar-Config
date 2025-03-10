@@ -96,10 +96,7 @@ const Concern = ({ expertId }) => {
     };
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom color="primary">
-                Area of expertise (Modify concerns with a click)
-            </Typography>
+        <Box>
             <Grid container spacing={1}>
                 {allConcerns.map((concern) => (
                     <Grid item key={concern.id}>

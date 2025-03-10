@@ -14,6 +14,7 @@ import {
 import ajaxCall from "../../../helpers/ajaxCall";
 import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StaticColor = [
   {
@@ -35,6 +36,7 @@ const StaticColor = [
 ];
 
 const ExpertsSection = ({ selectedService, onBookExpert }) => {
+  const navigate = useNavigate();
   const selectedServiceId = selectedService?.id;
   const staticData = StaticColor.find((s) => s.id === selectedServiceId);
   const [experts, setExperts] = useState([]);
@@ -72,10 +74,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       `professionals/professional-filter/?professional_type=${selectedService?.id}`,
       setExperts
     );
-    fetchData(
-      "professionals/concerns",
-      setConcerns
-    );
+    fetchData("professionals/concerns", setConcerns);
   }, [selectedServiceId]);
 
   const formatDate = (dateString) => {
@@ -89,6 +88,10 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       timeZone: "UTC",
     };
     return new Date(dateString).toLocaleString("en-US", options);
+  };
+
+  const handleViewConsultation = (expert) => {
+    navigate(`/experts/${expert.id}`);
   };
 
   if (loading) {
@@ -201,26 +204,28 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Specializations
-                </Typography>
-                <Box
-                  sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}
-                >
-                  {expert.concerns.map((spec, index) => (
-                    <Chip
-                      key={index}
-                      label={spec.name}
-                      size="small"
-                      sx={{
-                        bgcolor: `${staticData.color}15`,
-                        color: staticData.color,
-                      }}
-                    />
-                  ))}
+              {expert.concerns && expert.concerns.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Specializations
+                  </Typography>
+                  <Box
+                    sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                  >
+                    {expert.concerns.map((spec, index) => (
+                      <Chip
+                        key={index}
+                        label={spec.name}
+                        size="small"
+                        sx={{
+                          bgcolor: `${staticData.color}15`,
+                          color: staticData.color,
+                        }}
+                      />
+                    ))}
+                  </Box>
                 </Box>
-              </Box>
+              )}
               <Box
                 sx={{
                   mt: 3,
@@ -246,21 +251,37 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   {expert?.consultation}
                 </Typography>
               </Box>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => onBookExpert(expert)}
-                sx={{
-                  mt: 2,
-                  bgcolor: staticData.color,
-                  "&:hover": {
+              <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
+                <Button
+                  variant="contained"
+                  onClick={() => handleViewConsultation(expert)}
+                  sx={{
+                    width: "48%",
                     bgcolor: staticData.color,
-                    opacity: 0.9,
-                  },
-                }}
-              >
-                Book Consultation
-              </Button>
+                    "&:hover": {
+                      bgcolor: staticData.color,
+                      opacity: 0.9,
+                    },
+                  }}
+                >
+                  View Details
+                </Button>
+
+                <Button
+                  variant="contained"
+                  onClick={() => onBookExpert(expert)}
+                  sx={{
+                    width: "48%",
+                    bgcolor: staticData.color,
+                    "&:hover": {
+                      bgcolor: staticData.color,
+                      opacity: 0.9,
+                    },
+                  }}
+                >
+                  Book Consultation
+                </Button>
+              </Box>
             </Paper>
           </Grid>
         ))}

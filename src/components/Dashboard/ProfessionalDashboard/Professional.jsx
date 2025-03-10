@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Container,
   Grid,
-  Paper,
   Typography,
   Box,
   Button,
@@ -154,32 +153,7 @@ const Professional = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <Paper sx={{ p: 2, height: "100%" }}>
-            <Typography variant="h6" gutterBottom>
-              Latest Consultations
-            </Typography>
-            {consultationList.length > 0 ? (
-              consultationList.map((consultation, index) => (
-                <Box
-                  key={index}
-                  display="flex"
-                  justifyContent="space-between"
-                  mb={1}
-                >
-                  <Typography>{consultation.concerns}</Typography>
-                  <Typography color="text.secondary">
-                    {moment(consultation.scheduled_time).format("MMM D, YYYY")}
-                  </Typography>
-                </Box>
-              ))
-            ) : (
-              <Typography color="text.secondary">
-                No consultations available
-              </Typography>
-            )}
-          </Paper>
-        </Grid>
+
       </Grid>
       <Box sx={{ mb: 4 }}>
         <Button

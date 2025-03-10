@@ -103,7 +103,7 @@ const Contact = () => {
     <Box>
       <Box
         sx={{
-          bgcolor: "primary.light",
+          bgcolor: "#f5f1e8",
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",
