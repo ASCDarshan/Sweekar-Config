@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { ArrowForward, CheckCircle, Close } from "@mui/icons-material";
 import {
   Box,

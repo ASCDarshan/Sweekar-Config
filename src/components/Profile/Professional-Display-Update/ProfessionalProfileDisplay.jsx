@@ -6,7 +6,6 @@ import {
     Typography,
     Box,
     Chip,
-    Divider,
     Rating,
     Stack,
     Button,
@@ -37,7 +36,7 @@ import ajaxCall from "../../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
 import ProfessionalUpdateDrawer from "./ProfessionalUpdateDrawer";
 import UserProfileShimmer from "../../UI/UserProfileShimmer";
-import CallIcon from '@mui/icons-material/Call';
+import CallIcon from "@mui/icons-material/Call";
 import Concern from "./Update-Professional-Component/Concern";
 import { TabContext, TabPanel } from "@mui/lab";
 import { motion } from "framer-motion";
@@ -220,8 +219,6 @@ const ProfessionalProfileDisplay = () => {
                         />
                     ))}
 
-
-
                     <Box
                         sx={{
                             bgcolor: "background.paper",
@@ -255,7 +252,9 @@ const ProfessionalProfileDisplay = () => {
                                     </MotionAvatar>
 
                                     <Box sx={{ ml: 3, mt: 2 }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
+                                        <Box
+                                            sx={{ display: "flex", alignItems: "center", mb: 0.5 }}
+                                        >
                                             <MotionTypography
                                                 variant="h4"
                                                 component="h1"
@@ -287,7 +286,12 @@ const ProfessionalProfileDisplay = () => {
                                     </MotionTypography>
 
                                     <MotionBox
-                                        sx={{ display: "flex", alignItems: "center", gap: 1, mt: 2 }}
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1,
+                                            mt: 2,
+                                        }}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.6 }}
@@ -347,7 +351,9 @@ const ProfessionalProfileDisplay = () => {
                                             minWidth: 100,
                                         }}
                                     >
-                                        <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
+                                        <Box
+                                            sx={{ display: "flex", alignItems: "center", mb: 0.5 }}
+                                        >
                                             <AccessTime
                                                 sx={{
                                                     color: theme.palette.success.main,
@@ -382,7 +388,9 @@ const ProfessionalProfileDisplay = () => {
                                             minWidth: 100,
                                         }}
                                     >
-                                        <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
+                                        <Box
+                                            sx={{ display: "flex", alignItems: "center", mb: 0.5 }}
+                                        >
                                             <Work
                                                 sx={{
                                                     color: theme.palette.info.main,
@@ -716,7 +724,12 @@ const ProfessionalProfileDisplay = () => {
                                             </Typography>
 
                                             <Box
-                                                sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 4 }}
+                                                sx={{
+                                                    display: "flex",
+                                                    flexWrap: "wrap",
+                                                    gap: 1,
+                                                    mb: 4,
+                                                }}
                                             >
                                                 <Concern />
                                             </Box>
@@ -738,7 +751,10 @@ const ProfessionalProfileDisplay = () => {
                                                     borderRadius: "0 8px 8px 0",
                                                 }}
                                             >
-                                                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                                                <Typography
+                                                    variant="subtitle1"
+                                                    sx={{ fontWeight: 600 }}
+                                                >
                                                     {expert?.years_of_experience} Years of Experience
                                                 </Typography>
                                                 <Typography
@@ -747,8 +763,8 @@ const ProfessionalProfileDisplay = () => {
                                                     sx={{ mt: 1 }}
                                                 >
                                                     Helping clients achieve better mental health and
-                                                    well-being through personalized care and evidence-based
-                                                    approaches.
+                                                    well-being through personalized care and
+                                                    evidence-based approaches.
                                                 </Typography>
                                             </Box>
                                         </TabPanel>
@@ -767,7 +783,10 @@ const ProfessionalProfileDisplay = () => {
                                                                     theme.palette.warning.main,
                                                                     0.3
                                                                 ),
-                                                                bgcolor: alpha(theme.palette.warning.light, 0.05),
+                                                                bgcolor: alpha(
+                                                                    theme.palette.warning.light,
+                                                                    0.05
+                                                                ),
                                                                 position: "relative",
                                                                 overflow: "hidden",
                                                             }}
