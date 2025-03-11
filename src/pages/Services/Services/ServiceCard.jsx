@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { ArrowForward, CheckCircle, Info } from "@mui/icons-material";
 import {
   Avatar,
@@ -39,7 +40,6 @@ const servicess = [
     icon: <Work sx={{ fontSize: 40 }} />,
   },
 ];
-
 const ServiceCard = ({ service, onSelect, isSelected, onDetailOpen }) => {
   const theme = useTheme();
   const staticData = servicess.find((s) => s.id === service.id);
@@ -106,7 +106,7 @@ const ServiceCard = ({ service, onSelect, isSelected, onDetailOpen }) => {
                 {service.description}
               </Typography>
               <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
-                {service.concern.slice(0, 3).map((feature, idx) => (
+                {service.concern.slice(0, 3).map((feature) => (
                   <Chip
                     key={feature.id}
                     label={feature.name}

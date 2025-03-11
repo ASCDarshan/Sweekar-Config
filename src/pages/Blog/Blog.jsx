@@ -197,25 +197,26 @@ const Blog = () => {
         </Container>
       ) : (
         <Container sx={{ mb: 6 }}>
-          <Grid container spacing={4}>
-            {blogs.length === 0 ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "200px",
-                  textAlign: "center",
-                  borderRadius: "8px",
-                  p: 2,
-                }}
-              >
-                <Typography variant="h5" color="red">
-                  There is no blog for this category.
-                </Typography>
-              </Box>
-            ) : (
-              blogs.map((post) => (
+          {blogs.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "200px",
+                textAlign: "center",
+                borderRadius: "8px",
+                p: 2,
+              }}
+            >
+              <Typography variant="h5" color="red">
+                There is no blog for this category.
+              </Typography>
+            </Box>
+          ) : (
+            <Grid container spacing={4}>
+              {blogs.map((post) => (
                 <Grid item xs={12} md={4} key={post.id}>
                   <Card
                     sx={{
@@ -278,9 +279,9 @@ const Blog = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-              ))
-            )}
-          </Grid>
+              ))}
+            </Grid>
+          )}
         </Container>
       )}
     </Box>

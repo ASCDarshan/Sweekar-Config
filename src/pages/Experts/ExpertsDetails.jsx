@@ -24,15 +24,12 @@ import {
     AccessTime,
     CalendarMonth,
     EmojiEvents,
-    Favorite,
-    FavoriteBorder,
     Info,
     Language,
     LocationOn,
     PersonOutlined,
     PhoneOutlined,
     Psychology,
-    Share,
     VerifiedUser,
     VideocamOutlined,
     Work,
@@ -81,7 +78,6 @@ const ExpertsDetails = () => {
 
     const [expert, setExpert] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isFavorite, setIsFavorite] = useState(false);
     const [tabValue, setTabValue] = useState("1");
     const fetchData = async (url, setData) => {
         setLoading(true);
@@ -112,10 +108,6 @@ const ExpertsDetails = () => {
     useEffect(() => {
         fetchData(`professionals/professional-update/${id}/`, setExpert);
     }, [id]);
-
-    const toggleFavorite = () => {
-        setIsFavorite(!isFavorite);
-    };
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
@@ -218,32 +210,6 @@ const ExpertsDetails = () => {
                         }}
                     />
                 ))}
-
-                <Box sx={{ position: "absolute", top: 20, right: 20, zIndex: 5 }}>
-                    <Stack direction="row" spacing={1}>
-                        <IconButton
-                            sx={{
-                                bgcolor: "rgba(255, 255, 255, 0.2)",
-                                backdropFilter: "blur(10px)",
-                                color: "white",
-                                "&:hover": { bgcolor: "rgba(255, 255, 255, 0.3)" },
-                            }}
-                            onClick={toggleFavorite}
-                        >
-                            {isFavorite ? <Favorite /> : <FavoriteBorder />}
-                        </IconButton>
-                        <IconButton
-                            sx={{
-                                bgcolor: "rgba(255, 255, 255, 0.2)",
-                                backdropFilter: "blur(10px)",
-                                color: "white",
-                                "&:hover": { bgcolor: "rgba(255, 255, 255, 0.3)" },
-                            }}
-                        >
-                            <Share />
-                        </IconButton>
-                    </Stack>
-                </Box>
 
                 <Box
                     sx={{
@@ -570,21 +536,7 @@ const ExpertsDetails = () => {
                                 </Typography>
                             </Box>
                         ))}
-                        {user.user_type === "PROFESSIONAL" &&
-                            expert?.user?.id === user.user && (
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    sx={{
-                                        borderRadius: 2,
-                                        textTransform: "none",
-                                        mt: 2,
-                                    }}
-                                    onClick={() => navigate("/Professional/Dashboard")}
-                                >
-                                    View Full Schedule
-                                </Button>
-                            )}
+
                     </MotionPaper>
 
                     <MotionPaper

@@ -5,7 +5,6 @@ import {
   Grid,
   Card,
   CardContent,
-  CardMedia,
   Button,
   List,
   ListItem,
@@ -52,33 +51,6 @@ const services = [
     icon: "💼",
   },
 ];
-
-
-// const services = [
-//   {
-//     icon: <Psychology fontSize="large" />,
-//     title: "Mental Health Support",
-//     description:
-//       "Professional counseling and therapy services for LGBTQAI+ individuals and women",
-//   },
-//   {
-//     icon: <Gavel fontSize="large" />,
-//     title: "Legal Aid",
-//     description:
-//       "Legal assistance and guidance for addressing discrimination and rights protection",
-//   },
-//   {
-//     icon: <Groups fontSize="large" />,
-//     title: "Support Groups",
-//     description: "Regular community meetings and support group sessions",
-//   },
-//   {
-//     icon: <EventAvailable fontSize="large" />,
-//     title: "Scheduled Sessions",
-//     description: "Pre-scheduled professional consultations and appointments",
-//   },
-// ];
-
 const Centres = () => {
   return (
     <Box>
