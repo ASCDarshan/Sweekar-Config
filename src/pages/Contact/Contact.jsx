@@ -17,6 +17,8 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../../components/UI/Loading";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const services = [
   {
@@ -48,57 +50,64 @@ const services = [
   },
 ];
 
+const validationSchema = Yup.object({
+  name: Yup.string()
+    .required("Name is required")
+    .min(2, "Name must be at least 2 characters"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone: Yup.string()
+    .matches(/^[0-9]+$/, "Phone number must contain only digits")
+    .min(10, "Phone number must be at least 10 digits")
+    .required("Phone number is required"),
+  message: Yup.string()
+    .required("Message is required")
+});
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const initialValues = {
     name: "",
     email: "",
-    message: "",
     phone: "",
-  });
+    message: "",
+  };
   const [isLoading, setisLoading] = useState(false);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = async (values, { resetForm }) => {
     setisLoading(true);
-    event.preventDefault();
 
     try {
       const response = await ajaxCall(
-        "contact/contact/",
+        "contact/contact",
         {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           method: "POST",
-          body: JSON.stringify(formData),
+          body: JSON.stringify(values),
         },
         8000
       );
+
       if ([200, 201].includes(response.status)) {
         toast.success("Message Sent Successfully.");
-        setisLoading(false);
-        setFormData({ name: "", email: "", message: "", phone: "" });
+        resetForm();
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
-        setisLoading(false);
-      }
-      else if ([401].includes(response.status)) {
-        toast.error("Invalid Credentials.");
-        setisLoading(false);
+      } else {
+        toast.error("An unexpected error occurred. Please try again later.");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to send message. Please check your connection.");
+    } finally {
+      setisLoading(false);
     }
   };
-
   return (
     <Box>
       <Box
@@ -300,94 +309,107 @@ const Contact = () => {
                   Fill out the form below and we&apos;ll get back to you as soon
                   as possible.
                 </Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      label="Full Name"
-                      variant="outlined"
-                      name="name"
-                      onChange={handleChange}
-                      value={formData.name}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                      }}
-                      required
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Email"
-                      type="email"
-                      variant="outlined"
-                      name="email"
-                      onChange={handleChange}
-                      value={formData.email}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      label="Phone Number"
-                      variant="outlined"
-                      name="phone"
-                      onChange={handleChange}
-                      value={formData.phone}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      label="How can we help you?"
-                      multiline
-                      rows={4}
-                      variant="outlined"
-                      name="message"
-                      onChange={handleChange}
-                      value={formData.message}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: 2,
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    {isLoading ? (
-                      <Loading />
-                    ) : (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        fullWidth
-                        startIcon={<Send />}
-                        onClick={handleSubmit}
-                        sx={{
-                          borderRadius: 2,
-                          textTransform: 'none',
-                        }}
-                      >
-                        Send Message
-                      </Button>
-                    )}
-                  </Grid>
-                </Grid>
+
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({ errors, touched, isValid, dirty }) => (
+                    <Form>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            type="text"
+                            label="Full Name"
+                            variant="outlined"
+                            name="name"
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: 2,
+                              },
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            label="Email"
+                            type="email"
+                            variant="outlined"
+                            name="email"
+                            error={touched.email && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: 2,
+                              },
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            label="Phone Number"
+                            variant="outlined"
+                            name="phone"
+                            error={touched.phone && Boolean(errors.phone)}
+                            helperText={touched.phone && errors.phone}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: 2,
+                              },
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            label="How can we help you?"
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                            name="message"
+                            error={touched.message && Boolean(errors.message)}
+                            helperText={touched.message && errors.message}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: 2,
+                              },
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          {isLoading ? (
+                            <Loading />
+                          ) : (
+                            <Button
+                              variant="contained"
+                              size="small"
+                              fullWidth
+                              startIcon={<Send />}
+                              type="submit"
+                              disabled={!(isValid && dirty)}
+                              sx={{
+                                borderRadius: 2,
+                                textTransform: 'none',
+                              }}
+                            >
+                              Send Message
+                            </Button>
+                          )}
+                        </Grid>
+                      </Grid>
+                    </Form>
+                  )}
+                </Formik>
               </CardContent>
             </Card>
           </Grid>

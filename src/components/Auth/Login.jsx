@@ -230,7 +230,6 @@ const Login = () => {
                           formik.touched.email && Boolean(formik.errors.email)
                         }
                         helperText={formik.touched.email && formik.errors.email}
-                        required
                         sx={{ mb: 2 }}
                         InputProps={{
                           startAdornment: (
@@ -255,7 +254,6 @@ const Login = () => {
                         helperText={
                           formik.touched.password && formik.errors.password
                         }
-                        required
                         sx={{ mb: 1 }}
                         InputProps={{
                           startAdornment: (

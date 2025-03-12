@@ -289,7 +289,7 @@ const Navbar = () => {
                         sx={{
                           bgcolor: "#9D84B7",
                           "&:hover": {
-                            bgcolor: "rgba(255, 255, 255, 0.9)",
+                            bgcolor: "rgba(157, 132, 183, 0.9)",
                           },
                         }}
                       >
