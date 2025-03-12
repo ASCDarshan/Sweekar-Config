@@ -48,6 +48,12 @@ const initialValues = {
   address: "",
 };
 
+const steps = [
+  "Personal Information",
+  "Account Details",
+  "Contact Information",
+];
+
 const Register = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -131,11 +137,7 @@ const Register = () => {
       setisLoading(false);
     }
   };
-  const steps = [
-    "Personal Information",
-    "Account Details",
-    "Contact Information",
-  ];
+
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
   };

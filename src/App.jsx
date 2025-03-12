@@ -37,6 +37,7 @@ import Professional from "./components/Dashboard/ProfessionalDashboard/Professio
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationList";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
+import ScrollToTop from "./components/UI/ScrollToTop";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       {children}
       <MobileBottomNav />

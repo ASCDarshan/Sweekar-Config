@@ -264,25 +264,25 @@ const ExpertsDetails = () => {
                                     </Box>
                                 </Box>
 
-                                <MotionTypography
-                                    variant="h6"
-                                    color="text.secondary"
-                                    gutterBottom
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                >
-                                    {expert.professional_type?.title}
-                                </MotionTypography>
-
-                                <MotionBox
-                                    sx={{ display: "flex", alignItems: "center", gap: 1, mt: 2 }}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.6 }}
-                                >
-                                    <Rating value={expert?.rating || 0} />
-                                </MotionBox>
+                                {expert.professional_type?.title && (
+                                    <MotionTypography
+                                        variant="h6"
+                                        color="text.secondary"
+                                        gutterBottom
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.5 }}
+                                    >
+                                        <Chip
+                                            size="medium"
+                                            label={expert.professional_type.title}
+                                            sx={(theme) => ({
+                                                bgcolor: alpha(theme.palette.primary.dark, 0.1),
+                                                color: theme.palette.primary.main,
+                                            })}
+                                        />
+                                    </MotionTypography>
+                                )}
                             </Box>
                         </Grid2>
                         <Grid2 item xs={12} md={6}>
@@ -475,7 +475,7 @@ const ExpertsDetails = () => {
                             p: 3,
                             borderRadius: 4,
                             border: "1px solid",
-                            borderColor: alpha(theme.palette.divider, 0.1),
+                            borderColor: (theme) => alpha(theme.palette.divider, 0.1),
                             mb: 4,
                         }}
                     >
@@ -487,57 +487,67 @@ const ExpertsDetails = () => {
                             Upcoming Availability
                         </Typography>
 
-                        {expert.events?.map((event) => (
-                            <Box
-                                key={event.id}
-                                sx={{
-                                    p: 2,
-                                    mb: 2,
-                                    borderRadius: 2,
-                                    bgcolor: alpha(theme.palette.primary.light, 0.05),
-                                    border: "1px solid",
-                                    borderColor: alpha(theme.palette.primary.main, 0.1),
-                                }}
-                            >
+                        {expert.events && expert.events.length > 0 ? (
+                            expert.events.map((event) => (
                                 <Box
+                                    key={event.id}
                                     sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        mb: 1,
+                                        p: 2,
+                                        mb: 2,
+                                        borderRadius: 2,
+                                        bgcolor: (theme) => alpha(theme.palette.primary.light, 0.05),
+                                        border: "1px solid",
+                                        borderColor: (theme) => alpha(theme.palette.primary.main, 0.1),
                                     }}
                                 >
-                                    <Typography variant="subtitle2">
-                                        {new Date(event.start_date).toLocaleDateString("en-US", {
-                                            weekday: "short",
-                                            month: "short",
-                                            day: "numeric",
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            mb: 1,
+                                        }}
+                                    >
+                                        <Typography variant="subtitle2">
+                                            {new Date(event.start_date).toLocaleDateString("en-US", {
+                                                weekday: "short",
+                                                month: "short",
+                                                day: "numeric",
+                                            })}
+                                        </Typography>
+                                        <Chip
+                                            size="small"
+                                            label={event.title}
+                                            icon={<VideocamOutlined fontSize="small" />}
+                                            sx={{
+                                                bgcolor: (theme) => alpha(theme.palette.success.light, 0.1),
+                                                color: (theme) => theme.palette.success.main,
+                                            }}
+                                        />
+                                    </Box>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {new Date(event.start_date).toLocaleTimeString("en-US", {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })}{" "}
+                                        -
+                                        {new Date(event.end_date).toLocaleTimeString("en-US", {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
                                         })}
                                     </Typography>
-                                    <Chip
-                                        size="small"
-                                        label={event.title}
-                                        icon={<VideocamOutlined fontSize="small" />}
-                                        sx={{
-                                            bgcolor: alpha(theme.palette.success.light, 0.1),
-                                            color: theme.palette.success.main,
-                                        }}
-                                    />
                                 </Box>
-                                <Typography variant="body2" color="text.secondary">
-                                    {new Date(event.start_date).toLocaleTimeString("en-US", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })}{" "}
-                                    -
-                                    {new Date(event.end_date).toLocaleTimeString("en-US", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })}
-                                </Typography>
-                            </Box>
-                        ))}
-
+                            ))
+                        ) : (
+                            <Typography
+                                variant="body1"
+                                color="text.secondary"
+                                sx={{ textAlign: "center", mt: 2 }}
+                            >
+                                No upcoming slots available!
+                            </Typography>
+                        )}
                     </MotionPaper>
+
 
                     <MotionPaper
                         variants={itemVariants}
@@ -565,7 +575,7 @@ const ExpertsDetails = () => {
                                     label={lang.trim()}
                                     size="medium"
                                     sx={{
-                                        bgcolor: alpha(theme.palette.primary.light, 0.1),
+                                        bgcolor: alpha(theme.palette.primary.dark, 0.1),
                                         color: theme.palette.primary.main,
                                     }}
                                 />
@@ -698,7 +708,7 @@ const ExpertsDetails = () => {
                                                     key={concern.id}
                                                     label={concern.name}
                                                     sx={{
-                                                        bgcolor: alpha(theme.palette.primary.light, 0.1),
+                                                        bgcolor: alpha(theme.palette.primary.dark, 0.1),
                                                         color: theme.palette.primary.main,
                                                         py: 2,
                                                         px: 1,

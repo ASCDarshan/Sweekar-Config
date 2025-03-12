@@ -23,13 +23,13 @@ const servicess = [
   },
   {
     id: 2,
-    color: "#7A5BA1",
+    color: "#FF6B6B",
     stats: { professionals: 30, cases: 500, success: 95 },
     icon: <Gavel sx={{ fontSize: 40 }} />,
   },
   {
     id: 3,
-    color: "#FF6B6B",
+    color: "#7A5BA1",
     stats: { doctors: 40, patients: 2000, satisfaction: 97 },
     icon: <LocalHospital sx={{ fontSize: 40 }} />,
   },

@@ -22,7 +22,7 @@ const Blog = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [loadingBlogs, setLoadingBlogs] = useState(false);
 

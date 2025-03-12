@@ -526,36 +526,31 @@ const Experts = () => {
                         Specializations
                       </Typography>}
 
-                      <Box
-                        sx={{
-                          mb: 2,
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 0.5,
-                        }}
-                      >
-                        {(expert.concerns || []).slice(0, 3).map((spec) => (
-                          <Chip
-                            key={spec.id}
-                            label={spec.name}
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(theme.palette.primary.light, 0.1),
-                              color: theme.palette.primary.main,
-                              fontWeight: 500,
-                              mb: 0.5,
-                            }}
-                          />
-                        ))}
-                        {(expert.concerns || []).length > 3 && (
-                          <Chip
-                            label={`+${(expert.concerns || []).length - 3
-                              } more`}
-                            size="small"
-                            variant="outlined"
-                            sx={{ mb: 0.5 }}
-                          />
-                        )}
+                      <Box sx={{ mt: 2, minHeight: "80px" }}>
+                        <Box sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                          {expert?.concerns?.slice(0, 3).map((spec, index) => (
+                            <Chip
+                              key={index}
+                              label={spec.name}
+                              size="small"
+                              sx={(theme) => ({
+                                bgcolor: alpha(theme.palette.primary.light, 0.1),
+                                color: theme.palette.primary.main,
+                                fontWeight: 500,
+                                mb: 0.5,
+                              })}
+                            />
+                          ))}
+
+                          {expert?.concerns?.length > 3 && (
+                            <Chip
+                              label={`+${expert.concerns.length - 3} more`}
+                              size="small"
+                              variant="outlined"
+                              sx={{ mb: 0.5 }}
+                            />
+                          )}
+                        </Box>
                       </Box>
 
                       <Box
@@ -601,26 +596,27 @@ const Experts = () => {
                           </Tooltip>
                         )}
                       </Box>
-
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        onClick={() => handleViewConsultation(expert)}
-                        endIcon={<ArrowForward />}
-                        sx={{
-                          borderRadius: 2,
-                          py: 1,
-                          background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})`,
-                          textTransform: "none",
-                          fontWeight: 600,
-                          boxShadow: `0 4px 15px ${alpha(
-                            theme.palette.primary.main,
-                            0.3
-                          )}`,
-                        }}
-                      >
-                        View Profile
-                      </Button>
+                      <Box sx={{ mt: 2, height: "50px" }}>
+                        <Button
+                          variant="contained"
+                          fullWidth
+                          onClick={() => handleViewConsultation(expert)}
+                          endIcon={<ArrowForward />}
+                          sx={{
+                            borderRadius: 2,
+                            py: 1,
+                            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.main})`,
+                            textTransform: "none",
+                            fontWeight: 600,
+                            boxShadow: `0 4px 15px ${alpha(
+                              theme.palette.primary.main,
+                              0.3
+                            )}`,
+                          }}
+                        >
+                          View Profile
+                        </Button>
+                      </Box>
                     </CardContent>
                   </MotionCard>
                 </Grid>
