@@ -274,30 +274,25 @@ const ProfessionalProfileDisplay = () => {
                                         </Box>
                                     </Box>
 
-                                    <MotionTypography
-                                        variant="h6"
-                                        color="text.secondary"
-                                        gutterBottom
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.5 }}
-                                    >
-                                        {expert.professional_type?.title}
-                                    </MotionTypography>
-
-                                    <MotionBox
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 1,
-                                            mt: 2,
-                                        }}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.6 }}
-                                    >
-                                        <Rating value={expert?.rating || 0} />
-                                    </MotionBox>
+                                    {expert.professional_type?.title && (
+                                        <MotionTypography
+                                            variant="h6"
+                                            color="text.secondary"
+                                            gutterBottom
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.5 }}
+                                        >
+                                            <Chip
+                                                size="medium"
+                                                label={expert.professional_type.title}
+                                                sx={(theme) => ({
+                                                    bgcolor: alpha(theme.palette.primary.dark, 0.1),
+                                                    color: theme.palette.primary.main,
+                                                })}
+                                            />
+                                        </MotionTypography>
+                                    )}
                                 </Box>
                             </Grid2>
                             <Grid2 item xs={12} md={6}>
@@ -598,7 +593,7 @@ const ProfessionalProfileDisplay = () => {
                                         label={lang.trim()}
                                         size="medium"
                                         sx={{
-                                            bgcolor: alpha(theme.palette.primary.light, 0.1),
+                                            bgcolor: alpha(theme.palette.primary.dark, 0.1),
                                             color: theme.palette.primary.main,
                                         }}
                                     />
