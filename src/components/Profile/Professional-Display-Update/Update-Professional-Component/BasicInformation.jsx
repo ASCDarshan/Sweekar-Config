@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import {
     Box,
@@ -8,7 +9,7 @@ import {
 import { toast } from 'react-toastify';
 import ajaxCall from '../../../../helpers/ajaxCall';
 
-const BasicInformation = () => {
+const BasicInformation = ({ setCount, onClose }) => {
     const user = JSON.parse(localStorage.getItem("loginInfo")).user;
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(true);
@@ -76,6 +77,8 @@ const BasicInformation = () => {
             );
             if ([200, 201].includes(response.status)) {
                 toast.success("Profile Updated Successfully.");
+                setCount((prevCount) => prevCount + 1);
+                onClose();
             } else if ([400, 404].includes(response.status)) {
                 toast.error("Some Problem Occurred. Please try again.");
             } else if ([401].includes(response.status)) {

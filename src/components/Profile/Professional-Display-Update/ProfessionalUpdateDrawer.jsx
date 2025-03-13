@@ -4,7 +4,7 @@ import { Box, IconButton, SwipeableDrawer, Typography } from "@mui/material";
 import BasicInformation from "./Update-Professional-Component/BasicInformation";
 import Award from "./Update-Professional-Component/Award";
 
-const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
+const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose, setCount }) => {
     return (
         <SwipeableDrawer
             anchor="right"
@@ -37,13 +37,13 @@ const ProfessionalUpdateDrawer = ({ ExpertDetails, open, onClose }) => {
                 Basic Information
             </Typography>
             <Box sx={{ mb: 3 }}>
-                <BasicInformation ExpertDetails={ExpertDetails} />
+                <BasicInformation ExpertDetails={ExpertDetails} setCount={setCount} onClose={onClose} />
             </Box>
             <Typography variant="h6" gutterBottom fontWeight="bold">
                 Awards
             </Typography>
             <Box sx={{ mb: 3 }}>
-                <Award expertId={ExpertDetails?.id} />
+                <Award expertId={ExpertDetails?.id} setCount={setCount} onClose={onClose} />
             </Box>
         </SwipeableDrawer>
     );

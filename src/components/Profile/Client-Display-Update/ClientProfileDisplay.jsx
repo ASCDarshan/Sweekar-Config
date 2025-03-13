@@ -171,6 +171,7 @@ const ClientProfileDisplay = () => {
     const [openUpdateDrawer, setOpenUpdateDrawer] = useState(false);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState(0);
+    const [count, setCount] = useState(0);
 
     const fetchData = async (url, setData) => {
         setLoading(true);
@@ -202,7 +203,7 @@ const ClientProfileDisplay = () => {
 
     useEffect(() => {
         fetchData(`clients/profile-user/?user=${userId}`, setClients);
-    }, [userId]);
+    }, [userId, count]);
 
     const handleUpdateClick = () => {
         setOpenUpdateDrawer(true);
@@ -887,6 +888,7 @@ const ClientProfileDisplay = () => {
                     ExpertDetails={client}
                     open={openUpdateDrawer}
                     onClose={closeUpdateDrawer}
+                    setCount={setCount}
                 />
             </MotionContainer>
         </MotionBox>

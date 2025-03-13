@@ -63,7 +63,7 @@ const itemVariants = {
     },
 };
 
-const ClientUpdateDrawer = ({ open, onClose }) => {
+const ClientUpdateDrawer = ({ open, onClose, setCount }) => {
     const theme = useTheme();
     const user = JSON.parse(localStorage.getItem("loginInfo")).user;
     const [loading, setLoading] = useState(false);
@@ -139,6 +139,8 @@ const ClientUpdateDrawer = ({ open, onClose }) => {
             );
             if ([200, 201].includes(response.status)) {
                 toast.success("Profile Updated Successfully.");
+                setCount((prevCount) => prevCount + 1);
+                onClose();
             } else if ([400, 404].includes(response.status)) {
                 toast.error("Some Problem Occurred. Please try again.");
             } else if ([401].includes(response.status)) {
