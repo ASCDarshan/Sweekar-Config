@@ -27,6 +27,7 @@ const Services = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   const fetchData = async (url, setData) => {
     try {
@@ -55,7 +56,7 @@ const Services = () => {
 
   useEffect(() => {
     fetchData("professionals/professionaltype/", setServices);
-  }, []);
+  }, [count]);
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
@@ -240,6 +241,7 @@ const Services = () => {
             preSelectedExpert={selectedExpert}
             preSelectedExpertType={selectedService?.id}
             onClose={handleBookingClose}
+            setCount={setCount}
           />
         </DialogContent>
       </Dialog>

@@ -22,8 +22,8 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { CircularProgress } from "@mui/material";
 import ajaxCall from "../../helpers/ajaxCall";
-import { toast } from "react-toastify";
 import Loading from "../UI/Loading";
+import { toast } from "react-toastify";
 
 const steps = ["Select Professional", "Choose Time", "Confirm Details"];
 
@@ -156,6 +156,7 @@ const BookConsultation = ({
         setCount((prevCount) => prevCount + 1);
         toast.success("Consultation Booked Successfully.");
         onClose();
+
       } else {
         toast.error("Failed to book consultation. Please try again later.");
       }

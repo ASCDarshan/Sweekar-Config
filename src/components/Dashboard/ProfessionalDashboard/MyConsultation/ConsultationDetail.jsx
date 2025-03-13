@@ -16,11 +16,12 @@ import {
   Rating,
 } from "@mui/material";
 import ajaxCall from "../../../../helpers/ajaxCall";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ConsultationDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const userType = JSON.parse(localStorage.getItem("loginInfo"))?.user_type;
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -76,6 +77,12 @@ const ConsultationDetail = () => {
         toast.success("Consultation Cancelled Successfully.");
         setCancelDialog(false);
         fetchData(`consultations/consultation-update/${id}/`, setConsultation);
+        if (userType === "PROFESSONAL") {
+          navigate("/Professional/Dashboard")
+        }
+        else {
+          navigate("/Client/Dashboard")
+        }
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
       } else if ([401].includes(response.status)) {

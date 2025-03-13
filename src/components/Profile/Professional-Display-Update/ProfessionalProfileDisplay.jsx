@@ -82,6 +82,7 @@ const ProfessionalProfileDisplay = () => {
     const [openUpdateDrawer, setOpenUpdateDrawer] = useState(false);
     const [loading, setLoading] = useState(true);
     const [tabValue, setTabValue] = useState("1");
+    const [count, setCount] = useState(0);
 
     const fetchData = async (url, setData) => {
         setLoading(true);
@@ -113,7 +114,7 @@ const ProfessionalProfileDisplay = () => {
 
     useEffect(() => {
         fetchData(`professionals/professional-user/?user=${userId}`, setExpert);
-    }, [userId]);
+    }, [userId, count]);
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
@@ -899,6 +900,7 @@ const ProfessionalProfileDisplay = () => {
                 ExpertDetails={expert}
                 open={openUpdateDrawer}
                 onClose={() => setOpenUpdateDrawer(false)}
+                setCount={setCount}
             />
         </Container>
     );

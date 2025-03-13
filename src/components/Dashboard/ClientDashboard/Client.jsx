@@ -222,6 +222,7 @@ const Client = () => {
 
   const handleClose = () => {
     setOpenBooking(false);
+
   };
 
   const handleViewDetails = (consultationId) => {
@@ -586,12 +587,12 @@ const Client = () => {
                       whileHover={{
                         y: -10,
                         boxShadow: `0 15px 30px rgba(${service.color === "#6A5ACD"
-                            ? "106, 90, 205"
-                            : service.color === "#4DAA57"
-                              ? "77, 170, 87"
-                              : service.color === "#F4A259"
-                                ? "244, 162, 89"
-                                : "88, 153, 226"
+                          ? "106, 90, 205"
+                          : service.color === "#4DAA57"
+                            ? "77, 170, 87"
+                            : service.color === "#F4A259"
+                              ? "244, 162, 89"
+                              : "88, 153, 226"
                           }, 0.2)`,
                       }}
                       sx={{
@@ -915,8 +916,8 @@ const Client = () => {
               py: 2,
               px: 3,
               borderTop: `1px solid ${theme.palette.mode === "dark"
-                  ? theme.palette.primary.dark
-                  : theme.palette.primary.light
+                ? theme.palette.primary.dark
+                : theme.palette.primary.light
                 }`,
               background: theme.palette.background.paper,
               zIndex: 3,

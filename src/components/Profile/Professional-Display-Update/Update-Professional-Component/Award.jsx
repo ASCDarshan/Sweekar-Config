@@ -9,7 +9,7 @@ import {
 import { toast } from 'react-toastify';
 import ajaxCall from '../../../../helpers/ajaxCall';
 
-const Award = ({ expertId }) => {
+const Award = ({ expertId, setCount, onClose }) => {
     const [formData, setFormData] = useState({
         professional: expertId,
         title: "",
@@ -50,6 +50,8 @@ const Award = ({ expertId }) => {
                 toast.success("Message Sent Successfully.");
                 setisLoading(false);
                 setFormData({ name: "", email: "", message: "", phone: "" });
+                setCount((prevCount) => prevCount + 1);
+                onClose();
             } else if ([400, 404].includes(response.status)) {
                 toast.error("Some Problem Occurred. Please try again.");
                 setisLoading(false);
