@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Stepper,
   Step,
@@ -34,6 +34,7 @@ const BookConsultation = ({
   setCount,
 }) => {
   const userId = JSON.parse(localStorage.getItem("loginInfo"))?.user;
+  const contentRef = useRef(null);
 
   const [professionals, setProfessionals] = useState([]);
   const [clientData, setClientData] = useState([]);
@@ -48,6 +49,7 @@ const BookConsultation = ({
   const [eventData, setEventsData] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
 
   const fetchData = async (url, setData) => {
@@ -125,10 +127,10 @@ const BookConsultation = ({
   }, [selectedProfessional]);
 
   const handleBookConsultant = async () => {
-    setLoading(true);
+    setBtnLoading(true);
     try {
       const response = await ajaxCall(
-        `consultations/consultations/`,
+        `consultations/consultation/create/`,
         {
           headers: {
             Accept: "application/json",
@@ -163,7 +165,7 @@ const BookConsultation = ({
     } catch (error) {
       console.error("Network error:", error);
     } finally {
-      setLoading(false);
+      setBtnLoading(false);
     }
   };
 
@@ -173,6 +175,12 @@ const BookConsultation = ({
       setActiveStep(1);
     }
   }, [preSelectedExpert]);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [activeStep]);
 
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
@@ -400,6 +408,7 @@ const BookConsultation = ({
 
   return (
     <Box sx={{ p: 2 }}>
+      <div ref={contentRef} />
       <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
         {steps.map((label) => (
           <Step key={label}>
@@ -423,7 +432,7 @@ const BookConsultation = ({
           </Button>
         )}
         {activeStep === steps.length - 1 ? (
-          loading ? (
+          btnLoading ? (
             <Loading />
           ) : (
             <Button variant="contained" onClick={handleBookConsultant}>

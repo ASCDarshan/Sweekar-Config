@@ -866,40 +866,6 @@ const Client = () => {
               },
             }}
           >
-            <Box sx={{ mb: 4, mx: "auto", maxWidth: "85%" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  mb: 1,
-                }}
-              >
-                <Typography variant="subtitle2" color="text.secondary">
-                  Booking Process
-                </Typography>
-                <Typography variant="subtitle2" color="primary">
-                  Step 1 of 3
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: 6,
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  borderRadius: 3,
-                  overflow: "hidden",
-                }}
-              >
-                <Box
-                  sx={{
-                    height: "100%",
-                    width: "33.3%",
-                    bgcolor: theme.palette.primary.main,
-                    borderRadius: 3,
-                  }}
-                />
-              </Box>
-            </Box>
-
             <BookConsultation
               preSelectedExpertType={service?.id}
               setCount={setCount}
