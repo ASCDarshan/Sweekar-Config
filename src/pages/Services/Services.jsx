@@ -19,6 +19,7 @@ import ExpertsSection from "./Services/ExpertsSection";
 import NeedHelp from "../../components/Needhelp/NeedHelp";
 import ajaxCall from "../../helpers/ajaxCall";
 import ServiceShimmer from "../../components/UI/ServiceShimmer";
+import BackgroundImg from "../../assets/HeroBanner.jpg";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -119,7 +120,8 @@ const Services = () => {
     <Box>
       <Box
         sx={{
-          bgcolor: "#f5f1e8",
+          backgroundImage: `url(${BackgroundImg})`,
+
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",

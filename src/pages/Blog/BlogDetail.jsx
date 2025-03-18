@@ -54,11 +54,18 @@ const BlogDetail = () => {
                     startIcon={<ArrowBackIcon />}
                     onClick={() => navigate(-1)}
                     sx={{
-                        mb: 2,
-                        color: 'text.primary',
-                        '&:hover': {
-                            backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                        }
+                        bgcolor: "rgba(255, 255, 255, 0.9)",
+                        borderRadius: 8,
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+                        backdropFilter: "blur(10px)",
+                        px: 3,
+                        py: 1.2,
+                        "&:hover": {
+                            bgcolor: "white",
+                            boxShadow: "0 15px 30px rgba(0,0,0,0.15)",
+                            transform: "translateY(-3px)",
+                        },
+                        transition: "all 0.3s ease",
                     }}
                 >
                     Go Back

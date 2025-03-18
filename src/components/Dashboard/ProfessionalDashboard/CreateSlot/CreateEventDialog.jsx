@@ -68,7 +68,7 @@ const CreateEventDialog = ({ open, onClose, ProfessionalData, setCount }) => {
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle>Create New Event</DialogTitle>
+            <DialogTitle>Create New Slot</DialogTitle>
             <DialogContent>
                 <TextField
                     fullWidth
