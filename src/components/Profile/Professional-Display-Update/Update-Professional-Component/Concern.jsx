@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography, Chip } from "@mui/material";
+import { Box, Grid, Chip } from "@mui/material";
 import { toast } from "react-toastify";
 import ajaxCall from "../../../../helpers/ajaxCall";
 

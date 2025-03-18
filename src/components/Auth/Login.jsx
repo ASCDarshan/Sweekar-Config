@@ -36,10 +36,9 @@ const Login = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const loginMethod = "password";
   const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loginMethod, setLoginMethod] = useState("password");
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -197,25 +196,7 @@ const Login = () => {
                     Sign In
                   </Typography>
                 </Box>
-                <Box sx={{ mb: 3 }}>
-                  <Button
-                    fullWidth
-                    variant={
-                      loginMethod === "password" ? "contained" : "outlined"
-                    }
-                    onClick={() => setLoginMethod("password")}
-                    sx={{ mb: 1 }}
-                  >
-                    Login with Password
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant={loginMethod === "otp" ? "contained" : "outlined"}
-                    onClick={() => setLoginMethod("otp")}
-                  >
-                    Login with OTP
-                  </Button>
-                </Box>
+
                 {loginMethod === "password" ? (
                   <>
                     <form onSubmit={formik.handleSubmit}>

@@ -17,8 +17,9 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../../components/UI/Loading";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import BackgroundImg from "../../assets/HeroBanner.jpg"
 
 const services = [
   {
@@ -112,7 +113,7 @@ const Contact = () => {
     <Box>
       <Box
         sx={{
-          bgcolor: "#f5f1e8",
+          backgroundImage: `url(${BackgroundImg})`,
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",

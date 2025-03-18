@@ -59,8 +59,11 @@ const ServiceCard = ({ service, onSelect, isSelected, onDetailOpen }) => {
           },
           position: "relative",
           overflow: "visible",
-          bgcolor: isSelected ? `${staticData.color}10` : "background.paper",
-          border: isSelected ? `2px solid ${staticData.color}` : "none",
+          bgcolor: "white",
+          border: "3px solid transparent",
+          backgroundImage: `linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)`,
+          backgroundOrigin: "border-box",
+          backgroundClip: "padding-box, border-box",
           display: "flex",
           flexDirection: "column",
         }}

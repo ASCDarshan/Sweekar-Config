@@ -33,7 +33,7 @@ import logo from "../../assets/Sweekar.png";
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
-  { label: "Experts", path: "/experts" },
+  // { label: "Experts", path: "/experts" },
   { label: "Blog", path: "/blog" },
   { label: "Resources", path: "/resources" },
   { label: "Reach Us", path: "/contact" },

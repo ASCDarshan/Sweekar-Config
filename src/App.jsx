@@ -38,6 +38,7 @@ import ProfessionalProfileDisplay from "./components/Profile/Professional-Displa
 import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationList";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
 import ScrollToTop from "./components/UI/ScrollToTop";
+import ResponsiveClient from "./components/Dashboard/ClientDashboard/ResponsiveClient";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -82,7 +83,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/services" element={<Services />} />
-              <Route path="/experts" element={<Experts />} />
+              {/* <Route path="/experts" element={<Experts />} /> */}
               <Route path="/experts/:id/" element={<ExpertsDetails />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blogs/:blogId" element={<BlogDetail />} />
@@ -91,7 +92,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-              <Route path="/Client/Dashboard" element={<Client />} />
+              <Route path="/Client/Dashboard" element={<ResponsiveClient />} />
               <Route
                 path="/Client/Profile"
                 element={<ClientProfileDisplay />}
@@ -111,7 +112,7 @@ const App = () => {
                 element={<ConsultationDetail />}
               />
 
-              <Route path="*" element={<Navigate to="/" />} />
+              {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Routes>
           </Layout>
         </Router>
