@@ -207,16 +207,18 @@ const Services = () => {
             borderRadius: 3,
             boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
             overflow: "hidden",
-          }
+          },
         }}
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 500 }}
       >
-        <DialogTitle sx={{
-          p: 3,
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-        }}>
+        <DialogTitle
+          sx={{
+            p: 3,
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+          }}
+        >
           <Box
             display="flex"
             justifyContent="space-between"

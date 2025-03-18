@@ -1,5 +1,9 @@
 import { Box, Container } from "@mui/material";
-import { ShimmerSimpleGallery, ShimmerTitle, ShimmerText } from "react-shimmer-effects";
+import {
+    ShimmerSimpleGallery,
+    ShimmerTitle,
+    ShimmerText,
+} from "react-shimmer-effects";
 
 const ServiceShimmer = () => {
     return (
@@ -19,7 +23,10 @@ const ServiceShimmer = () => {
                 </Container>
             </Box>
 
-            <Container maxWidth="lg" sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}>
+            <Container
+                maxWidth="lg"
+                sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+            >
                 <ShimmerSimpleGallery card imageHeight={200} caption row={2} col={4} />
             </Container>
         </Box>

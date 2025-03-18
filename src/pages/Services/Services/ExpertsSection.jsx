@@ -38,7 +38,8 @@ const StaticColor = [
 const ExpertsSection = ({ selectedService, onBookExpert }) => {
   const navigate = useNavigate();
   const selectedServiceId = selectedService?.id;
-  const staticData = StaticColor.find((s) => s.id === selectedServiceId) || StaticColor[0];
+  const staticData =
+    StaticColor.find((s) => s.id === selectedServiceId) || StaticColor[0];
   const [experts, setExperts] = useState([]);
   const [concerns, setConcerns] = useState([]);
   const [selectedConcern, setSelectedConcern] = useState("All");
@@ -75,18 +76,22 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
       `professionals/professional-filter/?professional_type=${selectedService?.id}`,
       setExperts
     );
-    fetchData(`professionals/concern-filter/?concern_type=${selectedService?.id}`, setConcerns);
+    fetchData(
+      `professionals/concern-filter/?concern_type=${selectedService?.id}`,
+      setConcerns
+    );
   }, [selectedService?.id, selectedServiceId, concerns?.id]);
 
   const handleFilter = (concernName) => {
     setSelectedConcern(concernName);
   };
 
-  const filteredExperts = selectedConcern === "All"
-    ? experts
-    : experts.filter((expert) =>
-      expert.concerns?.some((c) => c.name === selectedConcern)
-    );
+  const filteredExperts =
+    selectedConcern === "All"
+      ? experts
+      : experts.filter((expert) =>
+        expert.concerns?.some((c) => c.name === selectedConcern)
+      );
 
   const formatDate = (dateString) => {
     const options = {
@@ -159,14 +164,28 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
         </Typography>
       )}
 
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 1, mb: 4, flexWrap: "wrap" }}>
-        <Button variant={selectedConcern === "All" ? "contained" : "outlined"} onClick={() => handleFilter("All")} size="small">
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 1,
+          mb: 4,
+          flexWrap: "wrap",
+        }}
+      >
+        <Button
+          variant={selectedConcern === "All" ? "contained" : "outlined"}
+          onClick={() => handleFilter("All")}
+          size="small"
+        >
           All
         </Button>
         {concerns.map((concern) => (
           <Button
             key={concern.id}
-            variant={selectedConcern === concern.name ? "contained" : "outlined"}
+            variant={
+              selectedConcern === concern.name ? "contained" : "outlined"
+            }
             onClick={() => handleFilter(concern.name)}
             size="small"
           >
@@ -209,7 +228,14 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   },
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2, height: "80px" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mb: 2,
+                    height: "80px",
+                  }}
+                >
                   <Avatar
                     sx={{
                       width: 80,
@@ -218,21 +244,29 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                       border: `2px solid ${staticData.color}`,
                     }}
                   >
-                    {expert?.user?.first_name?.charAt(0) || ''}
+                    {expert?.user?.first_name?.charAt(0) || ""}
                   </Avatar>
                   <Box>
                     <Typography variant="h6" gutterBottom>
                       {expert?.user?.username || "Expert"}
                     </Typography>
                     <Typography color="text.secondary">
-                      {expert?.professional_type?.title || "Professional"} Specialist{" "}
+                      {expert?.professional_type?.title || "Professional"}{" "}
+                      Specialist{" "}
                     </Typography>
-                    {expert?.rating?.length > 0 && expert?.rating && (<Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
-                      <Rating value={expert.rating || 0} readOnly size="small" />
-                      <Typography variant="body2" sx={{ ml: 1 }}>
-                        ({expert.rating || 0})
-                      </Typography>
-                    </Box>
+                    {expert?.rating?.length > 0 && expert?.rating && (
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", mt: 0.5 }}
+                      >
+                        <Rating
+                          value={expert.rating || 0}
+                          readOnly
+                          size="small"
+                        />
+                        <Typography variant="body2" sx={{ ml: 1 }}>
+                          ({expert.rating || 0})
+                        </Typography>
+                      </Box>
                     )}
                   </Box>
                 </Box>
@@ -245,7 +279,9 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                       Experience
                     </Typography>
                     <Typography variant="body1">
-                      {expert?.years_of_experience ? `${expert.years_of_experience} + years` : "N/A"}
+                      {expert?.years_of_experience
+                        ? `${expert.years_of_experience} + years`
+                        : "N/A"}
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -258,14 +294,14 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   </Grid>
                 </Grid>
 
-                <Box sx={{ mt: 2, minHeight: "80px" }}>
+                <Box sx={{ mt: 2, minHeight: "80px", mb: 1 }}>
                   <Typography variant="body2" color="text.secondary">
                     Specializations
                   </Typography>
                   <Box
                     sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}
                   >
-                    {expert.concerns && expert.concerns.length > 0 ?
+                    {expert.concerns && expert.concerns.length > 0 ? (
                       expert.concerns.map((spec, index) => (
                         <Chip
                           key={index}
@@ -276,9 +312,12 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                             color: staticData.color,
                           }}
                         />
-                      )) :
-                      <Typography variant="body2">No specializations listed</Typography>
-                    }
+                      ))
+                    ) : (
+                      <Typography variant="body2">
+                        No specializations listed
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
 
@@ -300,17 +339,20 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                       Next Available
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
-                      {expert?.events && expert.events.length > 0 && expert.events[0]?.start_date
+                      {expert?.events &&
+                        expert.events.length > 0 &&
+                        expert.events[0]?.start_date
                         ? formatDate(expert.events[0].start_date)
                         : "Not scheduled"}
                     </Typography>
                   </Box>
-                  <Typography variant="h6" fontWeight="bold" color="primary">
-                    {expert?.consultation || "N/A"}
-                  </Typography>
                 </Box>
 
-                <Box display="flex" justifyContent="space-between" sx={{ mt: 2, height: "50px" }}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  sx={{ mt: 2, height: "50px" }}
+                >
                   <Button
                     variant="contained"
                     onClick={() => handleViewConsultation(expert)}
@@ -344,7 +386,8 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
               </Paper>
             </Grid>
           ))}
-        </Grid>)}
+        </Grid>
+      )}
     </Container>
   );
 };

@@ -45,7 +45,14 @@ const Concerns = () => {
         Choose up to 3 of the closest options
       </Typography>
 
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, justifyContent: "flex-start" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 1,
+          justifyContent: "flex-start",
+        }}
+      >
         {concerns.map((concern) => (
           <Chip
             key={concern}
@@ -61,7 +68,9 @@ const Concerns = () => {
               border: "1px solid transparent",
               borderRadius: "25px",
               backgroundClip: "padding-box",
-              backgroundColor: selectedConcerns.includes(concern) ? "rgba(222, 148, 243, 0.49)" : "transparent",
+              backgroundColor: selectedConcerns.includes(concern)
+                ? "rgba(222, 148, 243, 0.49)"
+                : "transparent",
               "&:hover": {
                 backgroundColor: "rgba(255, 140, 0, 0.2)",
               },
@@ -73,8 +82,10 @@ const Concerns = () => {
                 inset: 0,
                 borderRadius: "inherit",
                 padding: "3px",
-                background: " linear-gradient(to bottom,rgba(240, 81, 139, 0.76), #fbb03b)",
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                background:
+                  " linear-gradient(to bottom,rgba(240, 81, 139, 0.76), #fbb03b)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                 WebkitMaskComposite: "xor",
                 maskComposite: "exclude",
               },

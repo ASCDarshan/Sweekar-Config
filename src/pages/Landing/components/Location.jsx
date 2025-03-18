@@ -1,20 +1,13 @@
 import { Box, Chip } from "@mui/material";
 import { useState } from "react";
 
-const locations = [
-  "Whitefield",
-  "Udyogalaya",
-  "JP Nagar",
-  "Indiranagar",
-];
+const locations = ["Whitefield", "Udyogalaya", "JP Nagar", "Indiranagar"];
 
 const Location = () => {
   const [selectedLocation, setSelectedLocation] = useState("All centres");
 
   return (
     <>
-
-
       <Box
         sx={{
           display: "flex",

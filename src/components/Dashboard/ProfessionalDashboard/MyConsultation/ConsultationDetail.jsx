@@ -78,10 +78,9 @@ const ConsultationDetail = () => {
         setCancelDialog(false);
         fetchData(`consultations/consultation-update/${id}/`, setConsultation);
         if (userType === "PROFESSONAL") {
-          navigate("/Professional/Dashboard")
-        }
-        else {
-          navigate("/Client/Dashboard")
+          navigate("/Professional/Dashboard");
+        } else {
+          navigate("/Client/Dashboard");
         }
       } else if ([400, 404].includes(response.status)) {
         toast.error("Some Problem Occurred. Please try again.");
@@ -210,7 +209,9 @@ const ConsultationDetail = () => {
       </Dialog>
 
       <Dialog open={cancelDialog} onClose={() => setCancelDialog(false)}>
-        <DialogTitle>Are you sure you want to cancel this consultation?</DialogTitle>
+        <DialogTitle>
+          Are you sure you want to cancel this consultation?
+        </DialogTitle>
         <DialogActions>
           <Button onClick={() => setCancelDialog(false)}>No</Button>
           <Button

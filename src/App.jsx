@@ -43,20 +43,22 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   const noFooterPaths = [
-    '/blog',
-    '/Client/Dashboard',
-    '/Client/Profile',
-    '/Professional/Dashboard',
-    '/Professional/Profile',
-    '/consultations',
-    '/consultation',
-    '/book-consultation',
-    '/login',
-    '/register'
+    "/blog",
+    "/Client/Dashboard",
+    "/Client/Profile",
+    "/Professional/Dashboard",
+    "/Professional/Profile",
+    "/consultations",
+    "/consultation",
+    "/book-consultation",
+    "/login",
+    "/register",
   ];
 
-  const shouldHideFooter = noFooterPaths.includes(location.pathname) ||
-    location.pathname.startsWith('/consultation/') || location.pathname.startsWith('/experts');
+  const shouldHideFooter =
+    noFooterPaths.includes(location.pathname) ||
+    location.pathname.startsWith("/consultation/") ||
+    location.pathname.startsWith("/experts");
 
   return (
     <>
@@ -90,15 +92,24 @@ const App = () => {
               <Route path="/register" element={<Register />} />
 
               <Route path="/Client/Dashboard" element={<Client />} />
-              <Route path="/Client/Profile" element={<ClientProfileDisplay />} />
+              <Route
+                path="/Client/Profile"
+                element={<ClientProfileDisplay />}
+              />
 
-              <Route path="/Professional/Dashboard" element={<Professional />} />
+              <Route
+                path="/Professional/Dashboard"
+                element={<Professional />}
+              />
               <Route
                 path="/Professional/Profile"
                 element={<ProfessionalProfileDisplay />}
               />
               <Route path="/consultations" element={<ConsultationList />} />
-              <Route path="/consultation/:id" element={<ConsultationDetail />} />
+              <Route
+                path="/consultation/:id"
+                element={<ConsultationDetail />}
+              />
 
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

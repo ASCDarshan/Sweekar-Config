@@ -73,7 +73,8 @@ const Concern = ({ expertId }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "POST",
                     body: JSON.stringify({ concern: concernId, professional: expertId }),
@@ -103,15 +104,19 @@ const Concern = ({ expertId }) => {
                         <Chip
                             label={concern.name}
                             onClick={() => handleChipClick(concern.id)}
-                            color={selectedConcerns.includes(concern.id) ? "primary" : "default"}
-                            variant={selectedConcerns.includes(concern.id) ? "filled" : "outlined"}
+                            color={
+                                selectedConcerns.includes(concern.id) ? "primary" : "default"
+                            }
+                            variant={
+                                selectedConcerns.includes(concern.id) ? "filled" : "outlined"
+                            }
                             disabled={loading}
                             sx={{
-                                '&:hover': {
+                                "&:hover": {
                                     backgroundColor: selectedConcerns.includes(concern.id)
-                                        ? 'primary.main'
-                                        : 'action.hover'
-                                }
+                                        ? "primary.main"
+                                        : "action.hover",
+                                },
                             }}
                         />
                     </Grid>

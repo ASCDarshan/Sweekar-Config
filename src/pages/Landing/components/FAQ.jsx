@@ -42,31 +42,29 @@ const FAQ = () => {
         <Typography variant="h4" align="center" gutterBottom sx={{ mb: 6 }}>
           Frequently Asked Questions
         </Typography>
-        {
-          faqs.map((faq, index) => (
-            <Accordion
-              key={index}
-              expanded={expanded === index}
-              onChange={() => setExpanded(expanded === index ? false : index)}
-              sx={{
-                mb: 2,
-                "&:before": { display: "none" },
-                boxShadow: "none",
-                border: "1px solid",
-                borderColor: "grey.200",
-              }}
-            >
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>
-                  {faq.question}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography color="text.secondary">{faq.answer}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))
-        }
+        {faqs.map((faq, index) => (
+          <Accordion
+            key={index}
+            expanded={expanded === index}
+            onChange={() => setExpanded(expanded === index ? false : index)}
+            sx={{
+              mb: 2,
+              "&:before": { display: "none" },
+              boxShadow: "none",
+              border: "1px solid",
+              borderColor: "grey.200",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>
+                {faq.question}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography color="text.secondary">{faq.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
       </Container>
     </Box>
   );

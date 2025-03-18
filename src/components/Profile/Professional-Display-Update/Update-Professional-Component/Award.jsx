@@ -1,13 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import {
-    Box,
-    Grid,
-    TextField,
-    Button,
-} from '@mui/material';
-import { toast } from 'react-toastify';
-import ajaxCall from '../../../../helpers/ajaxCall';
+import { useState } from "react";
+import { Box, Grid, TextField, Button } from "@mui/material";
+import { toast } from "react-toastify";
+import ajaxCall from "../../../../helpers/ajaxCall";
 
 const Award = ({ expertId, setCount, onClose }) => {
     const [formData, setFormData] = useState({
@@ -16,7 +11,6 @@ const Award = ({ expertId, setCount, onClose }) => {
         issuing_organization: "",
         date_received: "",
         description: "",
-
     });
     const [isLoading, setisLoading] = useState(false);
 
@@ -39,7 +33,8 @@ const Award = ({ expertId, setCount, onClose }) => {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken}`,
+                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+                            }`,
                     },
                     method: "POST",
                     body: JSON.stringify(formData),
@@ -55,8 +50,7 @@ const Award = ({ expertId, setCount, onClose }) => {
             } else if ([400, 404].includes(response.status)) {
                 toast.error("Some Problem Occurred. Please try again.");
                 setisLoading(false);
-            }
-            else if ([401].includes(response.status)) {
+            } else if ([401].includes(response.status)) {
                 toast.error("Invalid Credentials.");
                 setisLoading(false);
             }
@@ -64,7 +58,6 @@ const Award = ({ expertId, setCount, onClose }) => {
             console.log(error);
         }
     };
-
 
     return (
         <Box sx={{ p: 2 }}>
@@ -113,7 +106,6 @@ const Award = ({ expertId, setCount, onClose }) => {
                             onChange={handleChange}
                         />
                     </Grid>
-
 
                     <Grid item xs={12}>
                         <Button

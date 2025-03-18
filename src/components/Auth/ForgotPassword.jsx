@@ -73,7 +73,6 @@ const ForgotPassword = ({ open, onClose }) => {
     } finally {
       setLoading(false);
     }
-
   };
 
   return (

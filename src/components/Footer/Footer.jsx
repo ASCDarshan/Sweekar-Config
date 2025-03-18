@@ -1,4 +1,11 @@
-import { Box, Container, Typography, Link, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Link,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 const Footer = () => {
   const theme = useTheme();
@@ -12,9 +19,10 @@ const Footer = () => {
         px: 2,
         mt: "auto",
         mb: isMobile ? 5 : 0,
-        backgroundColor: theme.palette.mode === "light"
-          ? theme.palette.grey[200]
-          : theme.palette.grey[800],
+        backgroundColor:
+          theme.palette.mode === "light"
+            ? theme.palette.grey[200]
+            : theme.palette.grey[800],
       }}
     >
       <Container maxWidth="lg">
@@ -22,11 +30,19 @@ const Footer = () => {
           © {new Date().getFullYear()} Consultation Portal. All rights reserved.
         </Typography>
         <Typography variant="body2" align="center" color="text.secondary">
-          <Link color="inherit" href="/privacy" style={{ textDecoration: "none" }}>
+          <Link
+            color="inherit"
+            href="/privacy"
+            style={{ textDecoration: "none" }}
+          >
             Privacy Policy
           </Link>
           {" | "}
-          <Link href="/terms" color="inherit" style={{ textDecoration: "none" }}>
+          <Link
+            href="/terms"
+            color="inherit"
+            style={{ textDecoration: "none" }}
+          >
             Terms of Service
           </Link>
         </Typography>

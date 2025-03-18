@@ -59,7 +59,9 @@ const Services = () => {
       setService(service);
       setOpenBooking(true);
     } else {
-      toast.error("You need to be logged in to book a consultation. Please sign in to continue.");
+      toast.error(
+        "You need to be logged in to book a consultation. Please sign in to continue."
+      );
       setOpenBooking(false);
     }
   };
@@ -72,7 +74,8 @@ const Services = () => {
     <Box
       sx={{
         py: 8,
-        background: "linear-gradient(135deg, rgb(227 221 206), rgb(227 221 206))",
+        background:
+          "linear-gradient(135deg, rgb(227 221 206), rgb(227 221 206))",
       }}
     >
       <Container maxWidth="lg">
@@ -175,6 +178,7 @@ const Services = () => {
                         {service.description}
                       </Typography>
                     </Box>
+
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <Button
                         variant="outlined"
@@ -191,7 +195,7 @@ const Services = () => {
                           "&:hover": {
                             backgroundColor: "#f5f5f5",
                             borderColor: "black",
-                          }
+                          },
                         }}
                       >
                         Book Consultation
