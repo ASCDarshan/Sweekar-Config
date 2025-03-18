@@ -44,8 +44,8 @@ const Importance = () => {
         backgroundImage: `url(${BackgroundImg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        position: 'relative',
-        overflow: 'hidden'
+        position: "relative",
+        overflow: "hidden",
       }}
     >
       <Container maxWidth="lg">
@@ -56,7 +56,7 @@ const Importance = () => {
           sx={{
             fontWeight: 700,
             mb: 4,
-            color: '#000'
+            color: "#000",
           }}
         >
           The Importance of Sweekar
@@ -66,26 +66,31 @@ const Importance = () => {
             <Grid item xs={12} sm={10} md={3.5} key={index}>
               <Card
                 sx={{
-                  height: 'auto',
+                  height: "auto",
                   minHeight: 280,
-                  backgroundColor: 'white',
+                  backgroundColor: "white",
                   boxShadow: 2,
                   borderRadius: 2,
-                  border: '3px solid transparent',
-                  backgroundImage: 'linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)',
-                  backgroundOrigin: 'border-box',
-                  backgroundClip: 'content-box, border-box',
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'translateY(-5px)'
-                  }
+                  border: "3px solid transparent",
+                  backgroundImage:
+                    "linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)",
+                  backgroundOrigin: "border-box",
+                  backgroundClip: "content-box, border-box",
+                  transition: "transform 0.3s ease-in-out",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                  },
                 }}
               >
-                <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                  <Typography variant="h2" sx={{ mb: 2, fontSize: '3rem' }}>
+                <CardContent sx={{ p: 4, textAlign: "center" }}>
+                  <Typography variant="h2" sx={{ mb: 2, fontSize: "3rem" }}>
                     {point.icon}
                   </Typography>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 700, color: '#000' }}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: 700, color: "#000" }}
+                  >
                     {point.title}
                   </Typography>
                   <Typography variant="body1" color="text.secondary">

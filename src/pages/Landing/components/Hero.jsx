@@ -4,7 +4,6 @@ import LocationSelector from "./Location";
 import LogoImg from "../../../assets/Sweekar.png";
 import BackgroundImg from "../../../assets/HeroBanner.jpg";
 
-
 const Hero = () => {
   const [loaded, setLoaded] = useState(false);
 

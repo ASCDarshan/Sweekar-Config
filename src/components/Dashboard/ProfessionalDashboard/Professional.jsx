@@ -153,7 +153,6 @@ const Professional = () => {
             </CardContent>
           </Card>
         </Grid>
-
       </Grid>
       <Box sx={{ mb: 4 }}>
         <Button

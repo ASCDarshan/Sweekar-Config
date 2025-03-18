@@ -59,7 +59,8 @@ const ConsultationList = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
@@ -98,7 +99,8 @@ const ConsultationList = () => {
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const isAM = hours < 12;
-    const formattedTime = `${hours % 12 || 12}:${minutes} ${isAM ? "AM" : "PM"}`;
+    const formattedTime = `${hours % 12 || 12}:${minutes} ${isAM ? "AM" : "PM"
+      }`;
     return `${formattedDate}, ${formattedTime}`;
   }
 
@@ -140,7 +142,9 @@ const ConsultationList = () => {
               <TableRow>
                 <TableCell>Date & Time</TableCell>
                 <TableCell>
-                  {loginInfo.user.user_type === "CLIENT" ? "Professional" : "Client"}
+                  {loginInfo.user.user_type === "CLIENT"
+                    ? "Professional"
+                    : "Client"}
                 </TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Status</TableCell>
@@ -173,10 +177,17 @@ const ConsultationList = () => {
                     </TableCell>
                     <TableCell>{consultation.consultation_type}</TableCell>
                     <TableCell>
-                      <Chip label={consultation.status} color={getStatusColor(consultation.status)} />
+                      <Chip
+                        label={consultation.status}
+                        color={getStatusColor(consultation.status)}
+                      />
                     </TableCell>
                     <TableCell>
-                      <Button variant="outlined" size="small" onClick={() => handleViewDetails(consultation.id)}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => handleViewDetails(consultation.id)}
+                      >
                         View Details
                       </Button>
                     </TableCell>

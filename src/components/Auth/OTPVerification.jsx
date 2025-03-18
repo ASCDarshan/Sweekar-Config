@@ -72,19 +72,14 @@ const OTPVerification = ({ open, onClose, phone }) => {
             {countdown > 0 ? (
               `Resend OTP in ${countdown}s`
             ) : (
-              <Button disabled={!canResend}>
-                Resend OTP
-              </Button>
+              <Button disabled={!canResend}>Resend OTP</Button>
             )}
           </Typography>
         </Box>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 3 }}>
         <Button onClick={onClose}>Cancel</Button>
-        <Button
-          variant="contained"
-          disabled={otp.length !== 6}
-        >
+        <Button variant="contained" disabled={otp.length !== 6}>
           Verify
         </Button>
       </DialogActions>

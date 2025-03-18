@@ -158,7 +158,6 @@ const BookConsultation = ({
         setCount((prevCount) => prevCount + 1);
         toast.success("Consultation Booked Successfully.");
         onClose();
-
       } else {
         toast.error("Failed to book consultation. Please try again later.");
       }
@@ -243,6 +242,19 @@ const BookConsultation = ({
         ))}
       </Grid>
     );
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "UTC",
+    };
+    return new Date(dateString).toLocaleString("en-US", options);
   };
 
   const renderStepContent = (step) => {
@@ -385,9 +397,7 @@ const BookConsultation = ({
             <Typography>
               Professional: {selectedProfessional.user.username}
             </Typography>
-            <Typography>
-              Date & Time: {selectedDateTime?.toLocaleString()}
-            </Typography>
+            <Typography>Date & Time: {formatDate(selectedDateTime)}</Typography>
             <Typography>Type: {consultationType}</Typography>
             <TextField
               fullWidth

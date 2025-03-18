@@ -40,7 +40,7 @@ const Features = () => {
           sx={{
             mb: 6,
             fontWeight: 700,
-            fontSize: "2.5rem"
+            fontSize: "2.5rem",
           }}
         >
           What makes Sweekar unique?
@@ -73,8 +73,9 @@ const Features = () => {
                         left: 0,
                         width: "50%",
                         height: "4px",
-                        background: 'linear-gradient(to right, #d4145a, #fbb03b)',
-                      }
+                        background:
+                          "linear-gradient(to right, #d4145a, #fbb03b)",
+                      },
                     }}
                   >
                     {feature.title}

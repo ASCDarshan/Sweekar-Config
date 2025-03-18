@@ -9,7 +9,7 @@ import ImportanceSection from "./components/Importance";
 
 const Landing = () => {
   return (
-    <Box >
+    <Box>
       <HeroSection />
       <VisionSection />
       <ImportanceSection />
