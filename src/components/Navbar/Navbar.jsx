@@ -108,7 +108,7 @@ const Navbar = () => {
         sx={{
           backgroundColor: trigger
             ? "rgba(121, 94, 151, 0.9)"
-            : "rgba(255, 255, 255, 0.95)", // Adjusted colors
+            : "rgba(255, 255, 255, 0.95)",
           height: trigger ? "75px" : "80px",
           transition: "all 0.3s ease-in-out",
           backdropFilter: "blur(10px)",
