@@ -50,19 +50,19 @@ const services = [
   },
   {
     id: 2,
-    title: "Medical Services",
-    description:
-      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
-    icon: <MedicalServices fontSize="large" />,
-    color: "#4DAA57",
-  },
-  {
-    id: 3,
     title: "Legal Aid",
     description:
       "Find legal professionals committed to protecting your rights and dignity.",
     icon: <Gavel fontSize="large" />,
     color: "#F4A259",
+  },
+  {
+    id: 3,
+    title: "Medical Services",
+    description:
+      "Access to LGBTQAI+ friendly healthcare providers and medical professionals.",
+    icon: <MedicalServices fontSize="large" />,
+    color: "#4DAA57",
   },
   {
     id: 4,
@@ -586,12 +586,12 @@ const Client = () => {
                       whileHover={{
                         y: -10,
                         boxShadow: `0 15px 30px rgba(${service.color === "#6A5ACD"
-                            ? "106, 90, 205"
-                            : service.color === "#4DAA57"
-                              ? "77, 170, 87"
-                              : service.color === "#F4A259"
-                                ? "244, 162, 89"
-                                : "88, 153, 226"
+                          ? "106, 90, 205"
+                          : service.color === "#4DAA57"
+                            ? "77, 170, 87"
+                            : service.color === "#F4A259"
+                              ? "244, 162, 89"
+                              : "88, 153, 226"
                           }, 0.2)`,
                       }}
                       sx={{
@@ -881,8 +881,8 @@ const Client = () => {
               py: 2,
               px: 3,
               borderTop: `1px solid ${theme.palette.mode === "dark"
-                  ? theme.palette.primary.dark
-                  : theme.palette.primary.light
+                ? theme.palette.primary.dark
+                : theme.palette.primary.light
                 }`,
               background: theme.palette.background.paper,
               zIndex: 3,

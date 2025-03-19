@@ -23,15 +23,15 @@ const StaticColor = [
   },
   {
     id: 2,
-    color: "#7A5BA1",
+    color: "#9D84B7",
   },
   {
     id: 3,
-    color: "#FF6B6B",
+    color: "#9D84B7",
   },
   {
     id: 4,
-    color: "#4ECDC4",
+    color: "#9D84B7",
   },
 ];
 
@@ -116,10 +116,10 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
         <Box sx={{ mb: 6 }}>
           <ShimmerSimpleGallery
             card
-            imageHeight={250}
+            imageHeight={200}
             caption
             row={1}
-            col={3}
+            col={4}
           />
         </Box>
       </Container>
@@ -149,7 +149,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 8, mb: 6 }}>
+    <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
       {selectedService && (
         <Typography
           variant="h4"
@@ -157,7 +157,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
           sx={{
             fontWeight: 700,
             textAlign: "center",
-            mb: 4,
+            mb: 3,
           }}
         >
           {selectedService?.title} Experts
@@ -169,7 +169,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
           display: "flex",
           justifyContent: "center",
           gap: 1,
-          mb: 4,
+          mb: 3,
           flexWrap: "wrap",
         }}
       >
@@ -211,20 +211,28 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
           </Typography>
         </Box>
       ) : (
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {filteredExperts.map((expert) => (
-            <Grid item xs={12} md={4} key={expert.id}>
+            <Grid item xs={12} sm={6} md={3} key={expert.id}>
               <Paper
-                elevation={3}
+                elevation={2}
                 sx={{
-                  p: 3,
-                  borderRadius: 4,
+                  p: 2,
+                  borderRadius: 3,
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   transition: "transform 0.2s",
+                  position: "relative",
+                  overflow: "visible",
+                  bgcolor: "white",
+                  border: "3px solid transparent",
+                  backgroundImage: `linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)`,
+                  backgroundOrigin: "border-box",
+                  backgroundClip: "padding-box, border-box",
                   "&:hover": {
                     transform: "translateY(-5px)",
+                    boxShadow: 6,
                   },
                 }}
               >
@@ -232,25 +240,25 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    mb: 2,
-                    height: "80px",
+                    mb: 1.5,
+                    height: "60px",
                   }}
                 >
                   <Avatar
                     sx={{
-                      width: 80,
-                      height: 80,
-                      mr: 2,
+                      width: 60,
+                      height: 60,
+                      mr: 1.5,
                       border: `2px solid ${staticData.color}`,
                     }}
                   >
                     {expert?.user?.first_name?.charAt(0) || ""}
                   </Avatar>
                   <Box>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                       {expert?.user?.username || "Expert"}
                     </Typography>
-                    <Typography color="text.secondary">
+                    <Typography variant="body2" color="text.secondary">
                       {expert?.professional_type?.title || "Professional"}{" "}
                       Specialist{" "}
                     </Typography>
@@ -263,7 +271,7 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                           readOnly
                           size="small"
                         />
-                        <Typography variant="body2" sx={{ ml: 1 }}>
+                        <Typography variant="caption" sx={{ ml: 0.5 }}>
                           ({expert.rating || 0})
                         </Typography>
                       </Box>
@@ -271,43 +279,52 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                   </Box>
                 </Box>
 
-                <Divider sx={{ my: 2 }} />
+                <Divider sx={{ my: 1 }} />
 
-                <Grid container spacing={2} sx={{ minHeight: "70px" }}>
+                <Grid container spacing={1} sx={{ minHeight: "50px" }}>
                   <Grid item xs={6}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary">
                       Experience
                     </Typography>
-                    <Typography variant="body1">
+                    <Typography variant="body2">
                       {expert?.years_of_experience
                         ? `${expert.years_of_experience} + years`
                         : "N/A"}
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary">
                       Languages
                     </Typography>
-                    <Typography variant="body1">
+                    <Typography variant="body2">
                       {expert?.languages_spoken || "N/A"}
                     </Typography>
                   </Grid>
                 </Grid>
 
-                <Box sx={{ mt: 2, minHeight: "80px", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">
+                <Box sx={{ mt: 1, minHeight: "60px", mb: 1 }}>
+                  <Typography variant="caption" color="text.secondary">
                     Specializations
                   </Typography>
                   <Box
-                    sx={{ mt: 1, display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                    sx={{
+                      mt: 0.5,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 0.5,
+                      maxHeight: "50px",
+                      overflow: "hidden"
+                    }}
                   >
                     {expert.concerns && expert.concerns.length > 0 ? (
-                      expert.concerns.map((spec, index) => (
+                      expert.concerns.slice(0, 3).map((spec, index) => (
                         <Chip
                           key={index}
                           label={spec.name}
                           size="small"
                           sx={{
+                            height: "20px",
+                            "& .MuiChip-label": { px: 1, py: 0, fontSize: "0.7rem" },
                             bgcolor: `${staticData.color}15`,
                             color: staticData.color,
                           }}
@@ -318,27 +335,32 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                         No specializations listed
                       </Typography>
                     )}
+                    {expert.concerns && expert.concerns.length > 3 && (
+                      <Typography variant="caption" sx={{ color: staticData.color }}>
+                        +{expert.concerns.length - 3} more
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
 
                 <Box
                   sx={{
                     mt: "auto",
-                    pt: 3,
-                    p: 2,
+                    py: 1.5,
+                    px: 1.5,
                     bgcolor: expert.availability ? "success.light" : "#90EE90",
                     borderRadius: 2,
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    minHeight: "80px",
+                    minHeight: "60px",
                   }}
                 >
                   <Box>
-                    <Typography variant="subtitle2" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary">
                       Next Available
                     </Typography>
-                    <Typography variant="body1" fontWeight="medium">
+                    <Typography variant="body2" fontWeight="medium">
                       {expert?.events &&
                         expert.events.length > 0 &&
                         expert.events[0]?.start_date
@@ -351,21 +373,23 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                 <Box
                   display="flex"
                   justifyContent="space-between"
-                  sx={{ mt: 2, height: "50px" }}
+                  sx={{ mt: 1.5, height: "36px" }}
                 >
                   <Button
                     variant="contained"
                     onClick={() => handleViewConsultation(expert)}
                     sx={{
                       width: "48%",
+                      py: 0.5,
                       bgcolor: staticData.color,
                       "&:hover": {
                         bgcolor: staticData.color,
                         opacity: 0.9,
                       },
                     }}
+                    size="small"
                   >
-                    View Details
+                    View
                   </Button>
 
                   <Button
@@ -373,14 +397,16 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                     onClick={() => onBookExpert(expert)}
                     sx={{
                       width: "48%",
+                      py: 0.5,
                       bgcolor: staticData.color,
                       "&:hover": {
                         bgcolor: staticData.color,
                         opacity: 0.9,
                       },
                     }}
+                    size="small"
                   >
-                    Book Consultation
+                    Book
                   </Button>
                 </Box>
               </Paper>

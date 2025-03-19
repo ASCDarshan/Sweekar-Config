@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Box,
   Container,
@@ -29,6 +29,8 @@ const Services = () => {
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
+  // Add a ref for the ExpertsSection
+  const expertsSectionRef = useRef(null);
 
   const fetchData = async (url, setData) => {
     try {
@@ -58,6 +60,19 @@ const Services = () => {
   useEffect(() => {
     fetchData("professionals/professionaltype/", setServices);
   }, [count]);
+
+  // Add useEffect to scroll to ExpertsSection when a service is selected
+  useEffect(() => {
+    if (selectedService && expertsSectionRef.current) {
+      // Scroll to expert section with a slight delay to ensure it's rendered
+      setTimeout(() => {
+        expertsSectionRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
+    }
+  }, [selectedService]);
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
@@ -121,7 +136,6 @@ const Services = () => {
       <Box
         sx={{
           backgroundImage: `url(${BackgroundImg})`,
-
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",
@@ -251,10 +265,12 @@ const Services = () => {
       </Dialog>
 
       {selectedService && (
-        <ExpertsSection
-          selectedService={selectedService}
-          onBookExpert={checkAuthAndOpenExpertBooking}
-        />
+        <Box ref={expertsSectionRef}>
+          <ExpertsSection
+            selectedService={selectedService}
+            onBookExpert={checkAuthAndOpenExpertBooking}
+          />
+        </Box>
       )}
 
       <NeedHelp />
