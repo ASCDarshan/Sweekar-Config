@@ -29,7 +29,6 @@ const Services = () => {
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
-  // Add a ref for the ExpertsSection
   const expertsSectionRef = useRef(null);
 
   const fetchData = async (url, setData) => {
@@ -61,14 +60,12 @@ const Services = () => {
     fetchData("professionals/professionaltype/", setServices);
   }, [count]);
 
-  // Add useEffect to scroll to ExpertsSection when a service is selected
   useEffect(() => {
     if (selectedService && expertsSectionRef.current) {
-      // Scroll to expert section with a slight delay to ensure it's rendered
       setTimeout(() => {
         expertsSectionRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
+          behavior: "smooth",
+          block: "start",
         });
       }, 100);
     }

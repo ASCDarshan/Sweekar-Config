@@ -232,7 +232,7 @@ const ClientProfileDisplay = () => {
             sx={{
                 position: "relative",
                 minHeight: "100vh",
-                background: "linear-gradient(145deg, #F3EFFF, #E5E0FF)",
+                background: "rgb(227 221 206)",
                 pt: { xs: 2, md: 4 },
                 pb: 8,
                 overflow: "hidden",
@@ -450,7 +450,7 @@ const ClientProfileDisplay = () => {
                                     <MotionTypography
                                         variant={isMobile ? "h4" : "h3"}
                                         fontWeight="bold"
-                                        color="white"
+                                        color="black"
                                         sx={{
                                             textShadow: "0 2px 10px rgba(0,0,0,0.2)",
                                             mb: 0.5,

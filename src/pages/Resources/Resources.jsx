@@ -16,17 +16,27 @@ import {
 } from "@mui/material";
 import { Article, Download, Search } from "@mui/icons-material";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import { ShimmerSimpleGallery } from "react-shimmer-effects";
 import BackgroundImg from "../../assets/HeroBanner.jpg";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
+import ServiceShimmer from "../../components/UI/ServiceShimmer";
 
 const Resources = () => {
   const [resourcesData, setResourceData] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingResources, setLoadingResources] = useState(false);
 
-  const fetchData = async (url, setData) => {
+  const fetchData = async (url, setData, isCategoryChange = false) => {
+    if (isCategoryChange) {
+      setLoadingResources(true);
+    } else {
+      setLoading(true);
+    }
+
     try {
       const response = await ajaxCall(
         url,
@@ -46,6 +56,12 @@ const Resources = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
+    } finally {
+      if (isCategoryChange) {
+        setLoadingResources(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -59,9 +75,9 @@ const Resources = () => {
     setSelectedCategory(categoryId);
 
     if (categoryId === "All") {
-      fetchData("resource/resources/", setResourceData);
+      fetchData("resource/resources/", setResourceData, true);
     } else {
-      fetchData(`resource/resource-category/?category_id=${categoryId}`, setResourceData);
+      fetchData(`resource/resource-category/?category_id=${categoryId}`, setResourceData, true);
     }
   };
 
@@ -69,6 +85,16 @@ const Resources = () => {
     category?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     category?.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Box sx={{ mb: 6 }}>
+          <ServiceShimmer />
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <Box>
@@ -141,73 +167,86 @@ const Resources = () => {
         </Card>
       </Container>
 
-      <Container sx={{ mb: 6 }}>
-        {filteredResources.length > 0 ? (
-          filteredResources.map((category, index) => (
-            <Card key={index} sx={{ mb: 4 }}>
-              <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                  <IconButton
-                    sx={{
-                      bgcolor: "primary.light",
-                      "&:hover": { bgcolor: "primary.main" },
-                    }}
-                  >
-                    <LibraryBooksIcon />
-                  </IconButton>
-
-                  <Typography variant="h5" sx={{ ml: 2 }}>
-                    {category?.category_name}
-                  </Typography>
-                </Box>
-                <List>
-                  <ListItem
-                    sx={{
-                      border: "1px solid",
-                      borderColor: "divider",
-                      borderRadius: 1,
-                      mb: 2,
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Article color="primary" />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={category?.title}
-                      secondary={category?.description}
-                    />
-                    <Button
-                      variant="contained"
-                      startIcon={<Download />}
-                      href={category.file_url}
-                      download
+      {loadingResources ? (
+        <Container sx={{ mb: 6 }}>
+          <ShimmerSimpleGallery
+            card
+            imageHeight={100}
+            caption
+            row={3}
+            col={1}
+          />
+        </Container>
+      ) : (
+        <Container sx={{ mb: 6 }}>
+          {filteredResources.length > 0 ? (
+            filteredResources.map((category, index) => (
+              <Card key={index} sx={{ mb: 4 }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+                    <IconButton
+                      sx={{
+                        bgcolor: "primary.light",
+                        "&:hover": { bgcolor: "primary.main" },
+                      }}
                     >
-                      Download
-                    </Button>
-                  </ListItem>
-                </List>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "200px",
-              textAlign: "center",
-              borderRadius: "8px",
-              p: 2,
-            }}
-          >
-            <Typography variant="h5" color="red">
-              No Resources found for this search.
-            </Typography>
-          </Box>
-        )}
-      </Container>
+                      <LibraryBooksIcon />
+                    </IconButton>
+
+                    <Typography variant="h5" sx={{ ml: 2 }}>
+                      {category?.category_name}
+                    </Typography>
+                  </Box>
+                  <List>
+                    <ListItem
+                      sx={{
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 1,
+                        mb: 2,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Article color="primary" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={category?.title}
+                        secondary={category?.description}
+                      />
+                      <Button
+                        variant="contained"
+                        startIcon={<Download />}
+                        component="a"
+                        href={category?.file_url}
+                        download={category?.file_url?.split('/').pop()}
+                      >
+                        Download
+                      </Button>
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "200px",
+                textAlign: "center",
+                borderRadius: "8px",
+                p: 2,
+              }}
+            >
+              <Typography variant="h5" color="red">
+                No Resources found for this search.
+              </Typography>
+            </Box>
+          )}
+        </Container>
+      )}
     </Box>
   );
 };

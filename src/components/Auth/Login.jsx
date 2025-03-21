@@ -171,7 +171,7 @@ const Login = () => {
         display: "flex",
         minHeight: "100vh",
         alignItems: "center",
-        background: `linear-gradient(45deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+        background: `rgb(227 221 206)`,
       }}
     >
       <Container maxWidth="lg">

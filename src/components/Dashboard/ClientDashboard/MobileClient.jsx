@@ -15,11 +15,6 @@ import {
     BottomNavigation,
     BottomNavigationAction,
     SwipeableDrawer,
-    List,
-    ListItem,
-    ListItemText,
-    ListItemIcon,
-    Divider,
     Grid,
 } from "@mui/material";
 import {
@@ -31,7 +26,6 @@ import {
     Home,
     LocationOn,
     MedicalServices,
-    Menu,
     PhoneOutlined,
     Psychology,
     Schedule,
@@ -186,7 +180,6 @@ const MobileClient = () => {
     const [loading, setLoading] = useState(false);
     const [count, setCount] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
-    const [menuOpen, setMenuOpen] = useState(false);
 
     const fetchData = async (url, setData) => {
         setLoading(true);
@@ -976,7 +969,7 @@ const MobileClient = () => {
             sx={{
                 position: "relative",
                 minHeight: "100vh",
-                background: "linear-gradient(145deg, #F3EFFF, #E5E0FF)",
+                background: "rgb(227 221 206)",
                 pt: 2,
                 pb: 7,
                 overflow: "hidden",
@@ -1010,35 +1003,6 @@ const MobileClient = () => {
                     }}
                 />
             ))}
-
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    px: 2,
-                    pb: 1,
-                    position: "relative",
-                    zIndex: 2,
-                }}
-            >
-                <Typography
-                    variant="h6"
-                    component="h1"
-                    sx={{ fontWeight: 700, color: theme.palette.primary.main }}
-                >
-                    Wellness Hub
-                </Typography>
-                <IconButton
-                    onClick={() => setMenuOpen(true)}
-                    sx={{
-                        bgcolor: alpha(theme.palette.primary.main, 0.1),
-                        color: theme.palette.primary.main,
-                    }}
-                >
-                    <Menu />
-                </IconButton>
-            </Box>
 
             <Container
                 maxWidth="sm"
@@ -1256,79 +1220,6 @@ const MobileClient = () => {
                         >
                             Cancel
                         </Button>
-                    </Box>
-                </SwipeableDrawer>
-
-                <SwipeableDrawer
-                    anchor="right"
-                    open={menuOpen}
-                    onClose={() => setMenuOpen(false)}
-                    onOpen={() => { }}
-                    sx={{
-                        "& .MuiBackdrop-root": {
-                            backgroundColor: alpha(theme.palette.common.black, 0.5),
-                            backdropFilter: "blur(3px)",
-                        },
-                        "& .MuiDrawer-paper": {
-                            width: "80%",
-                            maxWidth: 300,
-                            borderTopLeftRadius: 16,
-                            borderBottomLeftRadius: 16,
-                            background: "rgba(255, 255, 255, 0.95)",
-                            backdropFilter: "blur(10px)",
-                        },
-                    }}
-                >
-                    <Box sx={{ p: 3 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                            <Avatar
-                                sx={{
-                                    width: 48,
-                                    height: 48,
-                                    bgcolor: theme.palette.primary.main,
-                                    mr: 2,
-                                }}
-                            >
-                                {userName?.user?.username?.charAt(0).toUpperCase() || "U"}
-                            </Avatar>
-                            <Box>
-                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                                    {userName?.user?.username || "User"}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    View Profile
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Divider sx={{ mb: 2 }} />
-
-                        <List component="nav">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Home color="primary" />
-                                </ListItemIcon>
-                                <ListItemText primary="Home" />
-                            </ListItem>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Schedule color="primary" />
-                                </ListItemIcon>
-                                <ListItemText primary="My Sessions" />
-                            </ListItem>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <MedicalServices color="primary" />
-                                </ListItemIcon>
-                                <ListItemText primary="Services" />
-                            </ListItem>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Psychology color="primary" />
-                                </ListItemIcon>
-                                <ListItemText primary="Support" />
-                            </ListItem>
-                        </List>
                     </Box>
                 </SwipeableDrawer>
             </Container>

@@ -92,9 +92,8 @@ const ProfessionalProfileDisplay = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("loginInfo")).accessToken
-            }`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+              }`,
           },
           method: "GET",
         },
@@ -146,9 +145,8 @@ const ProfessionalProfileDisplay = () => {
     }));
   };
 
-  const expertName = `${expert?.user?.first_name || ""} ${
-    expert?.user?.last_name || ""
-  }`;
+  const expertName = `${expert?.user?.first_name || ""} ${expert?.user?.last_name || ""
+    }`;
   const gradientBg = generateGradient(expertName);
 
   const backgroundElements = generateRandomElements(5);
@@ -162,7 +160,7 @@ const ProfessionalProfileDisplay = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4, mb: 6 }}>
       <MotionContainer
         maxWidth="lg"
         sx={{ py: { xs: 4, md: 6 } }}

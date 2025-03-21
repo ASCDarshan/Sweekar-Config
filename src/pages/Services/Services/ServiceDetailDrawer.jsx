@@ -47,7 +47,7 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
         Features
       </Typography>
       <Box sx={{ mb: 3 }}>
-        {service.concern.map((feature, idx) => (
+        {service?.concern?.map((feature, idx) => (
           <Chip key={idx} label={feature.name || feature} sx={{ m: 0.5 }} />
         ))}
       </Box>
@@ -55,7 +55,7 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
         Benefits
       </Typography>
       <Box sx={{ mb: 3 }}>
-        {service.benifits.map((benefit, idx) => (
+        {service?.benifits?.map((benefit, idx) => (
           <Box
             key={idx}
             sx={{

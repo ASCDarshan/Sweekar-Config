@@ -54,6 +54,15 @@ const steps = [
   "Contact Information",
 ];
 
+// Password validation regex patterns
+const hasUpperCase = /[A-Z]/;
+const hasLowerCase = /[a-z]/;
+const hasNumber = /[0-9]/;
+const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+const phoneRegex = /^\d{10,15}$/;
+const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+
 const Register = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -67,18 +76,61 @@ const Register = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
-      email: Yup.string().required("Email is required"),
-      password: Yup.string().required("Password is required"),
+      username: Yup.string()
+        .required("Username is required")
+        .min(3, "Username must be at least 3 characters")
+        .max(20, "Username cannot exceed 20 characters")
+        .matches(
+          usernameRegex,
+          "Username can only contain letters, numbers, and underscores"
+        ),
+      email: Yup.string()
+        .required("Email is required")
+        .email("Invalid email format")
+        .matches(emailRegex, "Invalid email format"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(8, "Password must be at least 8 characters")
+        .max(50, "Password cannot exceed 50 characters")
+        .test(
+          "hasUpperCase",
+          "Password must contain at least one uppercase letter",
+          (value) => hasUpperCase.test(value)
+        )
+        .test(
+          "hasLowerCase",
+          "Password must contain at least one lowercase letter",
+          (value) => hasLowerCase.test(value)
+        )
+        .test(
+          "hasNumber",
+          "Password must contain at least one number",
+          (value) => hasNumber.test(value)
+        )
+        .test(
+          "hasSpecialChar",
+          "Password must contain at least one special character",
+          (value) => hasSpecialChar.test(value)
+        ),
       password2: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Confirm Password is required"),
-      first_name: Yup.string().required("First Name is required"),
-      last_name: Yup.string().required("Last Name is required"),
+      first_name: Yup.string()
+        .required("First Name is required")
+        .min(2, "First name must be at least 2 characters")
+        .max(50, "First name cannot exceed 50 characters")
+        .matches(/^[a-zA-Z\s]+$/, "First name can only contain letters"),
+      last_name: Yup.string()
+        .required("Last Name is required")
+        .min(2, "Last name must be at least 2 characters")
+        .max(50, "Last name cannot exceed 50 characters")
+        .matches(/^[a-zA-Z\s]+$/, "Last name can only contain letters"),
       phone: Yup.string()
         .required("Phone number is required")
-        .min(10, "Phone number must be at least 10 characters"),
-      address: Yup.string().required("Address is required"),
+        .matches(phoneRegex, "Phone number must be between 10-15 digits"),
+      address: Yup.string()
+        .required("Address is required")
+        .max(200, "Address cannot exceed 200 characters"),
     }),
     onSubmit: (values) => {
       const signupData = {
@@ -95,6 +147,23 @@ const Register = () => {
       fetchData("users/register/", signupData);
     },
   });
+
+  const isStepValid = () => {
+    const currentStepFields = {
+      0: ["first_name", "last_name"],
+      1: ["username", "email", "password", "password2"],
+      2: ["phone", "address"],
+    };
+
+    const fieldsToCheck = currentStepFields[activeStep];
+
+    fieldsToCheck.forEach((field) => {
+      formik.setFieldTouched(field, true, false);
+    });
+
+    return !fieldsToCheck.some((field) => formik.errors[field]);
+  };
+
   const fetchData = async (url, data) => {
     setisLoading(true);
     try {
@@ -139,11 +208,48 @@ const Register = () => {
   };
 
   const handleNext = () => {
-    setActiveStep((prev) => prev + 1);
+    if (isStepValid()) {
+      setActiveStep((prev) => prev + 1);
+    } else {
+      toast.error("Please check all the required fields");
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
+  };
+
+  const getPasswordStrength = (password) => {
+    if (!password) return { strength: 0, label: "" };
+
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (hasUpperCase.test(password)) strength += 1;
+    if (hasLowerCase.test(password)) strength += 1;
+    if (hasNumber.test(password)) strength += 1;
+    if (hasSpecialChar.test(password)) strength += 1;
+
+    let label = "";
+    let color = "";
+
+    if (strength === 0 || strength === 1) {
+      label = "Very Weak";
+      color = "#ff0000";
+    } else if (strength === 2) {
+      label = "Weak";
+      color = "#ff8c00";
+    } else if (strength === 3) {
+      label = "Medium";
+      color = "#ffff00";
+    } else if (strength === 4) {
+      label = "Strong";
+      color = "#9acd32";
+    } else {
+      label = "Very Strong";
+      color = "#008000";
+    }
+
+    return { strength, label, color };
   };
 
   const getStepContent = (step) => {
@@ -198,6 +304,8 @@ const Register = () => {
           </Grid>
         );
       case 1:
+        const passwordStrength = getPasswordStrength(formik.values.password);
+
         return (
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -272,6 +380,36 @@ const Register = () => {
                   ),
                 }}
               />
+              {formik.values.password && (
+                <Box sx={{ mt: 1 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: 4,
+                        borderRadius: 2,
+                        bgcolor: 'grey.300',
+                        mr: 1,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          height: '100%',
+                          borderRadius: 2,
+                          width: `${(passwordStrength.strength / 5) * 100}%`,
+                          bgcolor: passwordStrength.color,
+                        }}
+                      />
+                    </Box>
+                    <Typography variant="caption" color={passwordStrength.color}>
+                      {passwordStrength.label}
+                    </Typography>
+                  </Box>
+                  <Typography variant="caption" color="text.secondary">
+                    Password must have at least 8 characters with uppercase, lowercase, number, and special character.
+                  </Typography>
+                </Box>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -334,6 +472,11 @@ const Register = () => {
                   ),
                 }}
               />
+              {formik.values.phone && !phoneRegex.test(formik.values.phone) && (
+                <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+                  Phone number should contain 10-15 digits only
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -363,13 +506,20 @@ const Register = () => {
     }
   };
 
+  const validateCurrentStep = () => {
+    if (activeStep === steps.length - 1) {
+      return formik.isValid && Object.keys(formik.touched).length > 0;
+    }
+    return true;
+  };
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        background: `linear-gradient(45deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+        background: `rgb(227 221 206)`,
         py: 4,
       }}
     >
@@ -488,6 +638,7 @@ const Register = () => {
                           size="large"
                           sx={{ px: 4 }}
                           onClick={formik.handleSubmit}
+                          disabled={!validateCurrentStep()}
                         >
                           Register
                         </Button>

@@ -348,7 +348,7 @@ const BookConsultation = ({
                 label="Consultation Type"
               >
                 {selectedProfessional.is_available_online && (
-                  <MenuItem value="VIDEO">Audio Call</MenuItem>
+                  <MenuItem value="AUDIO">Audio Call</MenuItem>
                 )}
                 {selectedProfessional.is_available_in_person && (
                   <MenuItem value="IN_PERSON">In Person</MenuItem>

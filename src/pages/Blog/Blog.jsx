@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { ShimmerSimpleGallery } from "react-shimmer-effects";
-import { Search, AccessTime } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 import ServiceShimmer from "../../components/UI/ServiceShimmer";
@@ -24,7 +24,7 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState(""); // Search state
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadingBlogs, setLoadingBlogs] = useState(false);
 
@@ -92,7 +92,6 @@ const Blog = () => {
 
   return (
     <Box>
-      {/* Hero Section */}
       <Box
         sx={{
           backgroundImage: `url(${BackgroundImg})`,
@@ -125,8 +124,10 @@ const Blog = () => {
         </Container>
       </Box>
 
-      {/* Search & Category Filters */}
-      <Container maxWidth="lg" sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
+      >
         <Card sx={{ p: 3 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -162,7 +163,13 @@ const Blog = () => {
 
       {loadingBlogs ? (
         <Container sx={{ mb: 6 }}>
-          <ShimmerSimpleGallery card imageHeight={250} caption row={1} col={3} />
+          <ShimmerSimpleGallery
+            card
+            imageHeight={250}
+            caption
+            row={1}
+            col={3}
+          />
         </Container>
       ) : (
         <Container sx={{ mb: 6 }}>
@@ -192,7 +199,7 @@ const Blog = () => {
                       height: "100%",
                       display: "flex",
                       flexDirection: "column",
-                      transition: "transform 0.2s",
+                      transition: "transform 0.2s ease-in-out",
                       "&:hover": { transform: "translateY(-5px)" },
                       position: "relative",
                       bgcolor: "white",
@@ -200,20 +207,58 @@ const Blog = () => {
                       backgroundImage: `linear-gradient(white, white), linear-gradient(to bottom, #d4145a, #fbb03b)`,
                       backgroundOrigin: "border-box",
                       backgroundClip: "padding-box, border-box",
+                      boxShadow: 3,
+                      borderRadius: 2,
+                      overflow: "hidden",
                     }}
                   >
-                    <CardMedia component="img" height="200" image={post.image} alt={post.title} />
-                    <CardContent sx={{ flexGrow: 1 }}>
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={post.image}
+                      alt={post.title}
+                      sx={{
+                        objectFit: "cover",
+                        transition: "transform 0.3s ease-in-out",
+                        "&:hover": { transform: "scale(1.05)" },
+                      }}
+                    />
+
+                    <CardContent sx={{ flexGrow: 1, p: 2 }}>
                       <Box sx={{ mb: 2 }}>
-                        <Chip label={post.category?.name || "Uncategorized"} color="primary" size="small" />
+                        <Chip
+                          label={post.category?.name || "Uncategorized"}
+                          color="primary"
+                          size="small"
+                        />
                       </Box>
-                      <Typography variant="h5" gutterBottom>
+
+                      <Typography
+                        variant="h5"
+                        gutterBottom
+                        sx={{ fontWeight: 600 }}
+                      >
                         {post.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                        {post.text.slice(0, 100)}...
-                      </Typography>
-                      <Button variant="contained" onClick={() => handleReadMore(post.title, post.id)} fullWidth>
+
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            post.text.length > 100
+                              ? `${post.text.slice(0, 100)}...`
+                              : post.text,
+                        }}
+                      />
+
+                      <Button
+                        variant="contained"
+                        onClick={() => handleReadMore(post.title, post.id)}
+                        fullWidth
+                        sx={{ mt: "auto" }}
+                      >
                         Read More
                       </Button>
                     </CardContent>
