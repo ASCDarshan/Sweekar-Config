@@ -101,7 +101,7 @@ const Hero = () => {
                   mb: 1,
                 }}
               >
-                All Centers
+                Our Services
               </Typography>
               <Box
                 sx={{
@@ -158,7 +158,7 @@ const Hero = () => {
               <Box
                 component="img"
                 src={LogoImg}
-                alt="Hero Background"
+                alt="Sweekar Logo"
                 sx={{
                   position: "relative",
                   width: "90%",

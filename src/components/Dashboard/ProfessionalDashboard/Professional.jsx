@@ -16,6 +16,32 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import ajaxCall from "../../../helpers/ajaxCall";
 import CreateEventDialog from "../ProfessionalDashboard/CreateSlot/CreateEventDialog";
 import DashboardShimmer from "../../UI/DashboardShimmer";
+import { motion } from "framer-motion";
+const MotionBox = motion(Box);
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+      duration: 0.5,
+    },
+  },
+};
+
+const generateBackgroundElements = (count) => {
+  return Array.from({ length: count }).map((_, index) => ({
+    id: index,
+    size: Math.floor(Math.random() * 300) + 100,
+    x: Math.floor(Math.random() * 100),
+    y: Math.floor(Math.random() * 100),
+    opacity: Math.random() * 0.08 + 0.02,
+    duration: Math.random() * 40 + 20,
+    delay: Math.random() * 5,
+  }));
+};
 
 const localizer = momentLocalizer(moment);
 
@@ -107,6 +133,7 @@ const Professional = () => {
     return events.filter((event) => new Date(event.start) >= today);
   };
 
+  const bgElements = generateBackgroundElements(6);
   const upcomingEvents = getUpcomingEvents(calendarEvents);
 
   if (loading) {
@@ -118,66 +145,123 @@ const Professional = () => {
   }
 
   return (
-    <Container>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom mt={3}>
-          Professional Dashboard
-        </Typography>
-      </Box>
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <Assessment fontSize="large" color="primary" />
-                <Box ml={2}>
-                  <Typography variant="h6">Total Consultations</Typography>
-                  <Typography variant="h4">
-                    {consultationList?.length}
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <Event fontSize="large" color="secondary" />
-                <Box ml={2}>
-                  <Typography variant="h6">Upcoming Events</Typography>
-                  <Typography variant="h4">{upcomingEvents.length}</Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      <Box sx={{ mb: 4 }}>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => setCreateEventDialogOpen(true)}
-          sx={{ mb: 2 }}
-        >
-          Add Slot
-        </Button>
-        <Calendar
-          localizer={localizer}
-          events={calendarEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
+    <MotionBox
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      sx={{
+        position: "relative",
+        minHeight: "100vh",
+        background: "rgb(227 221 206)",
+        pt: { xs: 2, md: 4 },
+        pb: 8,
+        overflow: "hidden",
+      }}
+    >
+      {bgElements.map((el) => (
+        <MotionBox
+          key={el.id}
+          sx={{
+            position: "fixed",
+            width: el.size,
+            height: el.size,
+            borderRadius: "50%",
+            background: "linear-gradient(145deg, #D8CCFF, #B5A6FF)",
+            filter: "blur(60px)",
+            left: `${el.x}%`,
+            top: `${el.y}%`,
+            opacity: el.opacity,
+            zIndex: 0,
+          }}
+          animate={{
+            x: ["-20px", "20px", "-20px"],
+            y: ["-30px", "30px", "-30px"],
+          }}
+          transition={{
+            duration: el.duration,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+            delay: el.delay,
+          }}
         />
-      </Box>
-      <CreateEventDialog
-        open={createEventDialogOpen}
-        onClose={() => setCreateEventDialogOpen(false)}
-        ProfessionalData={expert}
-        setCount={setCount}
-      />
-    </Container>
+      ))}
+      <Container>
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom mt={3}>
+            Professional Dashboard
+          </Typography>
+        </Box>
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card elevation={3}>
+              <CardContent>
+                <Box display="flex" alignItems="center">
+                  <Assessment fontSize="large" color="primary" />
+                  <Box ml={2}>
+                    <Typography variant="h6">Total Consultations</Typography>
+                    <Typography variant="h4">
+                      {consultationList?.length}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card elevation={3}>
+              <CardContent>
+                <Box display="flex" alignItems="center">
+                  <Event fontSize="large" color="secondary" />
+                  <Box ml={2}>
+                    <Typography variant="h6">Upcoming Events</Typography>
+                    <Typography variant="h4">
+                      {upcomingEvents.length}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+        <Box sx={{ mb: 4, p: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-start", mb: 2 }}>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => setCreateEventDialogOpen(true)}
+            >
+              Add Slot
+            </Button>
+          </Box>
+
+          <Card
+            sx={{
+              p: 2,
+              boxShadow: 3,
+              borderRadius: 2,
+              border: "1px solid #ddd",
+              bgcolor: "white",
+            }}
+          >
+            <Calendar
+              localizer={localizer}
+              events={calendarEvents}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500, padding: "10px" }}
+            />
+          </Card>
+        </Box>
+
+        <CreateEventDialog
+          open={createEventDialogOpen}
+          onClose={() => setCreateEventDialogOpen(false)}
+          ProfessionalData={expert}
+          setCount={setCount}
+        />
+      </Container>
+    </MotionBox>
   );
 };
 

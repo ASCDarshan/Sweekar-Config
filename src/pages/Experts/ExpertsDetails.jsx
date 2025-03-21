@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import ajaxCall from "../../helpers/ajaxCall";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     alpha,
     Avatar,
     Box,
-    Button,
     Chip,
     Container,
     Grid,
     Grid2,
     IconButton,
     Paper,
-    Rating,
     Stack,
     Tab,
     Tabs,
@@ -73,8 +71,6 @@ const itemVariants = {
 const ExpertsDetails = () => {
     const theme = useTheme();
     const { id } = useParams();
-    const user = JSON.parse(localStorage.getItem("loginInfo"));
-    const navigate = useNavigate();
 
     const [expert, setExpert] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -155,10 +151,11 @@ const ExpertsDetails = () => {
     return (
         <MotionContainer
             maxWidth="lg"
-            sx={{ py: { xs: 4, md: 6 } }}
+            sx={{ py: 8 }}
             initial="hidden"
             animate="visible"
             variants={containerVariants}
+
         >
             <MotionPaper
                 elevation={0}

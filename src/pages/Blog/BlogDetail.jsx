@@ -1,8 +1,16 @@
-import { Card, CardContent, Container, Grid, styled, Typography, Button } from "@mui/material"
+import {
+    Card,
+    CardContent,
+    Container,
+    Grid,
+    styled,
+    Typography,
+    Button,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ajaxCall from "../../helpers/ajaxCall";
 import { useEffect, useState } from "react";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const BlogDetail = () => {
     const location = useLocation();
@@ -71,9 +79,7 @@ const BlogDetail = () => {
                     Go Back
                 </Button>
 
-                <Card
-                    sx={{ mt: 4, boxShadow: "0 4px 8px rgba(163, 163, 163, 0.5)" }}
-                >
+                <Card sx={{ mt: 4, boxShadow: "0 4px 8px rgba(163, 163, 163, 0.5)" }}>
                     <Grid container>
                         <Grid item xs={12}>
                             <BackgroundImage bgImage={blogData.image} />
@@ -96,7 +102,7 @@ const BlogDetail = () => {
                 </Card>
             </Container>
         </>
-    )
-}
+    );
+};
 
-export default BlogDetail
+export default BlogDetail;

@@ -7,7 +7,6 @@ import {
   Grid,
   Button,
   Chip,
-  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -132,10 +131,8 @@ const ConsultationDetail = () => {
   const [reviewDialog, setReviewDialog] = useState(false);
   const [consultation, setConsultation] = useState({});
   const [cancelDialog, setCancelDialog] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const fetchData = async (url, setData) => {
-    setLoading(true);
     try {
       const response = await ajaxCall(
         url,
@@ -143,7 +140,8 @@ const ConsultationDetail = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "GET",
         },
@@ -156,8 +154,6 @@ const ConsultationDetail = () => {
       }
     } catch (error) {
       console.error("Network error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -173,7 +169,8 @@ const ConsultationDetail = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "PATCH",
         },
@@ -206,7 +203,8 @@ const ConsultationDetail = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo"))?.accessToken
+              }`,
           },
           method: "POST",
           body: JSON.stringify({
@@ -255,7 +253,9 @@ const ConsultationDetail = () => {
 
   const getName = () => {
     if (userType === "CLIENT") {
-      return consultation?.professional_details?.user?.username || "Professional";
+      return (
+        consultation?.professional_details?.user?.username || "Professional"
+      );
     } else {
       return consultation?.client_details?.user?.username || "Client";
     }
@@ -274,7 +274,7 @@ const ConsultationDetail = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        background: "linear-gradient(145deg, #F3EFFF, #E5E0FF)",
+        background: "rgb(227 221 206)",
         pt: { xs: 2, md: 4 },
         pb: 8,
         overflow: "hidden",
@@ -368,10 +368,8 @@ const ConsultationDetail = () => {
           <Box
             sx={{
               p: { xs: 3, md: 4 },
-              background: `linear-gradient(145deg, ${theme.palette.primary.light}, ${alpha(
-                theme.palette.primary.main,
-                0.8
-              )})`,
+              background: `linear-gradient(145deg, ${theme.palette.primary.light
+                }, ${alpha(theme.palette.primary.main, 0.8)})`,
               color: "white",
               position: "relative",
             }}
@@ -430,7 +428,10 @@ const ConsultationDetail = () => {
                   sx={{
                     borderRadius: 3,
                     height: "100%",
-                    border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
+                    border: `1px solid ${alpha(
+                      theme.palette.primary.light,
+                      0.5
+                    )}`,
                     background: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
@@ -467,7 +468,10 @@ const ConsultationDetail = () => {
                   sx={{
                     borderRadius: 3,
                     height: "100%",
-                    border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
+                    border: `1px solid ${alpha(
+                      theme.palette.primary.light,
+                      0.5
+                    )}`,
                     background: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
@@ -486,7 +490,9 @@ const ConsultationDetail = () => {
                           color: theme.palette.primary.main,
                         }}
                       >
-                        {getConsultationTypeIcon(consultation?.consultation_type)}
+                        {getConsultationTypeIcon(
+                          consultation?.consultation_type
+                        )}
                       </Avatar>
                       <Typography variant="h6">Consultation Type</Typography>
                     </Box>
@@ -504,7 +510,10 @@ const ConsultationDetail = () => {
                   sx={{
                     borderRadius: 3,
                     height: "100%",
-                    border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
+                    border: `1px solid ${alpha(
+                      theme.palette.primary.light,
+                      0.5
+                    )}`,
                     background: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
@@ -543,7 +552,10 @@ const ConsultationDetail = () => {
                   sx={{
                     borderRadius: 3,
                     height: "100%",
-                    border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
+                    border: `1px solid ${alpha(
+                      theme.palette.primary.light,
+                      0.5
+                    )}`,
                     background: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
@@ -580,7 +592,10 @@ const ConsultationDetail = () => {
                     variants={itemVariants}
                     sx={{
                       borderRadius: 3,
-                      border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
+                      border: `1px solid ${alpha(
+                        theme.palette.primary.light,
+                        0.5
+                      )}`,
                       background: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
@@ -609,9 +624,8 @@ const ConsultationDetail = () => {
                     </CardContent>
                   </MotionCard>
                 </Grid>
-              )
-              }
-            </Grid >
+              )}
+            </Grid>
 
             <Box
               sx={{
@@ -644,28 +658,29 @@ const ConsultationDetail = () => {
                 </Button>
               )}
 
-              {consultation?.status === "COMPLETED" && !consultation?.review && (
-                <Button
-                  variant="contained"
-                  onClick={() => setReviewDialog(true)}
-                  sx={{
-                    px: 4,
-                    py: 1.2,
-                    borderRadius: 8,
-                    transition: "all 0.3s",
-                    background: `linear - gradient(145deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-                    "&:hover": {
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 5px 15px rgba(157, 132, 183, 0.4)",
-                    },
-                  }}
-                >
-                  Leave Review
-                </Button>
-              )}
+              {consultation?.status === "COMPLETED" &&
+                !consultation?.review && (
+                  <Button
+                    variant="contained"
+                    onClick={() => setReviewDialog(true)}
+                    sx={{
+                      px: 4,
+                      py: 1.2,
+                      borderRadius: 8,
+                      transition: "all 0.3s",
+                      background: `linear - gradient(145deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 5px 15px rgba(157, 132, 183, 0.4)",
+                      },
+                    }}
+                  >
+                    Leave Review
+                  </Button>
+                )}
             </Box>
-          </Box >
-        </MotionPaper >
+          </Box>
+        </MotionPaper>
 
         <Dialog
           open={reviewDialog}
@@ -824,10 +839,13 @@ const ConsultationDetail = () => {
           </DialogTitle>
           <DialogContent>
             <Typography variant="body1" sx={{ textAlign: "center" }}>
-              Are you sure you want to cancel this consultation? This action cannot be undone.
+              Are you sure you want to cancel this consultation? This action
+              cannot be undone.
             </Typography>
           </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 3, justifyContent: "center", gap: 2 }}>
+          <DialogActions
+            sx={{ px: 3, pb: 3, justifyContent: "center", gap: 2 }}
+          >
             <Button
               onClick={() => setCancelDialog(false)}
               variant="outlined"
@@ -855,8 +873,8 @@ const ConsultationDetail = () => {
             </Button>
           </DialogActions>
         </Dialog>
-      </Container >
-    </MotionBox >
+      </Container>
+    </MotionBox>
   );
 };
 

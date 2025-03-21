@@ -1,10 +1,10 @@
 import { Box, Chip } from "@mui/material";
 import { useState } from "react";
 
-const locations = ["Whitefield", "Udyogalaya", "JP Nagar", "Indiranagar"];
+const locations = ["Mental-Health", "Legal-Aid", "Medical-Services", "Placement-Services"];
 
 const Location = () => {
-  const [selectedLocation, setSelectedLocation] = useState("All centres");
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   return (
     <>
