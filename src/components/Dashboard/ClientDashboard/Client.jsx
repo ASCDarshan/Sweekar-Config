@@ -34,6 +34,7 @@ import ajaxCall from "../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ClientDashboardShimmer from "../../UI/ClientDashboardShimmer";
+import backgroundImage from "../../../assets/HeroBanner.jpg";
 
 const MotionBox = motion(Box);
 const MotionPaper = motion(Paper);
@@ -243,7 +244,10 @@ const Client = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        background: "rgb(227 221 206)",
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         pt: { xs: 2, md: 4 },
         pb: 8,
         overflow: "hidden",
@@ -292,9 +296,8 @@ const Client = () => {
             p: { xs: 3, md: 4 },
             mb: 4,
             borderRadius: 3,
-            background: `linear-gradient(145deg, ${theme.palette.primary.light
-              }, ${alpha(theme.palette.primary.main, 0.8)})`,
-            color: "white",
+            background: `rgb(227 221 206)`,
+            color: "black",
             backdropFilter: "blur(10px)",
             boxShadow: "0 10px 30px rgba(106, 90, 205, 0.15)",
           }}
@@ -396,9 +399,13 @@ const Client = () => {
                           transition: "box-shadow 0.3s, transform 0.2s",
                           overflow: "visible",
                           position: "relative",
-                          background: "rgba(255, 255, 255, 0.8)",
+                          background: "white",
                           backdropFilter: "blur(10px)",
-                          border: "1px solid rgba(255, 255, 255, 0.6)",
+                          border: "3px solid transparent",
+                          backgroundImage: `linear-gradient(white, white), 
+                      linear-gradient(to bottom, #d4145a, #fbb03b)`,
+                          backgroundOrigin: "border-box",
+                          backgroundClip: "padding-box, border-box",
                         }}
                       >
                         {index === 0 && (
@@ -586,12 +593,12 @@ const Client = () => {
                       whileHover={{
                         y: -10,
                         boxShadow: `0 15px 30px rgba(${service.color === "#6A5ACD"
-                            ? "106, 90, 205"
-                            : service.color === "#4DAA57"
-                              ? "77, 170, 87"
-                              : service.color === "#F4A259"
-                                ? "244, 162, 89"
-                                : "88, 153, 226"
+                          ? "106, 90, 205"
+                          : service.color === "#4DAA57"
+                            ? "77, 170, 87"
+                            : service.color === "#F4A259"
+                              ? "244, 162, 89"
+                              : "88, 153, 226"
                           }, 0.2)`,
                       }}
                       sx={{
@@ -601,9 +608,13 @@ const Client = () => {
                         display: "flex",
                         flexDirection: "column",
                         overflow: "hidden",
-                        background: "rgba(255, 255, 255, 0.7)",
+                        background: "white",
                         backdropFilter: "blur(10px)",
-                        border: "1px solid rgba(255, 255, 255, 0.6)",
+                        border: "3px solid transparent",
+                        backgroundImage: `linear-gradient(white, white), 
+                      linear-gradient(to bottom, #d4145a, #fbb03b)`,
+                        backgroundOrigin: "border-box",
+                        backgroundClip: "padding-box, border-box",
                       }}
                     >
                       <Box
@@ -881,8 +892,8 @@ const Client = () => {
               py: 2,
               px: 3,
               borderTop: `1px solid ${theme.palette.mode === "dark"
-                  ? theme.palette.primary.dark
-                  : theme.palette.primary.light
+                ? theme.palette.primary.dark
+                : theme.palette.primary.light
                 }`,
               background: theme.palette.background.paper,
               zIndex: 3,

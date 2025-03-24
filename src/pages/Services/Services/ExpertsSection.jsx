@@ -262,6 +262,28 @@ const ExpertsSection = ({ selectedService, onBookExpert }) => {
                       {expert?.professional_type?.title || "Professional"}{" "}
                       Specialist{" "}
                     </Typography>
+                    <Box sx={{ display: "flex", gap: 0.5, mt: 0.5 }}>
+                      <Chip
+                        label={expert?.verification_status === "VERIFIED" ? "Verified" : "Not Verified"}
+                        size="small"
+                        sx={{
+                          height: "20px",
+                          "& .MuiChip-label": { px: 1, py: 0, fontSize: "0.7rem" },
+                          bgcolor: expert?.verification_status === "VERIFIED" ? "green" : "#FF6B6B",
+                          color: "white",
+                        }}
+                      />
+                      <Chip
+                        label={expert?.sensitize ? "Sensitized" : "Not Sensitized"}
+                        size="small"
+                        sx={{
+                          height: "20px",
+                          "& .MuiChip-label": { px: 1, py: 0, fontSize: "0.7rem" },
+                          bgcolor: expert?.sensitize ? "green" : "#FF6B6B",
+                          color: "white",
+                        }}
+                      />
+                    </Box>
                     {expert?.rating?.length > 0 && expert?.rating && (
                       <Box
                         sx={{ display: "flex", alignItems: "center", mt: 0.5 }}

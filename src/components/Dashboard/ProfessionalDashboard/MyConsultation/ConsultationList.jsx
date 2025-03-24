@@ -22,6 +22,7 @@ import ajaxCall from "../../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 import { DataTableShimmer } from "../../../UI/DataTableShimmer";
 import { motion } from "framer-motion";
+import backgroundImage from "../../../../assets/HeroBanner.jpg"
 
 const MotionBox = motion(Box);
 
@@ -153,7 +154,10 @@ const ConsultationList = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        background: "rgb(227 221 206)",
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         pt: { xs: 2, md: 4 },
         pb: 8,
         overflow: "hidden",
@@ -189,7 +193,7 @@ const ConsultationList = () => {
       ))}
       <Container
         maxWidth="lg"
-        sx={{ mt: 4, py: 4, background: "rgb(227 221 206)" }}
+        sx={{ mt: 4, py: 4 }}
       >
         <Paper sx={{ p: 3 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
