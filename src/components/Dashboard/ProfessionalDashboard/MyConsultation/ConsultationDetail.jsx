@@ -36,6 +36,7 @@ import ajaxCall from "../../../../helpers/ajaxCall";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import backgroundImage from "../../../../assets/HeroBanner.jpg"
 
 const MotionBox = motion(Box);
 const MotionPaper = motion(Paper);
@@ -274,12 +275,16 @@ const ConsultationDetail = () => {
       sx={{
         position: "relative",
         minHeight: "100vh",
-        background: "rgb(227 221 206)",
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         pt: { xs: 2, md: 4 },
         pb: 8,
         overflow: "hidden",
       }}
     >
+
       {bgElements.map((el) => (
         <MotionBox
           key={el.id}
@@ -368,9 +373,8 @@ const ConsultationDetail = () => {
           <Box
             sx={{
               p: { xs: 3, md: 4 },
-              background: `linear-gradient(145deg, ${theme.palette.primary.light
-                }, ${alpha(theme.palette.primary.main, 0.8)})`,
-              color: "white",
+              background: `rgb(227 221 206)`,
+              color: "black",
               position: "relative",
             }}
           >

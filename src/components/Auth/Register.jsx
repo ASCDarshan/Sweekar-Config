@@ -35,6 +35,7 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../UI/Loading";
+import backgroundImage from "../../assets/HeroBanner.jpg"
 
 const initialValues = {
   username: "",
@@ -54,7 +55,6 @@ const steps = [
   "Contact Information",
 ];
 
-// Password validation regex patterns
 const hasUpperCase = /[A-Z]/;
 const hasLowerCase = /[a-z]/;
 const hasNumber = /[0-9]/;
@@ -516,13 +516,17 @@ const Register = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        background: `rgb(227 221 206)`,
         py: 4,
+        display: "flex",
+        minHeight: "100vh",
+        alignItems: "center",
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
+
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="center" alignItems="center">
           {!isMobile && (

@@ -33,6 +33,7 @@ import ClientUpdateDrawer from "./ClientUpdateDrawer";
 import UserProfileShimmer from "../../UI/UserProfileShimmer";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import backgroundImage from "../../../assets/HeroBanner.jpg";
 
 const MotionBox = motion(Box);
 const MotionCard = motion(Card);
@@ -232,12 +233,16 @@ const ClientProfileDisplay = () => {
             sx={{
                 position: "relative",
                 minHeight: "100vh",
-                background: "rgb(227 221 206)",
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
                 pt: { xs: 2, md: 4 },
                 pb: 8,
                 overflow: "hidden",
             }}
         >
+
             {bgElements.map((el) => (
                 <MotionBox
                     key={el.id}
@@ -315,7 +320,7 @@ const ClientProfileDisplay = () => {
                         borderRadius: 3,
                         position: "relative",
                         overflow: "hidden",
-                        background: "rgba(255, 255, 255, 0.8)",
+                        background: "rgb(227 221 206)",
                         backdropFilter: "blur(10px)",
                         border: `1px solid ${alpha(theme.palette.primary.light, 0.5)}`,
                         boxShadow: "0 10px 30px rgba(106, 90, 205, 0.15)",
@@ -328,7 +333,7 @@ const ClientProfileDisplay = () => {
                             left: 0,
                             right: 0,
                             height: isMobile ? 150 : 180,
-                            background: `linear - gradient(145deg, ${theme.palette.primary.light}, ${alpha(theme.palette.primary.main, 0.8)})`,
+                            background: `rgb(227 221 206)`,
                             zIndex: 0,
                             "&::after": {
                                 content: '""',

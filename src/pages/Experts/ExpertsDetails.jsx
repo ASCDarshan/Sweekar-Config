@@ -109,20 +109,6 @@ const ExpertsDetails = () => {
         setTabValue(newValue);
     };
 
-    const generateGradient = (name) => {
-        if (!name)
-            return "linear-gradient(135deg,rgba(137, 43, 226, 0) 0%,rgba(76, 0, 130, 0.01) 100%)";
-
-        const hash = name.split("").reduce((acc, char) => {
-            return char.charCodeAt(0) + ((acc << 5) - acc);
-        }, 0);
-
-        const h1 = Math.abs(hash % 360);
-        const h2 = (h1 + 40) % 360;
-
-        return `linear-gradient(135deg, hsl(${h1}, 80%, 50%) 0%, hsl(${h2}, 80%, 40%) 100%)`;
-    };
-
     const generateRandomElements = (count) => {
         return Array.from({ length: count }).map((_, index) => ({
             id: index,
@@ -137,7 +123,6 @@ const ExpertsDetails = () => {
 
     const expertName = `${expert?.user?.first_name || ""} ${expert?.user?.last_name || ""
         }`;
-    const gradientBg = generateGradient(expertName);
 
     const backgroundElements = generateRandomElements(5);
 
@@ -155,8 +140,8 @@ const ExpertsDetails = () => {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-
         >
+
             <MotionPaper
                 elevation={0}
                 variants={itemVariants}
@@ -173,7 +158,7 @@ const ExpertsDetails = () => {
                 <Box
                     sx={{
                         height: 220,
-                        background: gradientBg,
+                        background: 'rgb(227 221 206)',
                         position: "relative",
                         overflow: "hidden",
                     }}
@@ -860,7 +845,7 @@ const ExpertsDetails = () => {
                     </MotionPaper>
                 </Grid>
             </Grid>
-        </MotionContainer>
+        </MotionContainer >
     );
 };
 
