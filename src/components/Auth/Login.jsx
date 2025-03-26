@@ -31,7 +31,7 @@ import ForgotPassword from "./ForgotPassword";
 import Loading from "../UI/Loading";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import backgroundImage from "../../assets/HeroBanner.jpg"
+import backgroundImage from "../../assets/HeroBanner.jpg";
 
 const Login = () => {
   const theme = useTheme();
@@ -116,10 +116,10 @@ const Login = () => {
   const navigateBasedOnUserType = (userType) => {
     switch (userType) {
       case "PROFESSIONAL":
-        navigate("/Professional/Dashboard");
+        navigate("/Professional/Profile");
         break;
       case "CLIENT":
-        navigate("/Client/Dashboard");
+        navigate("/Client/Profile");
         break;
       default:
         navigate("/");
@@ -178,7 +178,6 @@ const Login = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="center" alignItems="center">
           <Grid item xs={12} md={6}>
