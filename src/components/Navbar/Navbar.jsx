@@ -329,7 +329,6 @@ const Navbar = () => {
         <List>
           {navItems.map((item) => (
             <ListItem
-              button
               key={item.label}
               onClick={() => {
                 navigate(item.path);

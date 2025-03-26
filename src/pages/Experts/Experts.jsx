@@ -263,7 +263,7 @@ const Experts = () => {
               >
                 {filterOptions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }} >
                       {option.icon}
                       {option.label}
                     </Box>

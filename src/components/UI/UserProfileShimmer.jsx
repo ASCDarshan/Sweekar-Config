@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
     ShimmerTitle,
     ShimmerText,
@@ -7,16 +8,16 @@ import {
     ShimmerButton,
 } from "react-shimmer-effects";
 
-const UserProfileShimmer = () => {
+const UserProfileShimmer = ({ height = 200, size = 128 }) => {
     return (
         <div className="max-w-4xl mx-auto p-4">
             <div className="mb-6">
-                <ShimmerThumbnail height={200} rounded />
+                <ShimmerThumbnail height={height} rounded />
             </div>
 
             <div className="relative">
                 <div className="absolute -top-16 left-8">
-                    <ShimmerCircularImage size={128} />
+                    <ShimmerCircularImage size={size} />
                 </div>
 
                 <div className="pt-16 px-6 pb-6 bg-white rounded-lg border">

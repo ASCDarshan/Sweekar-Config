@@ -1,4 +1,6 @@
 import { createTheme } from "@mui/material/styles";
+import "@fontsource/halant";
+import "@fontsource/hind-vadodara";
 
 export const theme = createTheme({
   palette: {
@@ -19,7 +21,8 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily:
+      '"Halant", "Hind Vadodara", "Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
       fontSize: "3.5rem",
       fontWeight: 700,
