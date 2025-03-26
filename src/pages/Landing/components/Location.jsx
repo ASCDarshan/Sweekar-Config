@@ -1,9 +1,11 @@
 import { Box, Chip } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const locations = ["Mental-Health", "Legal-Aid", "Medical-Services", "Placement-Services"];
 
 const Location = () => {
+  const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState("");
 
   return (
@@ -19,7 +21,11 @@ const Location = () => {
           <Chip
             key={location}
             label={location}
-            onClick={() => setSelectedLocation(location)}
+            onClick={() => {
+              setSelectedLocation(location)
+              navigate("/services")
+            }
+            }
             sx={{
               borderRadius: "16px",
               backgroundColor:
