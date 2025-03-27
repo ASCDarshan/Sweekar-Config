@@ -54,7 +54,7 @@ const Features = () => {
                   backgroundColor: "transparent",
                   color: "#000",
                   boxShadow: "none",
-                  textAlign: "left",
+                  px: "6px",
                 }}
               >
                 <CardContent sx={{ p: 0 }}>
@@ -89,7 +89,7 @@ const Features = () => {
           ))}
         </Grid>
       </Container>
-    </Box>
+    </Box >
   );
 };
 

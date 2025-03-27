@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
   useLocation,
 } from "react-router-dom";
 import { theme } from "./theme";
@@ -13,6 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "./components/UI/ScrollToTop";
 
 import Navbar from "./components/Navbar/Navbar";
 import MobileBottomNav from "./components/Navbar/MobileBottomNav";
@@ -22,7 +22,6 @@ import Blog from "./pages/Blog/Blog";
 import BlogDetail from "./pages/Blog/BlogDetail";
 import Contact from "./pages/Contact/Contact";
 import Landing from "./pages/Landing/Landing";
-import Experts from "./pages/Experts/Experts";
 import ExpertsDetails from "./pages/Experts/ExpertsDetails";
 import Services from "./pages/Services/Services";
 import Resources from "./pages/Resources/Resources";
@@ -30,15 +29,13 @@ import Resources from "./pages/Resources/Resources";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 
-import Client from "./components/Dashboard/ClientDashboard/Client";
 import ClientProfileDisplay from "./components/Profile/Client-Display-Update/ClientProfileDisplay";
+import ResponsiveClient from "./components/Dashboard/ClientDashboard/ResponsiveClient";
 
 import Professional from "./components/Dashboard/ProfessionalDashboard/Professional";
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationList";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
-import ScrollToTop from "./components/UI/ScrollToTop";
-import ResponsiveClient from "./components/Dashboard/ClientDashboard/ResponsiveClient";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -83,7 +80,6 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/services" element={<Services />} />
-              {/* <Route path="/experts" element={<Experts />} /> */}
               <Route path="/experts/:id/" element={<ExpertsDetails />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blogs/:blogId" element={<BlogDetail />} />

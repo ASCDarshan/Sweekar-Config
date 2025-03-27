@@ -15,7 +15,6 @@ const ProfessionalUpdateDrawer = ({
       anchor="right"
       open={open}
       onClose={onClose}
-      onOpen={() => {}}
       PaperProps={{
         sx: {
           width: { xs: "100%", sm: 800 },

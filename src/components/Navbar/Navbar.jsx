@@ -351,7 +351,6 @@ const Navbar = () => {
           {user?.user ? (
             <>
               <ListItem
-                button
                 onClick={handleDropdownToggle}
                 sx={{
                   borderTop: "1px solid rgba(0, 0, 0, 0.08)",
@@ -365,7 +364,6 @@ const Navbar = () => {
               <Collapse in={openDropdown} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItem
-                    button
                     onClick={() => {
                       handleDashboard();
                       handleDrawerToggle();
@@ -378,7 +376,6 @@ const Navbar = () => {
                     <ListItemText primary="Dashboard" />
                   </ListItem>
                   <ListItem
-                    button
                     onClick={() => {
                       handleProfile();
                       handleDrawerToggle();
@@ -391,7 +388,6 @@ const Navbar = () => {
                     <ListItemText primary="Profile" />
                   </ListItem>
                   <ListItem
-                    button
                     onClick={() => {
                       handleLogout();
                       handleDrawerToggle();
@@ -409,7 +405,6 @@ const Navbar = () => {
           ) : (
             <>
               <ListItem
-                button
                 onClick={() => {
                   navigate("/login");
                   handleDrawerToggle();
@@ -418,7 +413,6 @@ const Navbar = () => {
                 <ListItemText primary="Login" />
               </ListItem>
               <ListItem
-                button
                 onClick={() => {
                   navigate("/register");
                   handleDrawerToggle();

@@ -25,9 +25,8 @@ const BasicInformation = ({ setCount, onClose }) => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("loginInfo")).accessToken
-            }`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+              }`,
           },
           method: "GET",
         },
@@ -65,9 +64,8 @@ const BasicInformation = ({ setCount, onClose }) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("loginInfo")).accessToken
-            }`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("loginInfo")).accessToken
+              }`,
           },
           method: "PATCH",
           body: formData,
@@ -94,7 +92,7 @@ const BasicInformation = ({ setCount, onClose }) => {
     <Box sx={{ p: 2 }}>
       <form onSubmit={handleUpdate}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item="true" xs={12} sm={6}>
             <TextField
               fullWidth
               label="License Number"
@@ -104,7 +102,7 @@ const BasicInformation = ({ setCount, onClose }) => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item="true" xs={12} sm={6}>
             <TextField
               fullWidth
               label="Years of Experience"
@@ -116,7 +114,7 @@ const BasicInformation = ({ setCount, onClose }) => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item="true" xs={12}>
             <TextField
               fullWidth
               multiline
@@ -128,7 +126,7 @@ const BasicInformation = ({ setCount, onClose }) => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item="true" xs={12} sm={6}>
             <TextField
               fullWidth
               label="Consultation Fee"
@@ -140,7 +138,7 @@ const BasicInformation = ({ setCount, onClose }) => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item="true" xs={12} sm={6}>
             <TextField
               fullWidth
               label="Languages Spoken"
@@ -151,7 +149,7 @@ const BasicInformation = ({ setCount, onClose }) => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item="true" xs={12} sm={6}>
             <TextField
               fullWidth
               label="Session Duration"
@@ -164,7 +162,7 @@ const BasicInformation = ({ setCount, onClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item="true" xs={12}>
             <Button
               type="submit"
               variant="contained"

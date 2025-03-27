@@ -35,7 +35,7 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../UI/Loading";
-import backgroundImage from "../../assets/HeroBanner.jpg"
+import backgroundImage from "../../assets/HeroBanner.jpg";
 
 const initialValues = {
   username: "",
@@ -58,7 +58,7 @@ const steps = [
 const hasUpperCase = /[A-Z]/;
 const hasLowerCase = /[a-z]/;
 const hasNumber = /[0-9]/;
-const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const phoneRegex = /^\d{10,15}$/;
 const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
@@ -252,6 +252,8 @@ const Register = () => {
     return { strength, label, color };
   };
 
+  const passwordStrength = getPasswordStrength(formik.values.password);
+
   const getStepContent = (step) => {
     switch (step) {
       case 0:
@@ -304,8 +306,6 @@ const Register = () => {
           </Grid>
         );
       case 1:
-        const passwordStrength = getPasswordStrength(formik.values.password);
-
         return (
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -382,31 +382,35 @@ const Register = () => {
               />
               {formik.values.password && (
                 <Box sx={{ mt: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
                     <Box
                       sx={{
-                        width: '100%',
+                        width: "100%",
                         height: 4,
                         borderRadius: 2,
-                        bgcolor: 'grey.300',
+                        bgcolor: "grey.300",
                         mr: 1,
                       }}
                     >
                       <Box
                         sx={{
-                          height: '100%',
+                          height: "100%",
                           borderRadius: 2,
                           width: `${(passwordStrength.strength / 5) * 100}%`,
                           bgcolor: passwordStrength.color,
                         }}
                       />
                     </Box>
-                    <Typography variant="caption" color={passwordStrength.color}>
+                    <Typography
+                      variant="caption"
+                      color={passwordStrength.color}
+                    >
                       {passwordStrength.label}
                     </Typography>
                   </Box>
                   <Typography variant="caption" color="text.secondary">
-                    Password must have at least 8 characters with uppercase, lowercase, number, and special character.
+                    Password must have at least 8 characters with uppercase,
+                    lowercase, number, and special character.
                   </Typography>
                 </Box>
               )}
@@ -526,7 +530,6 @@ const Register = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="center" alignItems="center">
           {!isMobile && (

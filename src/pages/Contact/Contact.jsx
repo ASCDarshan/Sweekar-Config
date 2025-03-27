@@ -7,7 +7,6 @@ import {
   CardContent,
   TextField,
   Button,
-
   Paper,
   Divider,
   Link,
@@ -19,7 +18,7 @@ import ajaxCall from "../../helpers/ajaxCall";
 import Loading from "../../components/UI/Loading";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import BackgroundImg from "../../assets/HeroBanner.jpg"
+import BackgroundImg from "../../assets/HeroBanner.jpg";
 
 const services = [
   {
@@ -62,8 +61,7 @@ const validationSchema = Yup.object({
     .matches(/^[0-9]+$/, "Phone number must contain only digits")
     .min(10, "Phone number must be at least 10 digits")
     .required("Phone number is required"),
-  message: Yup.string()
-    .required("Message is required")
+  message: Yup.string().required("Message is required"),
 });
 
 const Contact = () => {
@@ -74,8 +72,6 @@ const Contact = () => {
     message: "",
   };
   const [isLoading, setisLoading] = useState(false);
-
-
 
   const handleSubmit = async (values, { resetForm }) => {
     setisLoading(true);
@@ -188,21 +184,21 @@ const Contact = () => {
               </Paper>
 
               <CardContent sx={{ p: 4 }}>
-                <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+                <Box sx={{ display: "flex", gap: 3, mb: 4 }}>
                   <Box sx={{ flex: 1 }}>
                     <Box sx={{ mb: 3 }}>
                       <Typography
                         variant="h6"
                         fontWeight="500"
-                        sx={{ mb: 1.5, color: 'primary.main' }}
+                        sx={{ mb: 1.5, color: "primary.main" }}
                       >
                         Address
                       </Typography>
                       <Typography
                         variant="body2"
                         sx={{
-                          color: 'text.secondary',
-                          lineHeight: 1.6
+                          color: "text.secondary",
+                          lineHeight: 1.6,
                         }}
                       >
                         Shri Maharani Chimnabai Stree Udyogalaya,
@@ -217,15 +213,15 @@ const Contact = () => {
                       <Typography
                         variant="h6"
                         fontWeight="500"
-                        sx={{ mb: 1.5, color: 'primary.main' }}
+                        sx={{ mb: 1.5, color: "primary.main" }}
                       >
                         Working Hours
                       </Typography>
                       <Typography
                         variant="body2"
                         sx={{
-                          color: 'text.secondary',
-                          lineHeight: 1.6
+                          color: "text.secondary",
+                          lineHeight: 1.6,
                         }}
                       >
                         Monday - Saturday:
@@ -241,15 +237,15 @@ const Contact = () => {
                     <Typography
                       variant="h6"
                       fontWeight="500"
-                      sx={{ mb: 1.5, color: 'primary.main' }}
+                      sx={{ mb: 1.5, color: "primary.main" }}
                     >
                       Contact
                     </Typography>
                     <Typography
                       variant="body2"
                       sx={{
-                        color: 'text.secondary',
-                        lineHeight: 1.6
+                        color: "text.secondary",
+                        lineHeight: 1.6,
                       }}
                     >
                       Phone:
@@ -257,11 +253,11 @@ const Contact = () => {
                       <Link
                         href="tel:+918511126808"
                         sx={{
-                          color: 'primary.main',
-                          textDecoration: 'none',
-                          '&:hover': {
-                            textDecoration: 'underline'
-                          }
+                          color: "primary.main",
+                          textDecoration: "none",
+                          "&:hover": {
+                            textDecoration: "underline",
+                          },
                         }}
                       >
                         (+91) 85111 26808
@@ -277,7 +273,7 @@ const Contact = () => {
                   fullWidth
                   sx={{
                     borderRadius: 2,
-                    textTransform: 'none',
+                    textTransform: "none",
                   }}
                   onClick={() =>
                     window.open(
@@ -298,7 +294,7 @@ const Contact = () => {
                   variant="h4"
                   gutterBottom
                   fontWeight="bold"
-                  sx={{ color: 'primary.main' }}
+                  sx={{ color: "primary.main" }}
                 >
                   Send us a Message
                 </Typography>
@@ -400,7 +396,7 @@ const Contact = () => {
                               disabled={!(isValid && dirty)}
                               sx={{
                                 borderRadius: 2,
-                                textTransform: 'none',
+                                textTransform: "none",
                               }}
                             >
                               Send Message

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Container } from "@mui/material";
 import {
     ShimmerSimpleGallery,
@@ -5,7 +6,11 @@ import {
     ShimmerText,
 } from "react-shimmer-effects";
 
-const ServiceShimmer = () => {
+const ServiceShimmer = ({
+    imageHeight = 200,
+    galleryRow = 2,
+    galleryCol = 4
+}) => {
     return (
         <Box>
             <Box
@@ -27,7 +32,13 @@ const ServiceShimmer = () => {
                 maxWidth="lg"
                 sx={{ mt: -6, mb: 4, position: "relative", zIndex: 1 }}
             >
-                <ShimmerSimpleGallery card imageHeight={200} caption row={2} col={4} />
+                <ShimmerSimpleGallery
+                    card
+                    imageHeight={imageHeight}
+                    caption
+                    row={galleryRow}
+                    col={galleryCol}
+                />
             </Container>
         </Box>
     );
