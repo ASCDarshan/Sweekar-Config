@@ -1045,7 +1045,6 @@ const MobileClient = () => {
                     anchor="bottom"
                     open={openBooking}
                     onClose={handleClose}
-                    onOpen={() => { }}
                     sx={{
                         "& .MuiBackdrop-root": {
                             backgroundColor: alpha(theme.palette.common.black, 0.5),

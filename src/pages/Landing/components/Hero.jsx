@@ -23,12 +23,13 @@ const Hero = () => {
         pb: { xs: 8, md: 10 },
       }}
     >
-      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, height: "100%" }}>
         <Grid
           container
           spacing={{ xs: 3, md: 4 }}
           alignItems="center"
           justifyContent="space-between"
+          sx={{ height: "100%" }}
         >
           <Grid item xs={12} md={6} sx={{ mb: { xs: 3, md: 0 } }}>
             <Box
@@ -37,6 +38,7 @@ const Hero = () => {
                 transform: loaded ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out",
                 textAlign: { xs: "center", md: "left" },
+                pr: { md: 4 },
               }}
             >
               <Typography
@@ -83,7 +85,7 @@ const Hero = () => {
                   color: "#555",
                   mb: 3,
                   fontWeight: 400,
-                  fontSize: { xs: "1rem", md: "1.4rem" },
+                  fontSize: { xs: "1rem", md: "1.2rem" },
                   lineHeight: 1.6,
                   opacity: loaded ? 1 : 0,
                   transform: loaded ? "translateY(0)" : "translateY(20px)",
@@ -99,6 +101,8 @@ const Hero = () => {
                 variant="subtitle1"
                 sx={{
                   mb: 1,
+                  fontWeight: 600,
+                  color: "#2D2D2D",
                 }}
               >
                 Our Services
@@ -169,7 +173,7 @@ const Hero = () => {
                   backgroundClip: "content-box, border-box",
                   zIndex: 1,
                   overflow: "hidden",
-                  transition: "transform 0.5s ease-out",
+                  transition: "all 0.5s ease-out",
                   "&:hover": {
                     transform: "scale(1.02)",
                   },

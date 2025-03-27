@@ -17,7 +17,6 @@ const ServiceDetailDrawer = ({ service, open, onClose, onBooking }) => {
       anchor="right"
       open={open}
       onClose={onClose}
-      onOpen={() => { }}
       PaperProps={{
         sx: {
           width: { xs: "100%", sm: 400 },
