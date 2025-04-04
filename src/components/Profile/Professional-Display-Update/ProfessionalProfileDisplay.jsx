@@ -930,7 +930,7 @@ const ProfessionalProfileDisplay = () => {
           </Grid>
           {user.user_type === "PROFESSIONAL" &&
             expert?.user?.id === user.user && (
-              <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
+              <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
                 <Button
                   variant="contained"
                   color="primary"
