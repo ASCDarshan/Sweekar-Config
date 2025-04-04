@@ -155,9 +155,9 @@ const ConsultationList = () => {
         position: "relative",
         minHeight: "100vh",
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundRepeat: "repeat",
         pt: { xs: 2, md: 4 },
         pb: 8,
         overflow: "hidden",
@@ -255,15 +255,15 @@ const ConsultationList = () => {
                       <TableCell>{consultation.consultation_type}</TableCell>
                       <TableCell>
                         <Chip
-                          label={consultation.status}
-                          color={getStatusColor(consultation.status)}
+                          label={consultation?.status}
+                          color={getStatusColor(consultation?.status)}
                         />
                       </TableCell>
                       <TableCell>
                         <Button
                           variant="outlined"
                           size="small"
-                          onClick={() => handleViewDetails(consultation.id)}
+                          onClick={() => handleViewDetails(consultation?.id)}
                         >
                           View Details
                         </Button>

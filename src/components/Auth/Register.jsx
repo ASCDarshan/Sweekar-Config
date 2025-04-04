@@ -264,6 +264,7 @@ const Register = () => {
                 fullWidth
                 label="First Name*"
                 name="first_name"
+                placeholder="John"
                 value={formik.values.first_name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -287,6 +288,7 @@ const Register = () => {
                 fullWidth
                 label="Last Name*"
                 name="last_name"
+                placeholder="Doe"
                 value={formik.values.last_name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -313,6 +315,7 @@ const Register = () => {
                 fullWidth
                 label="Username*"
                 name="username"
+                placeholder="johndoe02"
                 value={formik.values.username}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -334,6 +337,7 @@ const Register = () => {
                 fullWidth
                 label="Email*"
                 name="email"
+                placeholder="test@example.com"
                 type="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -354,6 +358,7 @@ const Register = () => {
                 fullWidth
                 label="Password*"
                 name="password"
+                placeholder="Password"
                 type={showPassword ? "text" : "password"}
                 value={formik.values.password}
                 onChange={formik.handleChange}
@@ -420,6 +425,7 @@ const Register = () => {
                 fullWidth
                 label="Confirm Password*"
                 name="password2"
+                placeholder="Confirm Password"
                 type={showConfirmPassword ? "text" : "password"}
                 value={formik.values.password2}
                 onChange={formik.handleChange}
@@ -520,7 +526,7 @@ const Register = () => {
   return (
     <Box
       sx={{
-        py: 4,
+        py: 8,
         display: "flex",
         minHeight: "100vh",
         alignItems: "center",
