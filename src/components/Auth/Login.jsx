@@ -208,6 +208,7 @@ const Login = () => {
                         fullWidth
                         label="Username"
                         name="email"
+                        placeholder="Enter Your Username"
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -228,6 +229,7 @@ const Login = () => {
                         fullWidth
                         label="Password"
                         name="password"
+                        placeholder="Enter your password"
                         type={showPassword ? "text" : "password"}
                         value={formik.values.password}
                         onChange={formik.handleChange}
