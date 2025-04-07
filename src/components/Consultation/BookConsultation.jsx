@@ -347,10 +347,10 @@ const BookConsultation = ({
                 onChange={(e) => setConsultationType(e.target.value)}
                 label="Consultation Type"
               >
-                {selectedProfessional.is_available_online && (
+                {selectedProfessional?.is_available_online && (
                   <MenuItem value="AUDIO">Audio Call</MenuItem>
                 )}
-                {selectedProfessional.is_available_in_person && (
+                {selectedProfessional?.is_available_in_person && (
                   <MenuItem value="IN_PERSON">In Person</MenuItem>
                 )}
               </Select>
@@ -358,6 +358,7 @@ const BookConsultation = ({
                 fullWidth
                 sx={{ mt: 2 }}
                 label="List of concerns to be discussed (Preferred)"
+                placeholder="Preferred list of concerns to be discussed"
                 value={concern}
                 onChange={(e) => setConcern(e.target.value)}
                 variant="outlined"
@@ -405,6 +406,7 @@ const BookConsultation = ({
               rows={4}
               label="Notes for the consultation"
               value={notes}
+              placeholder="Notes for the consultation"
               onChange={(e) => setNotes(e.target.value)}
               sx={{ mt: 2 }}
             />

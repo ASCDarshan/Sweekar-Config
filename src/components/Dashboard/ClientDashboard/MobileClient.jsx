@@ -38,6 +38,7 @@ import ajaxCall from "../../../helpers/ajaxCall";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ClientDashboardShimmer from "../../UI/ClientDashboardShimmer";
+import backgroundImage from "../../../assets/HeroBanner.jpg";
 
 const MotionBox = motion(Box);
 const MotionPaper = motion(Paper);
@@ -966,12 +967,18 @@ const MobileClient = () => {
 
     return (
         <MotionBox
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
             sx={{
                 position: "relative",
                 minHeight: "100vh",
-                background: "rgb(227 221 206)",
-                pt: 2,
-                pb: 7,
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                pt: { xs: 2, md: 4 },
+                pb: 8,
                 overflow: "hidden",
             }}
         >
