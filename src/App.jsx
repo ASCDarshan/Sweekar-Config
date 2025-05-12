@@ -36,6 +36,8 @@ import Professional from "./components/Dashboard/ProfessionalDashboard/Professio
 import ProfessionalProfileDisplay from "./components/Profile/Professional-Display-Update/ProfessionalProfileDisplay";
 import ConsultationList from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationList";
 import ConsultationDetail from "./components/Dashboard/ProfessionalDashboard/MyConsultation/ConsultationDetail";
+import Privacy from "./components/Footer/FooterComponents/Privacy";
+import Terms from "./components/Footer/FooterComponents/Terms";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -107,6 +109,9 @@ const App = () => {
                 path="/consultation/:id"
                 element={<ConsultationDetail />}
               />
+
+              <Route path="privacy" element={<Privacy />} />
+              <Route path="terms" element={<Terms />} />
 
               {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Routes>

@@ -6,8 +6,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -32,16 +34,16 @@ const Footer = () => {
         <Typography variant="body2" align="center" color="text.secondary">
           <Link
             color="inherit"
-            href="/privacy"
-            style={{ textDecoration: "none" }}
+            onClick={() => navigate("/privacy")}
+            style={{ textDecoration: "none", cursor: "pointer" }}
           >
             Privacy Policy
           </Link>
           {" | "}
           <Link
-            href="/terms"
+            onClick={() => navigate("/terms")}
             color="inherit"
-            style={{ textDecoration: "none" }}
+            style={{ textDecoration: "none", cursor: "pointer" }}
           >
             Terms of Service
           </Link>
